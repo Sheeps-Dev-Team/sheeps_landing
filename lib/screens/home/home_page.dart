@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
           return Scaffold(
             appBar: const SiteAppBar(),
             body: GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+              padding: EdgeInsets.symmetric(horizontal: 24 * sizeUnit, vertical: 24 * sizeUnit),
               itemCount: 12,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: Responsive.isMobile(context)
@@ -32,8 +32,8 @@ class HomePage extends StatelessWidget {
                         ? 3
                         : 4,
                 childAspectRatio: 4 / 3,
-                mainAxisSpacing: 40,
-                crossAxisSpacing: 40,
+                mainAxisSpacing: 40 * sizeUnit,
+                crossAxisSpacing: 40 * sizeUnit,
               ),
               itemBuilder: (context, index) {
                 final bool isLast = index == 11;
@@ -88,7 +88,7 @@ class HomePage extends StatelessWidget {
             alignment: Alignment.center,
             child: SvgPicture.asset(
               GlobalAssets.svgPlus,
-              width: 100,
+              width: 100 * sizeUnit,
               colorFilter: ColorFilter.mode(
                 $style.colors.grey,
                 BlendMode.srcIn,

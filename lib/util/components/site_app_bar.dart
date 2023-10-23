@@ -13,16 +13,11 @@ class SiteAppBar extends StatelessWidget implements PreferredSize{
   Widget build(BuildContext context) {
     return CustomAppBar(
       leading: const SizedBox.shrink(),
-      leadingWidth: 24,
+      leadingWidth: 24 * sizeUnit,
       centerTitle: false,
-      titleWidget: SvgPicture.asset(GlobalAssets.svgLogo, height: 19),
+      titleWidget: SvgPicture.asset(GlobalAssets.svgLogo, height: 19 * sizeUnit),
       actions: [
-        Text(
-          '로그아웃',
-          style: $style.text.subTitle14.copyWith(color: $style.colors.grey),
-        ),
-        Gap($style.insets.$4),
-        SvgPicture.asset(GlobalAssets.svgLogout),
+        SvgPicture.asset(GlobalAssets.svgProfile, width: 32 * sizeUnit),
         Gap($style.insets.$24),
       ],
     );
