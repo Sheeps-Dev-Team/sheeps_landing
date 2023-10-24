@@ -11,6 +11,7 @@ import 'package:sheeps_landing/util/components/custom_app_bar.dart';
 import 'package:sheeps_landing/util/components/custom_button.dart';
 import 'package:sheeps_landing/util/components/custom_text_field.dart';
 import 'package:sheeps_landing/util/components/get_extended_image.dart';
+import 'package:sheeps_landing/util/components/preview.dart';
 
 class CreateProjectPage extends StatelessWidget {
   CreateProjectPage({super.key});
@@ -32,7 +33,7 @@ class CreateProjectPage extends StatelessWidget {
               controller: controller.pageController,
               itemCount: 7,
               scrollDirection: Axis.vertical,
-              onPageChanged: (value) => controller.currentPage(value),
+              onPageChanged: controller.onPageChanged,
               itemBuilder: (context, index) {
                 switch (index) {
                   case 0:
@@ -68,7 +69,7 @@ class CreateProjectPage extends StatelessWidget {
                     );
                   case 3:
                     return Obx(() => questionForImg(
-                          question: '이미지를 추가해 주세요.',
+                          question: '대표 이미지를 추가해 주세요.',
                           xFile: controller.xFile01.value,
                           description: '제품이나 서비스를 시각적으로 나타내기에 가장 적합한 이미지는 무엇인가요?',
                           onGetImage: (xFile) {
@@ -85,38 +86,96 @@ class CreateProjectPage extends StatelessWidget {
             ),
             Positioned(
               right: calSizeUnit(MediaQuery.of(context).size.width, 80),
-              child: Container(
-                padding: EdgeInsets.all($style.insets.$8),
-                width: 80 * sizeUnit,
-                constraints: BoxConstraints(minHeight: Get.height * 0.4),
-                decoration: BoxDecoration(
-                  border: Border.all(color: $style.colors.grey, width: 1 * sizeUnit),
-                  borderRadius: BorderRadius.circular($style.insets.$12),
-                ),
-                child: Column(
-                  children: [
-                    Obx(() => AnimatedOpacity(
-                          opacity: controller.previewAnimation.value ? 1 : 0,
-                          duration: $style.times.ms150,
-                          child: Container(
-                            width: 40 * sizeUnit,
-                            height: 10 * sizeUnit,
-                            decoration: BoxDecoration(
+              child: GetBuilder<CreateProjectController>(
+                  id: 'preview',
+                  builder: (_) {
+                    return Preview(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            // 프로젝트 이름
+                            PreviewItem(
+                              isTwinkle: controller.currentPage == 0,
+                              previewItemType: PreviewItemType.name,
                               color: controller.colorScheme.primaryContainer,
-                              borderRadius: BorderRadius.circular($style.corners.$4),
                             ),
-                          ),
-                        )),
-                  ],
-                ),
-              ),
+                            Gap($style.insets.$12),
+                            Row(
+                              children: [
+                                // 이미지
+                                PreviewItem(
+                                  isTwinkle: controller.currentPage == 3,
+                                  previewItemType: PreviewItemType.img01,
+                                  color: controller.colorScheme.primaryContainer,
+                                  isShow: controller.currentPage >= 3,
+                                ),
+                                Gap($style.insets.$8),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    // 제목
+                                    PreviewItem(
+                                      isTwinkle: controller.currentPage == 1,
+                                      previewItemType: PreviewItemType.title01,
+                                      color: controller.colorScheme.primaryContainer,
+                                      isShow: controller.currentPage >= 1,
+                                    ),
+                                    Gap($style.insets.$4),
+                                    PreviewItem(
+                                      isTwinkle: controller.currentPage == 2,
+                                      previewItemType: PreviewItemType.text01,
+                                      color: controller.colorScheme.primaryContainer,
+                                      isShow: controller.currentPage >= 2,
+                                    ),
+                                    Gap($style.insets.$2),
+                                    PreviewItem(
+                                      isTwinkle: controller.currentPage == 2,
+                                      previewItemType: PreviewItemType.text01,
+                                      color: controller.colorScheme.primaryContainer,
+                                      isShow: controller.currentPage >= 2,
+                                    ),
+                                    Gap($style.insets.$2),
+                                    PreviewItem(
+                                      isTwinkle: controller.currentPage == 2,
+                                      previewItemType: PreviewItemType.text01,
+                                      color: controller.colorScheme.primaryContainer,
+                                      isShow: controller.currentPage >= 2,
+                                    ),
+                                    Gap($style.insets.$4),
+                                    Row(
+                                      children: [
+                                        PreviewItem(
+                                          isTwinkle: controller.currentPage == 5,
+                                          previewItemType: PreviewItemType.button01,
+                                          color: controller.colorScheme.primaryContainer,
+                                          isShow: controller.currentPage >= 5,
+                                        ),
+                                        Gap($style.insets.$2),
+                                        PreviewItem(
+                                          isTwinkle: controller.currentPage == 5,
+                                          previewItemType: PreviewItemType.button01,
+                                          color: controller.colorScheme.primaryContainer,
+                                          isShow: controller.currentPage >= 5,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
             ),
           ],
         ),
       ),
     );
   }
-
+  
   // 텍스트용 질문
   Widget questionForText({
     required String question,
@@ -164,7 +223,7 @@ class CreateProjectPage extends StatelessWidget {
         Obx(
           () => CustomButton(
             width: 320 * sizeUnit,
-            customButtonStyle: CustomButtonStyle.filled48,
+            customButtonStyle: CustomButtonStyle.outline48,
             text: '다음',
             isOk: value.isNotEmpty,
             color: controller.seedColor,
@@ -247,7 +306,7 @@ class CreateProjectPage extends StatelessWidget {
         const Spacer(),
         CustomButton(
           width: 320 * sizeUnit,
-          customButtonStyle: CustomButtonStyle.filled48,
+          customButtonStyle: CustomButtonStyle.outline48,
           text: '다음',
           isOk: !isNullImg,
           color: controller.seedColor,
