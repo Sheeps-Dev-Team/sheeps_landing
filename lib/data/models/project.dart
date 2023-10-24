@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Project{
 
   Project({
@@ -9,9 +11,9 @@ class Project{
     this.imgPath = '',
     this.buttonType = 0,
     this.viewCount = 0,
-    this.createdAt = '',
-    this.updatedAt = '',
-    this.descriptionList = const []
+    this.descriptions = const [],
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   String documentID;
@@ -22,19 +24,11 @@ class Project{
   String imgPath;
   int buttonType;
   int viewCount;
-  String createdAt;
-  String updatedAt;
-  List<Description?> descriptionList;
+  List<Description> descriptions;
+  DateTime createdAt;
+  DateTime updatedAt;
 
   factory Project.fromJson(Map<String, dynamic> json) {
-
-    List<Description?> list = [];
-    if(json['Description'] != null && json['Description'].isNotEmpty){
-      for(var i = 0 ; i < json['Description'].length ; ++i){
-        list.add(Description.fromJson(json['Description'][i]));
-      }
-    }
-
     return Project(
         documentID: json['documentID'] ?? '',
         userDocumentID: json['userDocumentID'] ?? '',
@@ -44,9 +38,9 @@ class Project{
         imgPath: json['imgPath'] ?? '',
         buttonType: json['buttonType'] ?? 0,
         viewCount: json['viewCount'] ?? 0,
-        createdAt: json['createdAt'] ?? '',
-        updatedAt: json['updatedAt'] ?? '',
-        descriptionList: list
+        descriptions: json['descriptions'] == null ? [] : (json['descriptions'] as List).map((e) => e.fromJson()).toList().cast<Description>(),
+        createdAt: json['createdAt'].toDate(),
+        updatedAt: json['updatedAt'].toDate(),
     );
   }
 
@@ -60,15 +54,15 @@ class Project{
       "imgPath" : imgPath,
       "buttonType" : buttonType,
       "viewCount" : viewCount,
-      "createdAt" : createdAt,
-      "updatedAt" : updatedAt
+      "descriptions" : descriptions.map((e) => e.toJson()).toList(),
+      "createdAt": Timestamp.fromDate(createdAt),
+      "updatedAt": Timestamp.fromDate(updatedAt),
     };
   }
 
 }
 
 class Description{
-
   Description({
     required this.title,
     required this.contents,
