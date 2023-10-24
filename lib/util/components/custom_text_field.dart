@@ -31,6 +31,8 @@ class CustomTextField extends StatelessWidget {
     this.counterText,
     this.isActive = true,
     this.textAlign = TextAlign.start,
+    this.label,
+    this.cursorColor,
   }) : super(key: key);
 
   final TextEditingController? controller;
@@ -58,6 +60,8 @@ class CustomTextField extends StatelessWidget {
   final String? counterText;
   final bool isActive;
   final TextAlign textAlign;
+  final Widget? label;
+  final Color? cursorColor;
 
   final TextStyle defaultTextStyle = $style.text.body14;
 
@@ -76,20 +80,21 @@ class CustomTextField extends StatelessWidget {
         child: TextField(
           controller: controller,
           focusNode: focusNode,
-          cursorColor: $style.colors.primary,
+          cursorColor: cursorColor ?? $style.colors.primary,
           keyboardType: textInputType,
           textAlignVertical: TextAlignVertical.center,
           textAlign: textAlign,
           style: style ?? defaultTextStyle,
           inputFormatters: inputFormatters,
           decoration: InputDecoration(
+            label: label,
             hintText: hintText,
             hintStyle: hintStyle ?? (style ?? defaultTextStyle).copyWith(color: $style.colors.grey),
             border: outlinedInputBorder(borderColor ?? $style.colors.grey),
             enabledBorder: outlinedInputBorder(borderColor ?? $style.colors.grey),
             focusedBorder: outlinedInputBorder(focusBorderColor ?? $style.colors.primary),
             errorBorder: outlinedInputBorder($style.colors.red),
-            contentPadding: EdgeInsets.all(15 * sizeUnit),
+            contentPadding: EdgeInsets.all(16 * sizeUnit),
             errorText: errorText,
             errorMaxLines: 2,
             errorStyle: $style.text.body12.copyWith(color: $style.colors.red),
