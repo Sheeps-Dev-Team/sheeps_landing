@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "300032426425",
+    "project_id": "sheeps-landing",
+    "storage_bucket": "sheeps-landing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:300032426425:android:9a8ba73910646a1c8db668",
+        "android_client_info": {
+          "package_name": "kr.sheeps.sheeps_landing"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDC3uD_dSPX8FNzCEtaPE-eZdDbQKivoWI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

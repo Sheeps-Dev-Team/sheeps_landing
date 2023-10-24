@@ -45,6 +45,9 @@ dependencies:
   fluttertoast: ^8.2.2 # 토스트
   url_strategy: ^0.2.0 # url 앞에 #제거
   image_picker: ^1.0.4 # 이미지 가져오기
+  firebase_core: ^2.19.0
+  firebase_storage: ^11.3.1
+  cloud_firestore: ^4.11.0
 
 dev_dependencies:
   flutter_test:
