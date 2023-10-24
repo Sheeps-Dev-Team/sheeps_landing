@@ -4,4 +4,6 @@ class GlobalAssets {
   static const String svgLogout = 'assets/images/global/logout.svg'; // 로그아웃
   static const String svgPlus = 'assets/images/global/plus.svg'; // 플러스
   static const String svgProfile = 'assets/images/global/profile.svg'; // 프로필
+  static const String svgImg = 'assets/images/global/img.svg'; // 빈 이미지
+  static const String svgCancel = 'assets/images/global/cancel.svg'; // x
 }

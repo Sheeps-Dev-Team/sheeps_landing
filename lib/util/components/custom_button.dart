@@ -24,7 +24,7 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = isOk ? this.color ?? $style.colors.primary : $style.colors.grey;
+    final Color color = isOk ? this.color ?? $style.colors.primary : const Color(0xFFE1E1E1);
     Color borderColor = color;
 
     late final Color fillColor;

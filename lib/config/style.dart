@@ -95,6 +95,7 @@ class Insets {
   late final double $48 = 48 * scale;
   late final double $56 = 56 * scale;
   late final double $64 = 64 * scale;
+  late final double $80 = 80 * scale;
 }
 
 /// Animation Durations

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:sheeps_landing/config/routes.dart';
 import 'package:sheeps_landing/util/components/responsive.dart';
 import 'package:sheeps_landing/util/components/site_app_bar.dart';
 
@@ -79,19 +80,22 @@ class HomePage extends StatelessWidget {
       children: [
         Expanded(
           flex: 3,
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: $style.colors.grey),
-              borderRadius: BorderRadius.circular($style.corners.$12),
-              color: Colors.white,
-            ),
-            alignment: Alignment.center,
-            child: SvgPicture.asset(
-              GlobalAssets.svgPlus,
-              width: 100 * sizeUnit,
-              colorFilter: ColorFilter.mode(
-                $style.colors.grey,
-                BlendMode.srcIn,
+          child: InkWell(
+            borderRadius: BorderRadius.circular($style.insets.$12),
+            onTap: () => Get.toNamed(Routes.createProject),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: $style.colors.grey),
+                borderRadius: BorderRadius.circular($style.corners.$12),
+              ),
+              alignment: Alignment.center,
+              child: SvgPicture.asset(
+                GlobalAssets.svgPlus,
+                width: 100 * sizeUnit,
+                colorFilter: ColorFilter.mode(
+                  $style.colors.grey,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
           ),

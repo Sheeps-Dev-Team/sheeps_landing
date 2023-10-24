@@ -1,8 +1,9 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sheeps_landing/config/global_assets.dart';
 
 import '../../config/constants.dart';
-
 
 class GetExtendedImage extends StatefulWidget {
   const GetExtendedImage({
@@ -24,17 +25,12 @@ class GetExtendedImage extends StatefulWidget {
   _GetExtendedImageState createState() => _GetExtendedImageState();
 }
 
-class _GetExtendedImageState extends State<GetExtendedImage>
-    with SingleTickerProviderStateMixin {
+class _GetExtendedImageState extends State<GetExtendedImage> with SingleTickerProviderStateMixin {
   late AnimationController extendedController;
 
   @override
   void initState() {
-    extendedController = AnimationController(
-        vsync: this,
-        duration: const Duration(seconds: 1),
-        lowerBound: 0.0,
-        upperBound: 1.0);
+    extendedController = AnimationController(vsync: this, duration: const Duration(seconds: 1), lowerBound: 0.0, upperBound: 1.0);
     super.initState();
   }
 
@@ -83,8 +79,7 @@ class _GetExtendedImageState extends State<GetExtendedImage>
               child: SizedBox(
                 width: 16 * sizeUnit,
                 height: 16 * sizeUnit,
-                child: CircularProgressIndicator(
-                    strokeWidth: 2 * sizeUnit, color: $style.colors.primary),
+                child: CircularProgressIndicator(strokeWidth: 2 * sizeUnit, color: $style.colors.primary),
               ),
             );
           case LoadState.completed:
@@ -99,7 +94,16 @@ class _GetExtendedImageState extends State<GetExtendedImage>
             );
           case LoadState.failed:
             extendedController.reset();
-            return const Center(child: Icon(Icons.picture_in_picture));
+            return Center(
+              child: SvgPicture.asset(
+                GlobalAssets.svgImg,
+                width: 24 * sizeUnit,
+                colorFilter: ColorFilter.mode(
+                  $style.colors.grey,
+                  BlendMode.srcIn,
+                ),
+              ),
+            );
         }
       },
     );

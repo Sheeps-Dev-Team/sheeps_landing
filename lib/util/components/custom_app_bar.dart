@@ -8,7 +8,18 @@ import '../../config/constants.dart';
 import '../../config/global_assets.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSize {
-  const CustomAppBar({super.key, this.leading, this.title, this.actions, this.titleWidget, this.centerTitle, this.leadingWidth, this.controller});
+  const CustomAppBar({
+    super.key,
+    this.leading,
+    this.title,
+    this.actions,
+    this.titleWidget,
+    this.centerTitle,
+    this.leadingWidth,
+    this.controller,
+    this.backgroundColor,
+    this.surfaceTintColor,
+  });
 
   final Widget? leading;
   final String? title;
@@ -18,6 +29,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSize {
   final double? leadingWidth;
   final ScrollController? controller;
   final bool showBottomLine = true;
+  final Color? backgroundColor;
+  final Color? surfaceTintColor;
 
   static const appBarHeight = 48;
 
@@ -34,7 +47,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSize {
         child: Column(
           children: [
             AppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: backgroundColor ?? Colors.white,
               toolbarHeight: 47 * sizeUnit,
               elevation: 0,
               centerTitle: centerTitle ?? true,
@@ -44,6 +57,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSize {
               leading: leading ?? backButton(),
               title: titleWidget ?? (title != null ? Text(title!, style: $style.text.headline18) : null),
               actions: actions,
+              surfaceTintColor: surfaceTintColor,
             ),
             if (showBottomLine)
               Divider(
