@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:sheeps_landing/config/routes.dart';
-import 'package:sheeps_landing/data/models/User.dart';
+import 'package:sheeps_landing/data/models/user.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'config/constants.dart';
@@ -21,44 +21,44 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  QuerySnapshot<Map<String, dynamic>> _snapshot = await _firestore.collection("Users").where("Email", isEqualTo: "test@gmail.com").get();
-
-  var d = _snapshot.docs[0].id;
-  print(d);
-  User user = _snapshot.docs.map((e) => User.fromJson(e.data())).toList()[0];
-
-  user;
-
-  await _firestore.collection("Project").doc("LrSEynWpCdwPpiGxtMKM").set(
-    {
-      "UserDocumentID" : "j71GMnasbytvzz2KAQ6N",
-      "Name" : 1,
-      "Title" : "test",
-      "Contents" : "testContents",
-      "ImgPath" : "path",
-      "ButtonType" : 0,
-      "ViewCount" : 0,
-      "Description" : [
-        {
-          "Title" : 'title',
-          "Contents" : "contents",
-          "img" : "img"
-        },
-        {
-          "Title2" : 'title',
-          "Contents2" : "contents",
-          "img2" : "img"
-        },
-        {
-          "Title3" : 'title',
-          "Contents3" : "contents",
-          "img3" : "img"
-        },
-      ],
-    }
-  );
+  // FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  //
+  // QuerySnapshot<Map<String, dynamic>> _snapshot = await _firestore.collection("Users").where("Email", isEqualTo: "test@gmail.com").get();
+  //
+  // var d = _snapshot.docs[0].id;
+  // print(d);
+  // User user = _snapshot.docs.map((e) => User.fromJson(e.data())).toList()[0];
+  //
+  // user;
+  //
+  // await _firestore.collection("Project").doc("LrSEynWpCdwPpiGxtMKM").set(
+  //   {
+  //     "UserDocumentID" : "j71GMnasbytvzz2KAQ6N",
+  //     "Name" : 1,
+  //     "Title" : "test",
+  //     "Contents" : "testContents",
+  //     "ImgPath" : "path",
+  //     "ButtonType" : 0,
+  //     "ViewCount" : 0,
+  //     "Description" : [
+  //       {
+  //         "Title" : 'title',
+  //         "Contents" : "contents",
+  //         "img" : "img"
+  //       },
+  //       {
+  //         "Title2" : 'title',
+  //         "Contents2" : "contents",
+  //         "img2" : "img"
+  //       },
+  //       {
+  //         "Title3" : 'title',
+  //         "Contents3" : "contents",
+  //         "img3" : "img"
+  //       },
+  //     ],
+  //   }
+  // );
 
   runApp(const MyApp());
 
