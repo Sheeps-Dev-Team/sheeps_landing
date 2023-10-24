@@ -15,9 +15,27 @@ class ProjectRepository {
       project = Project.fromJson(documentSnapshot.data() as Map<String, dynamic>);
     } catch (e) {
       if(kDebugMode) print(e.toString());
+      return null;
     }
 
     return project;
+  }
+
+  // userID 로 프로젝트 리스트 가져오기
+  static Future<List<Project>> getProjectListByUserID(String userDocumentID) async {
+    List<Project> projects = [];
+
+    try {
+      await _projectCollection.where('userDocumentID', isEqualTo: userDocumentID).get().then((QuerySnapshot querySnapshot) {
+        for(QueryDocumentSnapshot<Object?> doc in querySnapshot.docs) {
+          projects.add(Project.fromJson(doc.data() as Map<String, dynamic>));
+        }
+      });
+    } catch (e) {
+      if(kDebugMode) print(e.toString());
+    }
+
+    return projects;
   }
 
   // 프로젝트 생성

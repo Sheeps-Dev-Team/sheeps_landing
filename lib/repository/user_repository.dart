@@ -15,6 +15,7 @@ class UserRepository {
       user = User.fromJson(documentSnapshot.data() as Map<String, dynamic>);
     } catch (e) {
       if(kDebugMode) print(e.toString());
+      return null;
     }
 
     return user;
