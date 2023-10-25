@@ -16,8 +16,9 @@ import '../../../config/global_assets.dart';
 class LoginPageController extends GetxController {
   GoogleSignInAccount? currentUser;
 
-  Future<void> loginFunc() async {
-    /// The scopes required by this application.
+  Future<bool> loginFunc() async {
+    var errCheck = false;
+
     const List<String> scopes = <String>[
       'email',
       'https://www.googleapis.com/auth/contacts.readonly',
@@ -45,6 +46,7 @@ class LoginPageController extends GetxController {
          debugPrint(GlobalData.loginUser!.documentID);
       }
     } catch (error) {
+      errCheck = true;
       if (kDebugMode) {
         print(error);
       }
@@ -52,5 +54,7 @@ class LoginPageController extends GetxController {
 
 
     update();
+
+    return errCheck;
   }
 }

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:sheeps_landing/config/global_assets.dart';
+import 'package:sheeps_landing/data/global_data.dart';
+import 'package:sheeps_landing/data/models/project.dart';
+import 'package:sheeps_landing/repository/project_repository.dart';
 import 'package:sheeps_landing/screens/login/controllers/login_page_controller.dart';
 
 import '../../config/constants.dart';
@@ -50,7 +53,11 @@ class LoginPage extends StatelessWidget {
                             isOk: true,
                             color: $style.colors.primary,
                             onTap: () async {
-                              await controller.loginFunc();
+                              if(false == await controller.loginFunc() && GlobalData.loginUser != null){ //로그인 성공시
+                                GlobalData.projectList = await ProjectRepository.getProjectListByUserID(GlobalData.loginUser!.documentID);
+                              }else{ //로그인 실패시
+
+                              }
                             },
                           ),
                         ],
