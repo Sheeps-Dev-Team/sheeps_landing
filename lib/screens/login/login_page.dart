@@ -26,6 +26,7 @@ class LoginPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgPicture.asset(GlobalAssets.svgLogo),
+                  Text('LANDING', style: $style.text.headline24.copyWith(color: $style.colors.primary, fontWeight: FontWeight.w900),),
                   SizedBox(height: 24 * sizeUnit),
                   Container(
                     width: 200 * sizeUnit,
@@ -45,11 +46,11 @@ class LoginPage extends StatelessWidget {
                           CustomButton(
                             width: 180 * sizeUnit,
                             customButtonStyle: CustomButtonStyle.filled48,
-                            text: '로그인 or\n 가입하기',
+                            text: '구글 로그인 \n or 가입하기',
                             isOk: true,
                             color: $style.colors.primary,
-                            onTap: () {
-
+                            onTap: () async {
+                              await controller.loginFunc();
                             },
                           ),
                         ],
