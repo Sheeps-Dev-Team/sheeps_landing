@@ -8,7 +8,7 @@ class Project{
     required this.name,
     required this.title,
     required this.contents,
-    this.imgPath = '',
+    required this.imgPath,
     this.buttonType = 0,
     this.viewCount = 0,
     this.descriptions = const [],
@@ -29,6 +29,15 @@ class Project{
   DateTime updatedAt;
 
   factory Project.fromJson(Map<String, dynamic> json) {
+
+    List<Description> list = [];
+
+    if(json['descriptions'] != null || json['descriptions'].isNotEmpty){
+      for(var i = 0 ; i < json['descriptions'].length ; ++i){
+        list.add(Description.fromJson(json['descriptions'][i]));
+      }
+    }
+
     return Project(
         documentID: json['documentID'] ?? '',
         userDocumentID: json['userDocumentID'] ?? '',
@@ -38,7 +47,7 @@ class Project{
         imgPath: json['imgPath'] ?? '',
         buttonType: json['buttonType'] ?? 0,
         viewCount: json['viewCount'] ?? 0,
-        descriptions: json['descriptions'] == null ? [] : (json['descriptions'] as List).map((e) => e.fromJson()).toList().cast<Description>(),
+        descriptions: list,
         createdAt: json['createdAt'].toDate(),
         updatedAt: json['updatedAt'].toDate(),
     );
