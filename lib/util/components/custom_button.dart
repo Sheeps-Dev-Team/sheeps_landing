@@ -52,7 +52,7 @@ class CustomButton extends StatelessWidget {
         fontSize = 16;
         if (color == $style.colors.grey) {
           fontWeight = FontWeight.w500;
-          borderColor = $style.colors.lightGrey;
+          borderColor = $style.colors.grey;
         }
         height = 48;
         break;
@@ -62,7 +62,7 @@ class CustomButton extends StatelessWidget {
         fontSize = 13;
         if (color == $style.colors.grey) {
           fontWeight = FontWeight.w500;
-          borderColor = $style.colors.lightGrey;
+          borderColor = $style.colors.grey;
         }
         height = 32;
         break;

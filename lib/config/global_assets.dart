@@ -6,4 +6,5 @@ class GlobalAssets {
   static const String svgProfile = 'assets/images/global/profile.svg'; // 프로필
   static const String svgImg = 'assets/images/global/img.svg'; // 빈 이미지
   static const String svgCancel = 'assets/images/global/cancel.svg'; // x
+  static const String svgPlusCircle = 'assets/images/global/plus_circle.svg'; // 원안에 플러스
 }
