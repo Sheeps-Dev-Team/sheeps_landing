@@ -6,7 +6,8 @@ class Project {
     required this.userDocumentID,
     required this.name,
     required this.title,
-    required this.imgPath = '',
+    required this.contents,
+    required this.imgPath,
     this.callbackType = '',
     this.viewCount = 0,
     this.descriptions = const [],
@@ -27,15 +28,6 @@ class Project {
   DateTime updatedAt;
 
   factory Project.fromJson(Map<String, dynamic> json) {
-
-    List<Description> list = [];
-
-    if(json['descriptions'] != null || json['descriptions'].isNotEmpty){
-      for(var i = 0 ; i < json['descriptions'].length ; ++i){
-        list.add(Description.fromJson(json['descriptions'][i]));
-      }
-    }
-
     return Project(
       documentID: json['documentID'] ?? '',
       userDocumentID: json['userDocumentID'] ?? '',
@@ -72,6 +64,7 @@ class Project {
     name: '',
     title: '',
     contents: '',
+    imgPath: '',
     descriptions: [Description.nullDescription.copyWith()],
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
