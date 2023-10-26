@@ -10,17 +10,19 @@ class Preview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all($style.insets.$8),
+      width: 140 * sizeUnit,
+      padding: EdgeInsets.symmetric(vertical: $style.insets.$8),
       decoration: BoxDecoration(
         border: Border.all(color: $style.colors.grey, width: 1 * sizeUnit),
         borderRadius: BorderRadius.circular($style.insets.$12),
       ),
+      alignment: Alignment.center,
       child: child,
     );
   }
 }
 
-enum PreviewItemType { name, title01, text01, img01, button01 }
+enum PreviewItemType { name, title, text, mainImg, subImg, button }
 
 class PreviewItem extends StatefulWidget {
   const PreviewItem({
@@ -43,7 +45,7 @@ class PreviewItem extends StatefulWidget {
 
 class _PreviewItemState extends State<PreviewItem> with TickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
-    duration: const Duration(seconds: 1),
+    duration: const Duration(milliseconds: 700),
     vsync: this,
   )..repeat(reverse: true);
 
@@ -64,21 +66,29 @@ class _PreviewItemState extends State<PreviewItem> with TickerProviderStateMixin
         width = 40 * sizeUnit;
         height = 8 * sizeUnit;
         break;
-      case PreviewItemType.title01:
+      case PreviewItemType.title:
         width = 40 * sizeUnit;
         height = 8 * sizeUnit;
         break;
-      case PreviewItemType.text01:
+      case PreviewItemType.text:
         width = 40 * sizeUnit;
         height = 4 * sizeUnit;
         break;
-      case PreviewItemType.img01:
+      case PreviewItemType.mainImg:
+        width = 60 * sizeUnit;
+        height = 32 * sizeUnit;
+        break;
+      case PreviewItemType.subImg:
         width = 60 * sizeUnit;
         height = 40 * sizeUnit;
         break;
-      case PreviewItemType.button01:
+      case PreviewItemType.button:
         width = 12 * sizeUnit;
         height = 5 * sizeUnit;
+        break;
+      default:
+        width = 0;
+        height = 0;
         break;
     }
   }
@@ -106,7 +116,7 @@ class _PreviewItemState extends State<PreviewItem> with TickerProviderStateMixin
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: widget.color.withOpacity(widget.isShow ? 1 : .2),
+        color: widget.color.withOpacity(widget.isShow ? 1 : .35),
         borderRadius: BorderRadius.circular($style.corners.$4),
       ),
     );
