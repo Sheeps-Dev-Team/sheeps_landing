@@ -40,9 +40,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSize {
       preferredSize: Size.fromHeight(appBarHeight * sizeUnit),
       child: GestureDetector(
         onTap: () {
-          if (Platform.isIOS && (controller != null && controller!.positions.isNotEmpty)) {
-            controller!.animateTo(0, duration: const Duration(milliseconds: 250), curve: Curves.bounceInOut);
-          }
+          // if (Platform.isIOS && (controller != null && controller!.positions.isNotEmpty)) {
+          //   controller!.animateTo(0, duration: const Duration(milliseconds: 250), curve: Curves.bounceInOut);
+          // }
         },
         child: Column(
           children: [

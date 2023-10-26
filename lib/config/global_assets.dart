@@ -7,4 +7,5 @@ class GlobalAssets {
   static const String svgImg = 'assets/images/global/img.svg'; // 빈 이미지
   static const String svgCancel = 'assets/images/global/cancel.svg'; // x
   static const String svgPlusCircle = 'assets/images/global/plus_circle.svg'; // 원안에 플러스
+  static const String svgGoogleLogo = 'assets/images/global/google_logo.svg'; //구글 로고
 }

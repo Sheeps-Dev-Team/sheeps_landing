@@ -6,6 +6,7 @@ import 'package:sheeps_landing/data/models/project.dart';
 import 'package:sheeps_landing/data/models/user_callback.dart';
 
 import '../../../util/global_function.dart';
+import 'package:dio/dio.dart' as DIO;
 
 class CreateProjectController extends GetxController {
   final PageController pageController = PageController();
@@ -26,6 +27,7 @@ class CreateProjectController extends GetxController {
   ColorScheme get colorScheme => ColorScheme.fromSeed(seedColor: seedColor); // 시드 호환 컬러
   late Rx<XFile> mainImgXFile = XFile(project.imgPath).obs; // 헤더 이미지
   RxBool descriptionsIsOk = false.obs; // description isOk
+  dynamic contentsImg;
 
   String callbackType = ''; // 콜백 타입
   List<String> detailCallbackTypeList = []; // 디테일 콜백 타입 리스트
@@ -46,19 +48,25 @@ class CreateProjectController extends GetxController {
   // 사진 가져오기
   Future<XFile?> getImage() async {
     final ImagePicker picker = ImagePicker();
-    XFile? xFile;
+    XFile? selectedImage;
 
-    xFile = await picker.pickImage(source: ImageSource.gallery);
+    selectedImage = await picker.pickImage(source: ImageSource.gallery);
 
-    if (xFile != null) {
-      if (await GlobalFunction.isBigFile(xFile)) {
-        GlobalFunction.showToast(msg: '사진의 크기는 15mb를 넘을 수 없습니다.');
-      } else {
-        return xFile;
-      }
+    if (selectedImage != null) {
+
+      contentsImg = selectedImage;
+
+      final String fileName = selectedImage.path.split('/').last;
+
+      // var file = DIO.MultipartFile.fromBytes(
+      //   await selectedImage.readAsBytes(),
+      //   filename: '$fileName.${selectedImage.mimeType == null ? 'jpeg' : selectedImage.mimeType!.split('/').last}',
+      // );
+
+      update(['img']);
     }
 
-    return null;
+    return selectedImage;
   }
 
   // 페이지 변경
