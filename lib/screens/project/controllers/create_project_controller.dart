@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -27,7 +30,6 @@ class CreateProjectController extends GetxController {
   ColorScheme get colorScheme => ColorScheme.fromSeed(seedColor: seedColor); // 시드 호환 컬러
   late Rx<XFile> mainImgXFile = XFile(project.imgPath).obs; // 헤더 이미지
   RxBool descriptionsIsOk = false.obs; // description isOk
-  dynamic contentsImg;
 
   String callbackType = ''; // 콜백 타입
   List<String> detailCallbackTypeList = []; // 디테일 콜백 타입 리스트
@@ -50,18 +52,13 @@ class CreateProjectController extends GetxController {
     final ImagePicker picker = ImagePicker();
     XFile? selectedImage;
 
-    selectedImage = await picker.pickImage(source: ImageSource.gallery);
+    // selectedImage = await picker.pickImage(source: ImageSource.gallery);
+    FilePickerResult? pickedFileWeb = await FilePicker.platform.pickFiles(type: FileType.image);
+    
+    if (pickedFileWeb != null) {
+      Uint8List? fileBytes = pickedFileWeb.files.first.bytes;
 
-    if (selectedImage != null) {
-
-      contentsImg = selectedImage;
-
-      final String fileName = selectedImage.path.split('/').last;
-
-      // var file = DIO.MultipartFile.fromBytes(
-      //   await selectedImage.readAsBytes(),
-      //   filename: '$fileName.${selectedImage.mimeType == null ? 'jpeg' : selectedImage.mimeType!.split('/').last}',
-      // );
+      selectedImage = XFile.fromData(fileBytes!);
 
       update(['img']);
     }
