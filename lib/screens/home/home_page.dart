@@ -49,29 +49,34 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Column projectItem() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          flex: 3,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular($style.insets.$12),
-            child: const Placeholder(),
+  GestureDetector projectItem() {
+    // print('${Routes.projectManagement}/1');
+    return GestureDetector(
+      onTap: (){Get.toNamed('${Routes.projectManagement}/1');},
+      //onTap: (){Get.to(() => ProjectManagementPage2());},
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 3,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular($style.insets.$12),
+              child: const Placeholder(),
+            ),
           ),
-        ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Gap($style.insets.$4),
-              Text('Project Name', style: $style.text.subTitle16),
-              Gap($style.insets.$2),
-              Text('updatedAt', style: $style.text.body12.copyWith(color: $style.colors.darkGrey)),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Gap($style.insets.$4),
+                Text('Project Name', style: $style.text.subTitle16),
+                Gap($style.insets.$2),
+                Text('updatedAt', style: $style.text.body12.copyWith(color: $style.colors.darkGrey)),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
