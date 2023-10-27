@@ -53,7 +53,6 @@ class HomePage extends StatelessWidget {
     // print('${Routes.projectManagement}/1');
     return GestureDetector(
       onTap: (){Get.toNamed('${Routes.projectManagement}/1');},
-      //onTap: (){Get.to(() => ProjectManagementPage2());},
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

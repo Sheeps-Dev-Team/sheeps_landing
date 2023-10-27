@@ -34,17 +34,25 @@ class ProjectManagementPage extends StatelessWidget {
   Container sideBar() {
     return Container(
       decoration: BoxDecoration(
-          border: Border(
-              right: BorderSide(
-        color: $style.colors.lightGrey,
-      ))),
+        border: Border(
+          right: BorderSide(
+            color: $style.colors.lightGrey,
+          ),
+        ),
+      ),
       width: 300 * sizeUnit,
       height: double.infinity,
       child: Column(
         children: List.generate(controller.pageMap.length, (index) {
           final String key = controller.pageMap.keys.toList()[index];
           return ListTile(
-            title: Text(key, style: $style.text.subTitle18, textAlign: TextAlign.center,),
+            focusColor: $style.colors.primary,
+            hoverColor: $style.colors.primary.withOpacity(0.3),
+            title: Text(
+              key,
+              style: $style.text.subTitle18,
+              textAlign: TextAlign.center,
+            ),
             onTap: () => controller.onChangedPageKey(key),
           );
         }),
@@ -52,3 +60,4 @@ class ProjectManagementPage extends StatelessWidget {
     );
   }
 }
+
