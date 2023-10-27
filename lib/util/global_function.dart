@@ -60,7 +60,7 @@ class GlobalFunction {
         type: MaterialType.transparency,
         child: Center(
           child: Container(
-            width: double.infinity,
+            width: 300 * sizeUnit,
             margin: EdgeInsets.symmetric(horizontal: $style.insets.$40),
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.95),

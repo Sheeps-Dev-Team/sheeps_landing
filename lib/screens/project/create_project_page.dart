@@ -25,117 +25,191 @@ class CreateProjectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: CustomAppBar(
-          surfaceTintColor: controller.seedColor,
-        ),
-        body: Stack(
-          alignment: Alignment.center,
-          children: [
-            PageView.builder(
-              controller: controller.pageController,
-              itemCount: 7,
-              scrollDirection: Axis.vertical,
-              onPageChanged: controller.onPageChanged,
-              itemBuilder: (context, index) {
-                switch (index) {
-                  case 0:
-                    return questionForText(
-                      value: controller.project.name.obs,
-                      question: '프로젝트 이름을 입력해 주세요.',
-                      hintText: '쉽스랜딩',
-                      maxLength: 20,
-                      onChanged: (value) => controller.project.name = value,
-                    );
-                  case 1:
-                    return questionForText(
-                      value: controller.project.title.obs,
-                      question: '제목을 입력해 주세요.',
-                      subQuestion: '제품이나 서비스를 한 문장으로 설명할 수 있다면 어떻게 설명하시겠어요?',
-                      hintText: '아이디어 검증을 위한, 5분만에 만드는 랜딩 페이지',
-                      maxLength: 40,
-                      onChanged: (value) => controller.project.title = value,
-                    );
-                  case 2:
-                    return questionForText(
-                      value: controller.project.contents.obs,
-                      question: '제품이나 서비스의 핵심 가치를 설명하는 문장',
-                      subQuestion: '제품 또는 서비스의 핵심적인 가치에 대해 설명해 주세요.\n3~4줄 정도의 문장이 적당해요',
-                      hintText:
-                          '그동안 아이디어를 검증하는 과정이 너무 번거롭지 않았나요?\n\n단 5분만에 손쉽게 랜딩 페이지를 제작할 수 있는 툴을 통해, 자신만의 아이디어를 쉽게 검증해 보세요.\n\n디자인이나 코딩을 몰라도 걱정할 필요가 없습니다.\n\n몇 가지 질문에만 대답하면 멋진 랜딩 페이지가 완성됩니다.',
-                      maxLine: 10,
-                      maxLength: 200,
-                      onChanged: (value) => controller.project.contents = value,
-                    );
-                  case 3:
-                    return Obx(() => questionForImg(
-                          question: '대표 이미지를 추가해 주세요.',
-                          xFile: controller.mainImgXFile.value,
-                          subQuestion: '제품이나 서비스를 시각적으로 나타내기에 가장 적합한 이미지는 무엇인가요?',
-                          onGetImage: (xFile) {
-                            if (xFile != null) {
-                              controller.mainImgXFile(xFile);
-                              controller.project.imgPath = xFile.path;
-                            }
-                          },
-                          onCancel: () {
-                            controller.mainImgXFile(controller.nullXFile);
-                            controller.project.imgPath = '';
-                          },
-                          onSubmit: controller.nextQuestion,
-                        ));
-                  case 4:
-                    return descriptionQuestionWidget();
-                  case 5:
-                    return questionForCallToAction();
-                }
-                return Placeholder(child: Text(index.toString()));
-              },
-            ),
-            Positioned(
-              right: calSizeUnit(MediaQuery.of(context).size.width, 80),
-              child: GetBuilder<CreateProjectController>(
-                id: 'preview',
-                builder: (_) {
-                  return Preview(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          // 프로젝트 이름
-                          PreviewItem(
-                            isTwinkle: controller.currentPage == 0,
-                            previewItemType: PreviewItemType.name,
-                            color: controller.colorScheme.primaryContainer,
-                            isShow: controller.project.name.isNotEmpty,
-                          ),
-                          Gap($style.insets.$12),
-                          previewHeader(),
-                          Gap($style.insets.$12),
-                          Column(
-                            children: List.generate(controller.project.descriptions.length, (index) {
-                              final Description description = controller.project.descriptions[index];
+      onWillPop: controller.onWillPop,
+      child: GetBuilder<CreateProjectController>(
+        builder: (_) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: appBar(),
+            body: Stack(
+              alignment: Alignment.center,
+              children: [
+                PageView.builder(
+                  controller: controller.pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: 7,
+                  scrollDirection: Axis.vertical,
+                  onPageChanged: controller.onPageChanged,
+                  itemBuilder: (context, index) {
+                    switch (index) {
+                      case 0:
+                        return questionForText(
+                          value: controller.project.name.obs,
+                          question: '프로젝트 이름을 입력해 주세요.',
+                          hintText: '쉽스랜딩',
+                          maxLength: 20,
+                          onChanged: (value) => controller.project.name = value,
+                        );
+                      case 1:
+                        return questionForText(
+                          value: controller.project.title.obs,
+                          question: '제목을 입력해 주세요.',
+                          subQuestion: '제품이나 서비스를 한 문장으로 설명할 수 있다면 어떻게 설명하시겠어요?',
+                          hintText: '아이디어 검증을 위한, 5분만에 만드는 랜딩 페이지',
+                          maxLength: 40,
+                          onChanged: (value) => controller.project.title = value,
+                        );
+                      case 2:
+                        return questionForText(
+                          value: controller.project.contents.obs,
+                          question: '제품이나 서비스의 핵심 가치를 설명하는 문장',
+                          subQuestion: '제품 또는 서비스의 핵심적인 가치에 대해 설명해 주세요.\n3~4줄 정도의 문장이 적당해요',
+                          hintText:
+                              '그동안 아이디어를 검증하는 과정이 너무 번거롭지 않았나요?\n\n단 5분만에 손쉽게 랜딩 페이지를 제작할 수 있는 툴을 통해, 자신만의 아이디어를 쉽게 검증해 보세요.\n\n디자인이나 코딩을 몰라도 걱정할 필요가 없습니다.\n\n몇 가지 질문에만 대답하면 멋진 랜딩 페이지가 완성됩니다.',
+                          maxLine: 10,
+                          maxLength: 200,
+                          onChanged: (value) => controller.project.contents = value,
+                        );
+                      case 3:
+                        return Obx(() => questionForImg(
+                              question: '대표 이미지를 추가해 주세요.',
+                              xFile: controller.mainImgXFile.value,
+                              subQuestion: '제품이나 서비스를 시각적으로 나타내기에 가장 적합한 이미지는 무엇인가요?',
+                              onGetImage: (xFile) {
+                                if (xFile != null) {
+                                  controller.mainImgXFile(xFile);
+                                  controller.project.imgPath = xFile.path;
+                                }
+                              },
+                              onCancel: () {
+                                controller.mainImgXFile(controller.nullXFile);
+                                controller.project.imgPath = '';
+                              },
+                              onSubmit: controller.nextQuestion,
+                            ));
+                      case 4:
+                        return descriptionQuestionWidget();
+                      case 5:
+                        return questionForCallToAction();
+                      case 6:
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Spacer(),
+                            Text('키 컬러를 설정해 주세요.', style: $style.text.headline32),
+                            Gap($style.insets.$24),
+                            SizedBox(
+                              width: 280 * sizeUnit,
+                              child: Wrap(
+                                spacing: 16 * sizeUnit,
+                                runSpacing: 16 * sizeUnit,
+                                children: List.generate(
+                                  controller.keyColorList.length,
+                                  (index) {
+                                    final Color color = controller.keyColorList[index];
+                                    final bool isKeyColor = controller.project.keyColor == color.value;
 
-                              return previewDescription(
-                                description: description,
-                                isTwinkle: controller.currentPage == 4 && index == controller.project.descriptions.length - 1,
-                                isReverse: index.isOdd,
-                              );
-                            }),
+                                    return InkWell(
+                                      onTap: () => controller.onChangedKeyColor(color),
+                                      borderRadius: BorderRadius.circular(20 * sizeUnit),
+                                      child: Container(
+                                        width: 40 * sizeUnit,
+                                        height: 40 * sizeUnit,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle, color: isKeyColor ? color : Colors.transparent, border: Border.all(width: 2 * sizeUnit, color: color)),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                            const Spacer(),
+                            CustomButton(
+                              width: controller.nextButtonWidth,
+                              customButtonStyle: CustomButtonStyle.outline48,
+                              text: '랜딩 페이지 만들기',
+                              color: controller.seedColor,
+                              onTap: controller.createProject,
+                            ),
+                            Gap($style.insets.$40),
+                          ],
+                        );
+                      default:
+                        return const SizedBox.shrink();
+                    }
+                  },
+                ),
+                Positioned(
+                  right: calSizeUnit(MediaQuery.of(context).size.width, 80),
+                  child: GetBuilder<CreateProjectController>(
+                    id: 'preview',
+                    builder: (_) {
+                      return Preview(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              // 프로젝트 이름
+                              PreviewItem(
+                                isTwinkle: controller.currentPage == 0,
+                                previewItemType: PreviewItemType.name,
+                                color: controller.colorScheme.primaryContainer,
+                                isShow: controller.project.name.isNotEmpty,
+                              ),
+                              Gap($style.insets.$12),
+                              previewHeader(), // 헤더 프리뷰
+                              Gap($style.insets.$12),
+                              // descriptions 프리뷰
+                              Column(
+                                children: List.generate(controller.project.descriptions.length, (index) {
+                                  final Description description = controller.project.descriptions[index];
+
+                                  return previewDescription(
+                                    description: description,
+                                    isTwinkle: controller.currentPage == 4 && index == controller.project.descriptions.length - 1,
+                                    isReverse: index.isOdd,
+                                  );
+                                }),
+                              ),
+                              previewCallToAction(), // 콜 투 액션 프리뷰
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
+  // 콜 투 액션 프리뷰
+  Column previewCallToAction() {
+    return Column(
+      children: [
+        // 제목
+        PreviewItem(
+          isTwinkle: controller.currentPage == 1,
+          previewItemType: PreviewItemType.title,
+          color: controller.colorScheme.primaryContainer,
+          isShow: controller.project.title.isNotEmpty,
+        ),
+        Gap($style.insets.$4),
+        // 버튼
+        PreviewItem(
+          isTwinkle: controller.currentPage == 5,
+          previewItemType: PreviewItemType.button,
+          color: controller.colorScheme.primaryContainer,
+          isShow: controller.callToActionIsOk.value,
+        ),
+      ],
+    );
+  }
+
+  // description 프리뷰
   Widget previewDescription({required Description description, required bool isTwinkle, bool isReverse = false}) {
     Column contents() {
       return Column(
@@ -197,6 +271,7 @@ class CreateProjectPage extends StatelessWidget {
     );
   }
 
+  // 헤더 프리뷰
   Widget previewHeader() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -242,22 +317,11 @@ class CreateProjectPage extends StatelessWidget {
             ),
             Gap($style.insets.$4),
             // 버튼
-            Row(
-              children: [
-                PreviewItem(
-                  isTwinkle: controller.currentPage == 5,
-                  previewItemType: PreviewItemType.button,
-                  color: controller.colorScheme.primaryContainer,
-                  isShow: controller.currentPage >= 5,
-                ),
-                Gap($style.insets.$2),
-                PreviewItem(
-                  isTwinkle: controller.currentPage == 5,
-                  previewItemType: PreviewItemType.button,
-                  color: controller.colorScheme.primaryContainer,
-                  isShow: controller.currentPage >= 5,
-                ),
-              ],
+            PreviewItem(
+              isTwinkle: controller.currentPage == 5,
+              previewItemType: PreviewItemType.button,
+              color: controller.colorScheme.primaryContainer,
+              isShow: controller.callToActionIsOk.value,
             ),
           ],
         ),
@@ -271,7 +335,10 @@ class CreateProjectPage extends StatelessWidget {
       final bool isSelected = controller.callbackType == type;
 
       return InkWell(
-        onTap: () => controller.setCallbackType(type),
+        onTap: () {
+          controller.setCallbackType(type);
+          controller.callToActionOkCheck();
+        },
         hoverColor: controller.colorScheme.surface,
         splashColor: controller.colorScheme.surfaceVariant,
         highlightColor: controller.colorScheme.surfaceVariant,
@@ -312,7 +379,10 @@ class CreateProjectPage extends StatelessWidget {
         final bool isContain = controller.detailCallbackTypeList.contains(type);
 
         return InkWell(
-          onTap: () => controller.setDetailCallbackType(type, isContain),
+          onTap: () {
+            controller.setDetailCallbackType(type, isContain);
+            controller.callToActionOkCheck();
+          },
           hoverColor: controller.colorScheme.surface,
           splashColor: controller.colorScheme.surfaceVariant,
           highlightColor: controller.colorScheme.surfaceVariant,
@@ -355,6 +425,7 @@ class CreateProjectPage extends StatelessWidget {
           RxString errorText = ''.obs;
 
           return Obx(() => CustomTextField(
+                controller: TextEditingController(text: controller.detailCallbackTypeList.isEmpty ? '' : controller.detailCallbackTypeList.first),
                 width: controller.textFiledWidth,
                 hintText: 'url을 입력해 주세요.',
                 autofocus: true,
@@ -368,13 +439,14 @@ class CreateProjectPage extends StatelessWidget {
                     if (await canLaunchUrlString(p0)) {
                       controller.detailCallbackTypeList.add(p0); // 디테일 콜백 세팅
                       errorText('');
-                      controller.update(['callToAction']);
+                      controller.callToActionOkCheck();
                     } else {
                       errorText('유효한 url을 입력해 주세요.');
+                      controller.callToActionOkCheck();
                     }
                   } else {
                     errorText('');
-                    controller.update(['callToAction']);
+                    controller.callToActionOkCheck();
                   }
                 },
               ));
@@ -383,60 +455,68 @@ class CreateProjectPage extends StatelessWidget {
       }
     }
 
-    return GetBuilder<CreateProjectController>(
-        id: 'callToAction',
-        builder: (_) {
-          return Column(
-            children: [
-              const Spacer(),
-              Text('Call To Action', style: $style.text.headline32),
-              Gap($style.insets.$12),
-              Text(
-                '사용자에게 받을 콜 투 액션 타입을 선택해 주세요.',
-                style: $style.text.subTitle18,
-                textAlign: TextAlign.center,
-              ),
-              Gap($style.insets.$40),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  selectionBox(
-                    type: UserCallback.typeNone,
-                  ),
-                  Gap($style.insets.$24),
-                  selectionBox(
-                    type: UserCallback.typeForm,
-                    text: '이름, 전화번호, 이메일 등을 수집할 수 있습니다.',
-                  ),
-                  Gap($style.insets.$24),
-                  selectionBox(
-                    type: UserCallback.typeLink,
-                    text: '원하는 url로 링크를 설정할 수 있습니다.',
-                  ),
-                ],
-              ),
-              if (controller.callbackType.isNotEmpty) ...[
-                Gap($style.insets.$24),
-                callbackDetailWidget(),
-              ],
-              const Spacer(),
-              CustomButton(
-                width: controller.nextButtonWidth,
-                customButtonStyle: CustomButtonStyle.outline48,
-                text: '다음',
-                isOk: controller.callToActionIsOk(),
-                color: controller.seedColor,
-                onTap: controller.nextQuestion,
-              ),
-              Gap($style.insets.$40),
-            ],
-          );
-        });
+    return Column(
+      children: [
+        Expanded(
+          child: GetBuilder<CreateProjectController>(
+              id: 'callToAction',
+              builder: (_) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // const Spacer(),
+                    Text('Call To Action', style: $style.text.headline32),
+                    Gap($style.insets.$12),
+                    Text(
+                      '사용자에게 받을 콜 투 액션 타입을 선택해 주세요.',
+                      style: $style.text.subTitle18,
+                      textAlign: TextAlign.center,
+                    ),
+                    Gap($style.insets.$40),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        selectionBox(
+                          type: UserCallback.typeNone,
+                        ),
+                        Gap($style.insets.$24),
+                        selectionBox(
+                          type: UserCallback.typeForm,
+                          text: '이름, 전화번호, 이메일 등을 수집할 수 있습니다.',
+                        ),
+                        Gap($style.insets.$24),
+                        selectionBox(
+                          type: UserCallback.typeLink,
+                          text: '원하는 url로 링크를 설정할 수 있습니다.',
+                        ),
+                      ],
+                    ),
+                    if (controller.callbackType.isNotEmpty) ...[
+                      Gap($style.insets.$24),
+                      callbackDetailWidget(),
+                    ],
+                    // const Spacer(),
+                  ],
+                );
+              }),
+        ),
+        Obx(() => CustomButton(
+              width: controller.nextButtonWidth,
+              customButtonStyle: CustomButtonStyle.outline48,
+              text: '다음',
+              isOk: controller.callToActionIsOk.value,
+              color: controller.seedColor,
+              onTap: controller.nextQuestion,
+            )),
+        Gap($style.insets.$40),
+      ],
+    );
   }
 
   Widget descriptionQuestionWidget() {
     // 핵심 기능 질문
     Column questionForDescription({
+      required int index,
       required Description description,
       required String question,
       required String titleHintText,
@@ -455,12 +535,14 @@ class CreateProjectPage extends StatelessWidget {
                 description.imgPath = '';
                 xFile(controller.nullXFile);
                 controller.descriptionsIsOkCheck(); // ok 체크
+                controller.descriptionXFileList.removeAt(index);
               },
               onGetImage: (value) {
                 if (value != null) {
                   description.imgPath = value.path;
                   xFile(value);
                   controller.descriptionsIsOkCheck(); // ok 체크
+                  controller.descriptionXFileList.add(value);
                 }
               },
             ));
@@ -581,6 +663,7 @@ class CreateProjectPage extends StatelessWidget {
                                 children: [
                                   if (controller.project.descriptions.length > 1) Gap($style.insets.$40),
                                   questionForDescription(
+                                    index: index,
                                     description: description,
                                     question: '핵심 기능 0${index + 1}',
                                     titleHintText: controller.descriptionTitleList[index],
@@ -592,7 +675,7 @@ class CreateProjectPage extends StatelessWidget {
                                     if (controller.project.descriptions.length < descriptionMaxCount) ...[
                                       addButton(), // 핵심 기능 추가 버튼
                                     ] else ...[
-                                      Text('핵심 기능 최대 $descriptionMaxCount까지 추가 가능합니다.', style: $style.text.subTitle12.copyWith(color: controller.seedColor)),
+                                      Text('핵심 기능 설명은 최대 $descriptionMaxCount까지 추가 가능합니다.', style: $style.text.subTitle12.copyWith(color: controller.seedColor)),
                                     ],
                                   ],
                                   Gap($style.insets.$40),
@@ -775,7 +858,7 @@ class CreateProjectPage extends StatelessWidget {
                   )
                 : GetExtendedImage(
                     url: xFile.path,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                   ),
           ),
           if (!isNullImg) ...[
@@ -794,6 +877,26 @@ class CreateProjectPage extends StatelessWidget {
           ],
         ],
       ),
+    );
+  }
+
+  CustomAppBar appBar() {
+    return CustomAppBar(
+      leading: SizedBox(
+        width: 24 * sizeUnit,
+        height: 24 * sizeUnit,
+        child: Center(
+          child: InkWell(
+            onTap: controller.previousQuestion,
+            child: SvgPicture.asset(
+              GlobalAssets.svgArrowLeft,
+              width: 24 * sizeUnit,
+              colorFilter: ColorFilter.mode($style.colors.black, BlendMode.srcIn),
+            ),
+          ),
+        ),
+      ),
+      surfaceTintColor: controller.seedColor,
     );
   }
 }

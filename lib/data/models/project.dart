@@ -9,8 +9,11 @@ class Project {
     required this.contents,
     required this.imgPath,
     this.callbackType = '',
+    this.keyColor = 4283609155,
     this.viewCount = 0,
+    required this.templateID,
     this.descriptions = const [],
+    this.isPosting = true,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -22,8 +25,11 @@ class Project {
   String contents;
   String imgPath;
   String callbackType;
+  int keyColor;
   int viewCount;
+  int templateID;
   List<Description> descriptions;
+  bool isPosting;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -36,8 +42,11 @@ class Project {
       contents: json['contents'] ?? '',
       imgPath: json['imgPath'] ?? '',
       callbackType: json['callbackType'] ?? '',
+      keyColor: json['keyColor'] ?? 4283609155,
       viewCount: json['viewCount'] ?? 0,
+      templateID: json['templateID'] ?? 1,
       descriptions: json['descriptions'] == null ? [] : (json['descriptions'] as List).map((e) => e.fromJson()).toList().cast<Description>(),
+      isPosting: json['isPosting'] ?? true,
       createdAt: json['createdAt'].toDate(),
       updatedAt: json['updatedAt'].toDate(),
     );
@@ -52,8 +61,11 @@ class Project {
       "contents": contents,
       "imgPath": imgPath,
       "callbackType": callbackType,
+      "keyColor": keyColor,
       "viewCount": viewCount,
+      "templateID": templateID,
       "descriptions": descriptions.map((e) => e.toJson()).toList(),
+      "isPosting": isPosting,
       "createdAt": Timestamp.fromDate(createdAt),
       "updatedAt": Timestamp.fromDate(updatedAt),
     };
@@ -65,6 +77,7 @@ class Project {
     title: '',
     contents: '',
     imgPath: '',
+    templateID: 1,
     descriptions: [Description.nullDescription.copyWith()],
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
@@ -79,6 +92,7 @@ class Project {
     String? imgPath,
     String? callbackType,
     int? viewCount,
+    int? templateID,
     List<Description>? descriptions,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -92,6 +106,7 @@ class Project {
       imgPath: imgPath ?? this.imgPath,
       callbackType: callbackType ?? this.callbackType,
       viewCount: viewCount ?? this.viewCount,
+      templateID: templateID ?? this.templateID,
       descriptions: descriptions ?? this.descriptions,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,

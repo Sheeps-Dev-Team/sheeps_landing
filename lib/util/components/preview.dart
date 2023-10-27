@@ -10,7 +10,7 @@ class Preview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 140 * sizeUnit,
+      width: 150 * sizeUnit,
       padding: EdgeInsets.symmetric(vertical: $style.insets.$8),
       decoration: BoxDecoration(
         border: Border.all(color: $style.colors.grey, width: 1 * sizeUnit),
@@ -68,7 +68,7 @@ class _PreviewItemState extends State<PreviewItem> with TickerProviderStateMixin
         break;
       case PreviewItemType.title:
         width = 40 * sizeUnit;
-        height = 8 * sizeUnit;
+        height = 6 * sizeUnit;
         break;
       case PreviewItemType.text:
         width = 40 * sizeUnit;
@@ -113,10 +113,10 @@ class _PreviewItemState extends State<PreviewItem> with TickerProviderStateMixin
 
   Widget item() {
     return Container(
-      width: width,
-      height: height,
+      width: width * 1.2,
+      height: height * 1.2,
       decoration: BoxDecoration(
-        color: widget.color.withOpacity(widget.isShow ? 1 : .35),
+        color: widget.isTwinkle ? ColorScheme.fromSeed(seedColor: widget.color).inversePrimary : widget.color.withOpacity(widget.isShow ? 1 : .3),
         borderRadius: BorderRadius.circular($style.corners.$4),
       ),
     );

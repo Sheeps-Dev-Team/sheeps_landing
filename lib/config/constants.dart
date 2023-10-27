@@ -14,7 +14,7 @@ const int genderMale = 0; // 남
 const int genderFemale = 1; // 여
 
 const String division = '|'; // 문자열 구분자
-const String formDivision = '||'; // 문자열 구분자
+const String formDivision = '__'; // 폼 문자열 구분자
 
 enum LoginType{kakao, apple, google, none} // 로그인 타입 (카카오, 애플, 구글, 비로그인)
 

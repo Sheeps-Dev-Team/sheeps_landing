@@ -1,5 +1,5 @@
 class UserCallback {
-  static const String typeNone = '선택안함';
+  static const String typeNone = '선택 안함';
   static const String typeForm = '폼';
   static const String typeLink = '링크';
 
