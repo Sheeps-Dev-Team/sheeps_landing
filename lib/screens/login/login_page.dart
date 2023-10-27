@@ -96,24 +96,7 @@ class LoginPage extends StatelessWidget {
                   SizedBox(height: 18 * sizeUnit),
                   InkWell(
                     onTap: () async {
-                      FilePickerResult? pickedFileWeb = await FilePicker.platform.pickFiles(type: FileType.image);
 
-                      if (pickedFileWeb != null) {
-
-                        Uint8List? fileBytes = pickedFileWeb.files.first.bytes;
-                        String fileName = pickedFileWeb.files.first.name;
-
-                        TaskSnapshot uploadTask = await FirebaseStorage.instance.ref('uploads/$fileName').putData(fileBytes!);
-
-                        String url = await uploadTask.ref.getDownloadURL();
-
-                        debugPrint(url);
-                      } else {
-                        // User canceled the picker
-                        if (kDebugMode) {
-                          print('User canceled the picker!');
-                        }
-                      }
                     },
                     child: Container(
                       width: 240 * sizeUnit,
@@ -131,13 +114,6 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: 200 * sizeUnit,
-                    height: 200 * sizeUnit,
-                    child: const GetExtendedImage(url: 'https://firebasestorage.googleapis.com/v0/b/sheeps-landing.appspot.com/o/uploads%2F1242x2688bb-2.png?alt=media&token=b9c51011-583d-4e77-81bf-af83109f68aa',
-
-                    ),
-                  )
                 ],
               )
             )
