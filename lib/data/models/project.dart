@@ -97,6 +97,8 @@ class Project {
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }
+
+  String get url => 'https://sheeps-landing.web.app/project/$documentID';
 }
 
 class Description {
