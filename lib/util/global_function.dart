@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../config/constants.dart';
 
@@ -209,5 +210,14 @@ class GlobalFunction {
     //약 15mb
     if (fileSize >= 15882755) return Future.value(true);
     return Future.value(false);
+  }
+
+  // url 연결 함수
+  static Future<void> launch(Uri url) async {
+    if (await canLaunchUrl(url)) {
+      if (!await launchUrl(url)) {
+        throw Exception('Could not launch $url');
+      }
+    }
   }
 }

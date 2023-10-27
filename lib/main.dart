@@ -1,16 +1,26 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:sheeps_landing/config/routes.dart';
+import 'package:sheeps_landing/data/models/user.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'config/constants.dart';
 import 'config/style.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 
   setPathUrlStrategy(); //url # 제거

@@ -5,12 +5,17 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sheeps_landing/config/constants.dart';
 import 'package:sheeps_landing/config/global_assets.dart';
+import 'package:sheeps_landing/data/models/project.dart';
 import 'package:sheeps_landing/screens/project/controllers/create_project_controller.dart';
 import 'package:sheeps_landing/util/components/base_widget.dart';
 import 'package:sheeps_landing/util/components/custom_app_bar.dart';
 import 'package:sheeps_landing/util/components/custom_button.dart';
 import 'package:sheeps_landing/util/components/custom_text_field.dart';
 import 'package:sheeps_landing/util/components/get_extended_image.dart';
+import 'package:sheeps_landing/util/components/preview.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+
+import '../../data/models/user_callback.dart';
 
 class CreateProjectPage extends StatelessWidget {
   CreateProjectPage({super.key});
@@ -32,83 +37,97 @@ class CreateProjectPage extends StatelessWidget {
               controller: controller.pageController,
               itemCount: 7,
               scrollDirection: Axis.vertical,
-              onPageChanged: (value) => controller.currentPage(value),
+              onPageChanged: controller.onPageChanged,
               itemBuilder: (context, index) {
                 switch (index) {
                   case 0:
                     return questionForText(
+                      value: controller.project.name.obs,
                       question: '프로젝트 이름을 입력해 주세요.',
                       hintText: '쉽스랜딩',
                       maxLength: 20,
-                      onSubmit: (answer) {
-                        controller.nextQuestion();
-                      },
+                      onChanged: (value) => controller.project.name = value,
                     );
                   case 1:
                     return questionForText(
+                      value: controller.project.title.obs,
                       question: '제목을 입력해 주세요.',
-                      description: '제품이나 서비스를 한 문장으로 설명할 수 있다면 어떻게 설명하시겠어요?',
+                      subQuestion: '제품이나 서비스를 한 문장으로 설명할 수 있다면 어떻게 설명하시겠어요?',
                       hintText: '아이디어 검증을 위한, 5분만에 만드는 랜딩 페이지',
                       maxLength: 40,
-                      onSubmit: (answer) {
-                        controller.nextQuestion();
-                      },
+                      onChanged: (value) => controller.project.title = value,
                     );
                   case 2:
                     return questionForText(
+                      value: controller.project.contents.obs,
                       question: '제품이나 서비스의 핵심 가치를 설명하는 문장',
-                      description: '제품 또는 서비스의 핵심적인 가치에 대해 설명해 주세요.\n3~4줄 정도의 문장이 적당해요',
+                      subQuestion: '제품 또는 서비스의 핵심적인 가치에 대해 설명해 주세요.\n3~4줄 정도의 문장이 적당해요',
                       hintText:
                           '그동안 아이디어를 검증하는 과정이 너무 번거롭지 않았나요?\n\n단 5분만에 손쉽게 랜딩 페이지를 제작할 수 있는 툴을 통해, 자신만의 아이디어를 쉽게 검증해 보세요.\n\n디자인이나 코딩을 몰라도 걱정할 필요가 없습니다.\n\n몇 가지 질문에만 대답하면 멋진 랜딩 페이지가 완성됩니다.',
                       maxLine: 10,
                       maxLength: 200,
-                      onSubmit: (answer) {
-                        controller.nextQuestion();
-                      },
+                      onChanged: (value) => controller.project.contents = value,
                     );
                   case 3:
                     return Obx(() => questionForImg(
-                          question: '이미지를 추가해 주세요.',
-                          xFile: controller.xFile01.value,
-                          description: '제품이나 서비스를 시각적으로 나타내기에 가장 적합한 이미지는 무엇인가요?',
+                          question: '대표 이미지를 추가해 주세요.',
+                          xFile: controller.mainImgXFile.value,
+                          subQuestion: '제품이나 서비스를 시각적으로 나타내기에 가장 적합한 이미지는 무엇인가요?',
                           onGetImage: (xFile) {
-                            if (xFile != null) controller.xFile01(xFile);
+                            if (xFile != null) {
+                              controller.mainImgXFile(xFile);
+                              controller.project.imgPath = xFile.path;
+                            }
                           },
                           onCancel: () {
-                            controller.xFile01(controller.nullXFile);
+                            controller.mainImgXFile(controller.nullXFile);
+                            controller.project.imgPath = '';
                           },
                           onSubmit: controller.nextQuestion,
                         ));
+                  case 4:
+                    return descriptionQuestionWidget();
+                  case 5:
+                    return questionForCallToAction();
                 }
                 return Placeholder(child: Text(index.toString()));
               },
             ),
             Positioned(
               right: calSizeUnit(MediaQuery.of(context).size.width, 80),
-              child: Container(
-                padding: EdgeInsets.all($style.insets.$8),
-                width: 80 * sizeUnit,
-                constraints: BoxConstraints(minHeight: Get.height * 0.4),
-                decoration: BoxDecoration(
-                  border: Border.all(color: $style.colors.grey, width: 1 * sizeUnit),
-                  borderRadius: BorderRadius.circular($style.insets.$12),
-                ),
-                child: Column(
-                  children: [
-                    Obx(() => AnimatedOpacity(
-                          opacity: controller.previewAnimation.value ? 1 : 0,
-                          duration: $style.times.ms150,
-                          child: Container(
-                            width: 40 * sizeUnit,
-                            height: 10 * sizeUnit,
-                            decoration: BoxDecoration(
-                              color: controller.colorScheme.primaryContainer,
-                              borderRadius: BorderRadius.circular($style.corners.$4),
-                            ),
+              child: GetBuilder<CreateProjectController>(
+                id: 'preview',
+                builder: (_) {
+                  return Preview(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          // 프로젝트 이름
+                          PreviewItem(
+                            isTwinkle: controller.currentPage == 0,
+                            previewItemType: PreviewItemType.name,
+                            color: controller.colorScheme.primaryContainer,
+                            isShow: controller.project.name.isNotEmpty,
                           ),
-                        )),
-                  ],
-                ),
+                          Gap($style.insets.$12),
+                          previewHeader(),
+                          Gap($style.insets.$12),
+                          Column(
+                            children: List.generate(controller.project.descriptions.length, (index) {
+                              final Description description = controller.project.descriptions[index];
+
+                              return previewDescription(
+                                description: description,
+                                isTwinkle: controller.currentPage == 4 && index == controller.project.descriptions.length - 1,
+                                isReverse: index.isOdd,
+                              );
+                            }),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           ],
@@ -117,26 +136,523 @@ class CreateProjectPage extends StatelessWidget {
     );
   }
 
+  Widget previewDescription({required Description description, required bool isTwinkle, bool isReverse = false}) {
+    Column contents() {
+      return Column(
+        children: [
+          // 제목
+          PreviewItem(
+            isTwinkle: isTwinkle,
+            previewItemType: PreviewItemType.title,
+            color: controller.colorScheme.primaryContainer,
+            isShow: description.title.isNotEmpty,
+          ),
+          Gap($style.insets.$4),
+          PreviewItem(
+            isTwinkle: isTwinkle,
+            previewItemType: PreviewItemType.text,
+            color: controller.colorScheme.primaryContainer,
+            isShow: description.contents.isNotEmpty,
+          ),
+          Gap($style.insets.$2),
+          PreviewItem(
+            isTwinkle: isTwinkle,
+            previewItemType: PreviewItemType.text,
+            color: controller.colorScheme.primaryContainer,
+            isShow: description.contents.isNotEmpty,
+          ),
+        ],
+      );
+    }
+
+    PreviewItem img() {
+      return PreviewItem(
+        isTwinkle: isTwinkle,
+        previewItemType: PreviewItemType.subImg,
+        color: controller.colorScheme.primaryContainer,
+        isShow: description.imgPath.isNotEmpty,
+      );
+    }
+
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: isReverse ? MainAxisAlignment.start : MainAxisAlignment.end,
+          children: [
+            if (isReverse) ...[
+              img(),
+            ] else ...[
+              contents(),
+            ],
+            Gap($style.insets.$8),
+            if (isReverse) ...[
+              contents(),
+            ] else ...[
+              img(),
+            ],
+          ],
+        ),
+        Gap($style.insets.$12),
+      ],
+    );
+  }
+
+  Widget previewHeader() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // 이미지
+        PreviewItem(
+          isTwinkle: controller.currentPage == 3,
+          previewItemType: PreviewItemType.mainImg,
+          color: controller.colorScheme.primaryContainer,
+          isShow: controller.project.imgPath.isNotEmpty,
+        ),
+        Gap($style.insets.$8),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 제목
+            PreviewItem(
+              isTwinkle: controller.currentPage == 1,
+              previewItemType: PreviewItemType.title,
+              color: controller.colorScheme.primaryContainer,
+              isShow: controller.project.title.isNotEmpty,
+            ),
+            Gap($style.insets.$4),
+            PreviewItem(
+              isTwinkle: controller.currentPage == 2,
+              previewItemType: PreviewItemType.text,
+              color: controller.colorScheme.primaryContainer,
+              isShow: controller.project.contents.isNotEmpty,
+            ),
+            Gap($style.insets.$2),
+            PreviewItem(
+              isTwinkle: controller.currentPage == 2,
+              previewItemType: PreviewItemType.text,
+              color: controller.colorScheme.primaryContainer,
+              isShow: controller.project.contents.isNotEmpty,
+            ),
+            Gap($style.insets.$2),
+            PreviewItem(
+              isTwinkle: controller.currentPage == 2,
+              previewItemType: PreviewItemType.text,
+              color: controller.colorScheme.primaryContainer,
+              isShow: controller.project.contents.isNotEmpty,
+            ),
+            Gap($style.insets.$4),
+            // 버튼
+            Row(
+              children: [
+                PreviewItem(
+                  isTwinkle: controller.currentPage == 5,
+                  previewItemType: PreviewItemType.button,
+                  color: controller.colorScheme.primaryContainer,
+                  isShow: controller.currentPage >= 5,
+                ),
+                Gap($style.insets.$2),
+                PreviewItem(
+                  isTwinkle: controller.currentPage == 5,
+                  previewItemType: PreviewItemType.button,
+                  color: controller.colorScheme.primaryContainer,
+                  isShow: controller.currentPage >= 5,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  // call to action 질문
+  Widget questionForCallToAction() {
+    Widget selectionBox({required String type, String? text}) {
+      final bool isSelected = controller.callbackType == type;
+
+      return InkWell(
+        onTap: () => controller.setCallbackType(type),
+        hoverColor: controller.colorScheme.surface,
+        splashColor: controller.colorScheme.surfaceVariant,
+        highlightColor: controller.colorScheme.surfaceVariant,
+        borderRadius: BorderRadius.circular($style.corners.$12),
+        child: Container(
+          width: 320 * sizeUnit,
+          height: 120 * sizeUnit,
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 1 * sizeUnit,
+              color: controller.colorScheme.secondary,
+            ),
+            color: isSelected ? controller.colorScheme.primaryContainer : null,
+            borderRadius: BorderRadius.circular($style.corners.$12),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                type,
+                style: $style.text.headline20.copyWith(color: isSelected ? controller.colorScheme.onPrimaryContainer : null),
+              ),
+              if (text != null) ...[
+                Gap($style.insets.$16),
+                Text(
+                  text,
+                  style: $style.text.subTitle12.copyWith(color: isSelected ? controller.colorScheme.onPrimaryContainer : null),
+                ),
+              ],
+            ],
+          ),
+        ),
+      );
+    }
+
+    Widget callbackDetailWidget() {
+      Widget detailSelectionBox({required String type}) {
+        final bool isContain = controller.detailCallbackTypeList.contains(type);
+
+        return InkWell(
+          onTap: () => controller.setDetailCallbackType(type, isContain),
+          hoverColor: controller.colorScheme.surface,
+          splashColor: controller.colorScheme.surfaceVariant,
+          highlightColor: controller.colorScheme.surfaceVariant,
+          borderRadius: BorderRadius.circular($style.corners.$12),
+          child: Container(
+            width: 160 * sizeUnit,
+            height: 80 * sizeUnit,
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 1 * sizeUnit,
+                color: controller.colorScheme.secondary,
+              ),
+              borderRadius: BorderRadius.circular($style.corners.$12),
+              color: isContain ? controller.colorScheme.primaryContainer : null,
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              type,
+              style: $style.text.subTitle14.copyWith(color: isContain ? controller.colorScheme.onPrimaryContainer : null),
+            ),
+          ),
+        );
+      }
+
+      switch (controller.callbackType) {
+        case UserCallback.typeNone:
+          return const SizedBox.shrink();
+        case UserCallback.typeForm:
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              detailSelectionBox(type: UserCallback.formTypeName),
+              Gap($style.insets.$12),
+              detailSelectionBox(type: UserCallback.formTypeEmail),
+              Gap($style.insets.$12),
+              detailSelectionBox(type: UserCallback.formTypePhoneNumber),
+            ],
+          );
+        case UserCallback.typeLink:
+          RxString errorText = ''.obs;
+
+          return Obx(() => CustomTextField(
+                width: controller.textFiledWidth,
+                hintText: 'url을 입력해 주세요.',
+                autofocus: true,
+                focusBorderColor: controller.seedColor,
+                cursorColor: controller.seedColor,
+                errorText: errorText.isEmpty ? null : errorText.value,
+                onChanged: (p0) async {
+                  controller.detailCallbackTypeList.clear();
+
+                  if (p0.isNotEmpty) {
+                    if (await canLaunchUrlString(p0)) {
+                      controller.detailCallbackTypeList.add(p0); // 디테일 콜백 세팅
+                      errorText('');
+                      controller.update(['callToAction']);
+                    } else {
+                      errorText('유효한 url을 입력해 주세요.');
+                    }
+                  } else {
+                    errorText('');
+                    controller.update(['callToAction']);
+                  }
+                },
+              ));
+        default:
+          return const SizedBox.shrink();
+      }
+    }
+
+    return GetBuilder<CreateProjectController>(
+        id: 'callToAction',
+        builder: (_) {
+          return Column(
+            children: [
+              const Spacer(),
+              Text('Call To Action', style: $style.text.headline32),
+              Gap($style.insets.$12),
+              Text(
+                '사용자에게 받을 콜 투 액션 타입을 선택해 주세요.',
+                style: $style.text.subTitle18,
+                textAlign: TextAlign.center,
+              ),
+              Gap($style.insets.$40),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  selectionBox(
+                    type: UserCallback.typeNone,
+                  ),
+                  Gap($style.insets.$24),
+                  selectionBox(
+                    type: UserCallback.typeForm,
+                    text: '이름, 전화번호, 이메일 등을 수집할 수 있습니다.',
+                  ),
+                  Gap($style.insets.$24),
+                  selectionBox(
+                    type: UserCallback.typeLink,
+                    text: '원하는 url로 링크를 설정할 수 있습니다.',
+                  ),
+                ],
+              ),
+              if (controller.callbackType.isNotEmpty) ...[
+                Gap($style.insets.$24),
+                callbackDetailWidget(),
+              ],
+              const Spacer(),
+              CustomButton(
+                width: controller.nextButtonWidth,
+                customButtonStyle: CustomButtonStyle.outline48,
+                text: '다음',
+                isOk: controller.callToActionIsOk(),
+                color: controller.seedColor,
+                onTap: controller.nextQuestion,
+              ),
+              Gap($style.insets.$40),
+            ],
+          );
+        });
+  }
+
+  Widget descriptionQuestionWidget() {
+    // 핵심 기능 질문
+    Column questionForDescription({
+      required Description description,
+      required String question,
+      required String titleHintText,
+      required String contentsHintText,
+      bool isReverse = false,
+    }) {
+      // 이미지 박스
+      Widget imgBox() {
+        Rx<XFile> xFile = XFile(description.imgPath).obs;
+
+        return Obx(() => imgSelectionBox(
+              width: 612 * sizeUnit,
+              height: 457 * sizeUnit,
+              xFile: xFile.value,
+              onCancel: () {
+                description.imgPath = '';
+                xFile(controller.nullXFile);
+                controller.descriptionsIsOkCheck(); // ok 체크
+              },
+              onGetImage: (value) {
+                if (value != null) {
+                  description.imgPath = value.path;
+                  xFile(value);
+                  controller.descriptionsIsOkCheck(); // ok 체크
+                }
+              },
+            ));
+      }
+
+      // 텍스트 필드 컬럼
+      Column textFieldColumn() {
+        return Column(
+          children: [
+            CustomTextField(
+              controller: TextEditingController(text: description.title),
+              width: controller.textFiledWidth,
+              hintText: titleHintText,
+              autofocus: true,
+              maxLength: 40,
+              focusBorderColor: controller.seedColor,
+              cursorColor: controller.seedColor,
+              onChanged: (p0) {
+                description.title = p0;
+                controller.descriptionsIsOkCheck(); // ok 체크
+              },
+            ),
+            Gap($style.insets.$16),
+            CustomTextField(
+              controller: TextEditingController(text: description.contents),
+              width: controller.textFiledWidth,
+              hintText: contentsHintText,
+              autofocus: true,
+              maxLines: 10,
+              minLines: 10,
+              maxLength: 200,
+              focusBorderColor: controller.seedColor,
+              cursorColor: controller.seedColor,
+              onChanged: (p0) {
+                description.contents = p0;
+                controller.descriptionsIsOkCheck(); // ok 체크
+              },
+            ),
+          ],
+        );
+      }
+
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(question, style: $style.text.headline32),
+          Gap($style.insets.$12),
+          Text(
+            '제품이나 서비스의 핵심 기능에 대해 설명해 주세요.',
+            style: $style.text.subTitle18,
+            textAlign: TextAlign.center,
+          ),
+          Gap($style.insets.$40),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              isReverse ? imgBox() : textFieldColumn(),
+              Gap($style.insets.$40),
+              isReverse ? textFieldColumn() : imgBox(),
+            ],
+          ),
+        ],
+      );
+    }
+
+    // 핵심 기능 삭제 버튼
+    InkWell removeButton(int index) {
+      return InkWell(
+        onTap: () => controller.removeDescription(index),
+        child: SvgPicture.asset(
+          GlobalAssets.svgCancel,
+          width: 24 * sizeUnit,
+          colorFilter: ColorFilter.mode(controller.seedColor, BlendMode.srcIn),
+        ),
+      );
+    }
+
+    // 핵심 기능 추가 버튼
+    InkWell addButton() {
+      return InkWell(
+        onTap: controller.addDescription,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              GlobalAssets.svgPlusCircle,
+              width: 24 * sizeUnit,
+              colorFilter: ColorFilter.mode(controller.seedColor, BlendMode.srcIn),
+            ),
+            Gap($style.insets.$4),
+            Text('핵심 기능 추가', style: $style.text.subTitle12.copyWith(color: controller.seedColor)),
+          ],
+        ),
+      );
+    }
+
+    return GetBuilder<CreateProjectController>(
+      id: 'descriptions',
+      builder: (_) {
+        return Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: SizedBox(
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                    controller: controller.descriptionScrollController,
+                    child: Column(
+                      children: List.generate(controller.project.descriptions.length, (index) {
+                        final Description description = controller.project.descriptions[index];
+
+                        return SizedBox(
+                          width: 1052 * sizeUnit,
+                          child: Stack(
+                            children: [
+                              Column(
+                                children: [
+                                  if (controller.project.descriptions.length > 1) Gap($style.insets.$40),
+                                  questionForDescription(
+                                    description: description,
+                                    question: '핵심 기능 0${index + 1}',
+                                    titleHintText: controller.descriptionTitleList[index],
+                                    contentsHintText: controller.descriptionContentsList[index],
+                                    isReverse: index.isOdd,
+                                  ),
+                                  Gap($style.insets.$24),
+                                  if (index == controller.project.descriptions.length - 1) ...[
+                                    if (controller.project.descriptions.length < descriptionMaxCount) ...[
+                                      addButton(), // 핵심 기능 추가 버튼
+                                    ] else ...[
+                                      Text('핵심 기능 최대 $descriptionMaxCount까지 추가 가능합니다.', style: $style.text.subTitle12.copyWith(color: controller.seedColor)),
+                                    ],
+                                  ],
+                                  Gap($style.insets.$40),
+                                ],
+                              ),
+                              if (controller.project.descriptions.length > 1) ...[
+                                Positioned(
+                                  top: 40 * sizeUnit,
+                                  right: 4 * sizeUnit,
+                                  child: removeButton(index), // 핵심 기능 삭제 버튼
+                                ),
+                              ],
+                            ],
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(vertical: $style.insets.$40),
+              alignment: Alignment.center,
+              child: Obx(() => CustomButton(
+                    width: controller.nextButtonWidth,
+                    customButtonStyle: CustomButtonStyle.outline48,
+                    color: controller.seedColor,
+                    text: '다음',
+                    isOk: controller.descriptionsIsOk.value,
+                    onTap: controller.nextQuestion,
+                  )),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   // 텍스트용 질문
   Widget questionForText({
+    required RxString value,
     required String question,
-    String? description,
+    String? subQuestion,
     required String hintText,
     int? maxLine,
     int? maxLength,
-    required Function(String answer) onSubmit,
+    required Function(String value) onChanged,
   }) {
-    RxString value = ''.obs;
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Spacer(),
         Text(question, style: $style.text.headline32),
-        if (description != null) ...[
+        if (subQuestion != null) ...[
           Gap($style.insets.$12),
           Text(
-            description,
+            subQuestion,
             style: $style.text.subTitle18,
             textAlign: TextAlign.center,
           ),
@@ -145,7 +661,8 @@ class CreateProjectPage extends StatelessWidget {
           Gap($style.insets.$80),
         ],
         CustomTextField(
-          width: 400 * sizeUnit,
+          controller: TextEditingController(text: value.value),
+          width: controller.textFiledWidth,
           autofocus: true,
           hintText: hintText,
           focusBorderColor: controller.seedColor,
@@ -153,22 +670,25 @@ class CreateProjectPage extends StatelessWidget {
           maxLines: maxLine ?? 1,
           minLines: maxLine ?? 1,
           maxLength: maxLength,
-          onChanged: (p0) => value(p0),
+          onChanged: (p0) {
+            onChanged(p0);
+            value(p0);
+          },
           onSubmitted: maxLine == null
               ? (p0) {
-                  if (value.isNotEmpty) onSubmit(value.value);
+                  if (value.isNotEmpty) controller.nextQuestion;
                 }
               : null,
         ),
         const Spacer(),
         Obx(
           () => CustomButton(
-            width: 320 * sizeUnit,
-            customButtonStyle: CustomButtonStyle.filled48,
+            width: controller.nextButtonWidth,
+            customButtonStyle: CustomButtonStyle.outline48,
             text: '다음',
             isOk: value.isNotEmpty,
             color: controller.seedColor,
-            onTap: () => onSubmit(value.value),
+            onTap: controller.nextQuestion,
           ),
         ),
         Gap($style.insets.$40),
@@ -180,22 +700,22 @@ class CreateProjectPage extends StatelessWidget {
   Widget questionForImg({
     required String question,
     required XFile xFile,
-    String? description,
+    String? subQuestion,
     required Function(XFile? xFile) onGetImage,
     required GestureTapCallback onCancel,
     required GestureTapCallback onSubmit,
   }) {
-    final bool isNullImg = xFile == controller.nullXFile;
+    final bool isNullImg = xFile.path.isEmpty;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Spacer(),
         Text(question, style: $style.text.headline32),
-        if (description != null) ...[
+        if (subQuestion != null) ...[
           Gap($style.insets.$12),
           Text(
-            description,
+            subQuestion,
             style: $style.text.subTitle18,
             textAlign: TextAlign.center,
           ),
@@ -203,51 +723,17 @@ class CreateProjectPage extends StatelessWidget {
         ] else ...[
           Gap($style.insets.$80),
         ],
-        InkWell(
-          onTap: () async => onGetImage(await controller.getImage()),
-          borderRadius: BorderRadius.circular($style.corners.$12),
-          child: Stack(
-            children: [
-              Container(
-                width: 564 * sizeUnit,
-                height: 290 * sizeUnit,
-                decoration: BoxDecoration(
-                  color: controller.colorScheme.surface,
-                  borderRadius: BorderRadius.circular($style.corners.$12),
-                ),
-                alignment: Alignment.center,
-                child: isNullImg
-                    ? SvgPicture.asset(
-                        GlobalAssets.svgImg,
-                        width: 96 * sizeUnit,
-                        colorFilter: ColorFilter.mode(controller.colorScheme.primaryContainer, BlendMode.srcIn),
-                      )
-                    : GetExtendedImage(
-                        url: xFile.path,
-                        fit: BoxFit.cover,
-                      ),
-              ),
-              if (!isNullImg) ...[
-                Positioned(
-                  top: 8 * sizeUnit,
-                  right: 8 * sizeUnit,
-                  child: InkWell(
-                    onTap: onCancel,
-                    child: SvgPicture.asset(
-                      GlobalAssets.svgCancel,
-                      width: 24 * sizeUnit,
-                      colorFilter: ColorFilter.mode(controller.seedColor, BlendMode.srcIn),
-                    ),
-                  ),
-                ),
-              ],
-            ],
-          ),
+        imgSelectionBox(
+          width: 564 * sizeUnit,
+          height: 290 * sizeUnit,
+          onGetImage: onGetImage,
+          xFile: xFile,
+          onCancel: onCancel,
         ),
         const Spacer(),
         CustomButton(
-          width: 320 * sizeUnit,
-          customButtonStyle: CustomButtonStyle.filled48,
+          width: controller.nextButtonWidth,
+          customButtonStyle: CustomButtonStyle.outline48,
           text: '다음',
           isOk: !isNullImg,
           color: controller.seedColor,
@@ -255,6 +741,59 @@ class CreateProjectPage extends StatelessWidget {
         ),
         Gap($style.insets.$40),
       ],
+    );
+  }
+
+  // 이미지 선택 박스
+  InkWell imgSelectionBox({
+    required double width,
+    required double height,
+    required XFile xFile,
+    required GestureTapCallback onCancel,
+    required Function(XFile? xFile) onGetImage,
+  }) {
+    final bool isNullImg = xFile.path.isEmpty;
+
+    return InkWell(
+      onTap: () async => onGetImage(await controller.getImage()),
+      borderRadius: BorderRadius.circular($style.corners.$12),
+      child: Stack(
+        children: [
+          Container(
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+              color: controller.colorScheme.surface,
+              borderRadius: BorderRadius.circular($style.corners.$12),
+            ),
+            alignment: Alignment.center,
+            child: isNullImg
+                ? SvgPicture.asset(
+                    GlobalAssets.svgImg,
+                    width: 96 * sizeUnit,
+                    colorFilter: ColorFilter.mode(controller.colorScheme.primaryContainer, BlendMode.srcIn),
+                  )
+                : GetExtendedImage(
+                    url: xFile.path,
+                    fit: BoxFit.cover,
+                  ),
+          ),
+          if (!isNullImg) ...[
+            Positioned(
+              top: 8 * sizeUnit,
+              right: 8 * sizeUnit,
+              child: InkWell(
+                onTap: onCancel,
+                child: SvgPicture.asset(
+                  GlobalAssets.svgCancel,
+                  width: 24 * sizeUnit,
+                  colorFilter: ColorFilter.mode(controller.seedColor, BlendMode.srcIn),
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }

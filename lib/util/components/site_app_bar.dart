@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
 import '../../config/constants.dart';
 import '../../config/global_assets.dart';
+import '../../config/routes.dart';
 import 'custom_app_bar.dart';
 
 class SiteAppBar extends StatelessWidget implements PreferredSize{
@@ -17,7 +19,9 @@ class SiteAppBar extends StatelessWidget implements PreferredSize{
       centerTitle: false,
       titleWidget: SvgPicture.asset(GlobalAssets.svgLogo, height: 19 * sizeUnit),
       actions: [
-        SvgPicture.asset(GlobalAssets.svgProfile, width: 32 * sizeUnit),
+        InkWell(
+            onTap:  () => Get.toNamed(Routes.login),
+            child: SvgPicture.asset(GlobalAssets.svgProfile, width: 32 * sizeUnit)),
         Gap($style.insets.$24),
       ],
     );

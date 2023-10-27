@@ -24,7 +24,7 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = isOk ? this.color ?? $style.colors.primary : const Color(0xFFE1E1E1);
+    final Color color = isOk ? this.color ?? $style.colors.primary : $style.colors.grey;
     Color borderColor = color;
 
     late final Color fillColor;
@@ -52,7 +52,7 @@ class CustomButton extends StatelessWidget {
         fontSize = 16;
         if (color == $style.colors.grey) {
           fontWeight = FontWeight.w500;
-          borderColor = $style.colors.lightGrey;
+          borderColor = $style.colors.grey;
         }
         height = 48;
         break;
@@ -62,7 +62,7 @@ class CustomButton extends StatelessWidget {
         fontSize = 13;
         if (color == $style.colors.grey) {
           fontWeight = FontWeight.w500;
-          borderColor = $style.colors.lightGrey;
+          borderColor = $style.colors.grey;
         }
         height = 32;
         break;
@@ -74,21 +74,24 @@ class CustomButton extends StatelessWidget {
       fontWeight: fontWeight,
     );
 
-    return TextButton(
-      onPressed: isOk ? onTap : null,
-      style: ButtonStyle(
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular($style.corners.$8),
-            side: BorderSide(color: borderColor),
+    return Theme(
+      data: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: color)),
+      child: TextButton(
+        onPressed: isOk ? onTap : null,
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular($style.corners.$8),
+              side: BorderSide(color: borderColor),
+            ),
           ),
+          backgroundColor: MaterialStateProperty.all<Color>(fillColor),
+          minimumSize: MaterialStateProperty.all(Size(width ?? double.infinity, height)),
+          fixedSize: MaterialStateProperty.all(Size(width ?? double.infinity, height)),
+          alignment: Alignment.center,
         ),
-        backgroundColor: MaterialStateProperty.all<Color>(fillColor),
-        minimumSize: MaterialStateProperty.all(Size(width ?? double.infinity, height)),
-        fixedSize: MaterialStateProperty.all(Size(width ?? double.infinity, height)),
-        alignment: Alignment.center,
+        child: Text(text, style: textStyle),
       ),
-      child: Text(text, style: textStyle),
     );
   }
 }
