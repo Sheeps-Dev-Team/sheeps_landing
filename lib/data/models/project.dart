@@ -113,7 +113,7 @@ class Project {
     );
   }
 
-  String get url => 'https://sheeps-landing.web.app/project/$documentID';
+  String get getUrl => 'https://sheeps-landing.web.app/project/$documentID';
 }
 
 class Description {

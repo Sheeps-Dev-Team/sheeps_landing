@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -228,6 +229,18 @@ class GlobalFunction {
       Get.offAllNamed(Routes.home);
     } else {
       Get.back();
+    }
+  }
+
+  // url 직접 접근 차단
+  static bool blockDirectAccess(){
+    if(kDebugMode) return false;
+
+    if (Get.previousRoute.isEmpty) {
+      Get.offAllNamed(Routes.home);
+      return true;
+    } else {
+      return false;
     }
   }
 }

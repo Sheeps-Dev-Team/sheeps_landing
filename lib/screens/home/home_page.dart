@@ -52,14 +52,14 @@ class HomePage extends StatelessWidget {
   GestureDetector projectItem() {
     // print('${Routes.projectManagement}/1');
     return GestureDetector(
-      onTap: (){Get.toNamed('${Routes.projectManagement}/1');},
+      onTap: (){Get.toNamed('${Routes.projectManagement}/N1Z1RfyvMRfz52SP2K4g');},
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             flex: 3,
             child: InkWell(
-              onTap: (){Get.toNamed('${Routes.projectManagement}/1');},
+              onTap: (){Get.toNamed('${Routes.projectManagement}/N1Z1RfyvMRfz52SP2K4g');},
               child: ClipRRect(
                 borderRadius: BorderRadius.circular($style.insets.$12),
                 child: const Placeholder(),
