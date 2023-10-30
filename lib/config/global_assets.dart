@@ -8,4 +8,8 @@ class GlobalAssets {
   static const String svgCancel = 'assets/images/global/cancel.svg'; // x
   static const String svgPlusCircle = 'assets/images/global/plus_circle.svg'; // 원안에 플러스
   static const String svgGoogleLogo = 'assets/images/global/google_logo.svg'; //구글 로고
+  static const String svgDashboard = 'assets/images/global/dashboard.svg'; //대시보드 로고
+  static const String svgCommunication = 'assets/images/global/communication.svg'; //커뮤니케이션 로고
+  static const String svgProjectSettings = 'assets/images/global/settings.svg'; //프로젝트 설정 로고
+  static const String svgEdit = 'assets/images/global/edit.svg'; //프로젝트 수정 로고
 }

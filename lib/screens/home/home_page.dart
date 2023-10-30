@@ -58,9 +58,12 @@ class HomePage extends StatelessWidget {
         children: [
           Expanded(
             flex: 3,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular($style.insets.$12),
-              child: const Placeholder(),
+            child: InkWell(
+              onTap: (){Get.toNamed('${Routes.projectManagement}/1');},
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular($style.insets.$12),
+                child: const Placeholder(),
+              ),
             ),
           ),
           Expanded(
