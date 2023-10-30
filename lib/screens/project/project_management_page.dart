@@ -15,7 +15,6 @@ class ProjectManagementPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(Get.parameters['id']);
     return BaseWidget(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -25,7 +24,7 @@ class ProjectManagementPage extends StatelessWidget {
             children: [
               sideBar(),
               Expanded(
-                child: controller.page,
+                child: controller.isLoading ? const SizedBox.shrink() : controller.page,
               ),
             ],
           );
