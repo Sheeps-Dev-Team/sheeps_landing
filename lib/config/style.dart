@@ -98,6 +98,7 @@ class Insets {
   late final double $60 = 60 * scale;
   late final double $64 = 64 * scale;
   late final double $80 = 80 * scale;
+  late final double $160 = 160 * scale;
 }
 
 /// Animation Durations
@@ -105,4 +106,5 @@ class Insets {
 class Times {
   final Duration ms150 = const Duration(milliseconds: 150);
   final Duration ms300 = const Duration(milliseconds: 300);
+  final Duration ms400 = const Duration(milliseconds: 400);
 }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sheeps_landing/screens/template/default_template.dart';
 
 class Project {
   Project({
@@ -11,7 +12,7 @@ class Project {
     this.callbackType = '',
     this.keyColor = 4283609155,
     this.viewCount = 0,
-    required this.templateID,
+    this.templateID = DefaultTemplate.id,
     this.descriptions = const [],
     this.isPosting = true,
     required this.createdAt,
@@ -44,8 +45,8 @@ class Project {
       callbackType: json['callbackType'] ?? '',
       keyColor: json['keyColor'] ?? 4283609155,
       viewCount: json['viewCount'] ?? 0,
-      templateID: json['templateID'] ?? 1,
-      descriptions: json['descriptions'] == null ? [] : (json['descriptions'] as List).map((e) => e.fromJson()).toList().cast<Description>(),
+      templateID: json['templateID'] ?? DefaultTemplate.id,
+      descriptions: json['descriptions'] == null ? [] : (json['descriptions'] as List).map((e) => Description.fromJson(e)).toList().cast<Description>(),
       isPosting: json['isPosting'] ?? true,
       createdAt: json['createdAt'].toDate(),
       updatedAt: json['updatedAt'].toDate(),
@@ -77,7 +78,6 @@ class Project {
     title: '',
     contents: '',
     imgPath: '',
-    templateID: 1,
     descriptions: [Description.nullDescription.copyWith()],
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),

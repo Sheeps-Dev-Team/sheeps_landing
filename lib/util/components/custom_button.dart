@@ -12,6 +12,7 @@ class CustomButton extends StatelessWidget {
     this.color,
     this.width,
     this.isOk = true,
+    this.borderRadius,
     required this.onTap,
   }) : super(key: key);
 
@@ -20,6 +21,7 @@ class CustomButton extends StatelessWidget {
   final Color? color;
   final double? width;
   final bool isOk;
+  final BorderRadius? borderRadius;
   final GestureTapCallback onTap;
 
   @override
@@ -37,34 +39,34 @@ class CustomButton extends StatelessWidget {
       case CustomButtonStyle.filled48:
         fillColor = color;
         fontColor = Colors.white;
-        fontSize = 16;
-        height = 48;
+        fontSize = 16 * sizeUnit;
+        height = 48 * sizeUnit;
         break;
       case CustomButtonStyle.filled32:
         fillColor = color;
         fontColor = Colors.white;
-        fontSize = 13;
-        height = 32;
+        fontSize = 13 * sizeUnit;
+        height = 32 * sizeUnit;
         break;
       case CustomButtonStyle.outline48:
         fillColor = Colors.white;
         fontColor = color;
-        fontSize = 16;
+        fontSize = 16 * sizeUnit;
         if (color == $style.colors.grey) {
           fontWeight = FontWeight.w500;
           borderColor = $style.colors.grey;
         }
-        height = 48;
+        height = 48 * sizeUnit;
         break;
       case CustomButtonStyle.outline32:
         fillColor = Colors.white;
         fontColor = color;
-        fontSize = 13;
+        fontSize = 13 * sizeUnit;
         if (color == $style.colors.grey) {
           fontWeight = FontWeight.w500;
           borderColor = $style.colors.grey;
         }
-        height = 32;
+        height = 32 * sizeUnit;
         break;
     }
 
@@ -81,7 +83,7 @@ class CustomButton extends StatelessWidget {
         style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular($style.corners.$8),
+              borderRadius: borderRadius ?? BorderRadius.circular($style.corners.$8),
               side: BorderSide(color: borderColor),
             ),
           ),

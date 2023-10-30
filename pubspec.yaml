@@ -51,6 +51,7 @@ dependencies:
   url_launcher: ^6.2.1 # url 연결
   google_sign_in: ^6.1.5
   file_picker: ^6.0.0
+  scrollable_positioned_list: ^0.3.8 # 스크롤 포지션
 
 dev_dependencies:
   flutter_test:
