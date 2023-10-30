@@ -13,6 +13,7 @@ class GetExtendedImage extends StatefulWidget {
     this.isZoom = false,
     this.width,
     this.height,
+    this.loadingWidget,
   }) : super(key: key);
 
   final String url;
@@ -20,6 +21,7 @@ class GetExtendedImage extends StatefulWidget {
   final double? width;
   final double? height;
   final bool isZoom;
+  final Widget? loadingWidget;
 
   @override
   _GetExtendedImageState createState() => _GetExtendedImageState();
@@ -75,13 +77,13 @@ class _GetExtendedImageState extends State<GetExtendedImage> with SingleTickerPr
         switch (state.extendedImageLoadState) {
           case LoadState.loading:
             extendedController.reset();
-            return Center(
-              child: SizedBox(
-                width: 16 * sizeUnit,
-                height: 16 * sizeUnit,
-                child: CircularProgressIndicator(strokeWidth: 2 * sizeUnit, color: $style.colors.primary),
-              ),
-            );
+          return widget.loadingWidget ?? Center(
+            child: SizedBox(
+              width: 24 * sizeUnit,
+              height: 24 * sizeUnit,
+              child: CircularProgressIndicator(strokeWidth: 2 * sizeUnit, color: $style.colors.primary),
+            ),
+          );
           case LoadState.completed:
             extendedController.forward();
             return FadeTransition(

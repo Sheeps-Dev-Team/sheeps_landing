@@ -102,6 +102,7 @@ class _MyAppState extends State<MyApp> {
       supportedLocales: const [
         Locale('ko', 'KR'),
       ],
+      // initialRoute: '${Routes.project}/N1Z1RfyvMRfz52SP2K4g',
       initialRoute: Routes.splash,
       getPages: Routes.getPages,
     );

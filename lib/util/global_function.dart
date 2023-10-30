@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../config/constants.dart';
+import '../config/routes.dart';
 
 class GlobalFunction {
   // 포커스 해제 함수
@@ -218,6 +219,15 @@ class GlobalFunction {
       if (!await launchUrl(url)) {
         throw Exception('Could not launch $url');
       }
+    }
+  }
+
+  // 뒤로가기 (이전 라우트가 없으면 홈으로가기)
+  static void goToBack(){
+    if (Get.previousRoute.isEmpty) {
+      Get.offAllNamed(Routes.home);
+    } else {
+      Get.back();
     }
   }
 }

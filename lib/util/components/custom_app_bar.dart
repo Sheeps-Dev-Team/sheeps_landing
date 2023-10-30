@@ -19,6 +19,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSize {
     this.controller,
     this.backgroundColor,
     this.surfaceTintColor,
+    this.height,
   });
 
   final Widget? leading;
@@ -31,13 +32,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSize {
   final bool showBottomLine = true;
   final Color? backgroundColor;
   final Color? surfaceTintColor;
+  final double? height;
 
   static const appBarHeight = 48;
 
   @override
   Widget build(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(appBarHeight * sizeUnit),
+      preferredSize: Size.fromHeight(height ?? appBarHeight * sizeUnit),
       child: GestureDetector(
         onTap: () {
           // if (Platform.isIOS && (controller != null && controller!.positions.isNotEmpty)) {
@@ -48,7 +50,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSize {
           children: [
             AppBar(
               backgroundColor: backgroundColor ?? Colors.white,
-              toolbarHeight: 47 * sizeUnit,
+              toolbarHeight: height != null ? height! - 1 * sizeUnit : 47 * sizeUnit,
               elevation: 0,
               centerTitle: centerTitle ?? true,
               titleSpacing: 0.0,
@@ -90,5 +92,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSize {
 
   @override
   // TODO: implement preferredSize
-  Size get preferredSize => Size(double.infinity, appBarHeight * sizeUnit);
+  Size get preferredSize => Size(double.infinity, height ?? appBarHeight * sizeUnit);
 }
