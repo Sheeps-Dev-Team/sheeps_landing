@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:sheeps_landing/data/global_data.dart';
 import 'package:sheeps_landing/data/models/user.dart';
 
 class UserRepository {
@@ -51,5 +52,18 @@ class UserRepository {
       if(kDebugMode) print(e.toString());
       return null;
     }
+  }
+
+  //계정 닫기
+  static Future<bool> setUserClose() async {
+    try {
+      final DocumentReference doc = _userCollection.doc(GlobalData.loginUser!.documentID);
+      await doc.update({'state' : 1});
+      return true;
+    } catch (e) {
+      if(kDebugMode) print(e.toString());
+      return false;
+    }
+
   }
 }

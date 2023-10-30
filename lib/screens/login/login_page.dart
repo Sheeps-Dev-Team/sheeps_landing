@@ -14,6 +14,7 @@ import 'package:sheeps_landing/data/global_data.dart';
 import 'package:sheeps_landing/data/models/project.dart';
 import 'package:sheeps_landing/repository/project_repository.dart';
 import 'package:sheeps_landing/screens/login/controllers/login_page_controller.dart';
+import 'package:sheeps_landing/screens/user/user_main_page.dart';
 import 'package:sheeps_landing/util/components/get_extended_image.dart';
 
 import '../../config/constants.dart';
@@ -51,6 +52,7 @@ class LoginPage extends StatelessWidget {
                     onTap: () async {
                       if(false == await controller.loginFunc() && GlobalData.loginUser != null){ //로그인 성공시
                         GlobalData.projectList = await ProjectRepository.getProjectListByUserID(GlobalData.loginUser!.documentID);
+                        Get.to(() => const UserMainPage());
                       }else{ //로그인 실패시
 
                       }

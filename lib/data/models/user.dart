@@ -6,6 +6,7 @@ class User {
     required this.email,
     required this.loginType,
     required this.name,
+    this.state = 0,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -14,6 +15,7 @@ class User {
   String email;
   int loginType;
   String name;
+  int state;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -23,6 +25,7 @@ class User {
       email: json['email'] ?? '',
       loginType: json['loginType'] ?? 0,
       name: json['name'] ?? '',
+      state: json['state'] ?? 0,
       createdAt: json['createdAt'].toDate(),
       updatedAt: json['updatedAt'].toDate(),
     );
@@ -34,6 +37,7 @@ class User {
       "email": email,
       "loginType": loginType,
       "name": name,
+      "state" : state,
       "createdAt": Timestamp.fromDate(createdAt),
       "updatedAt": Timestamp.fromDate(updatedAt),
     };
