@@ -5,12 +5,19 @@ import 'package:sheeps_landing/util/global_function.dart';
 
 class ProjectController extends GetxController {
   late final Project project;
-  late final bool isTemp;
+  late final bool isIndex;
   bool isLoading = true;
 
-  void initState({required Project? project, required bool isTemp}) async{
+  void initState({required Project? project, required bool isIndex}) async{
     if(project == null) {
-      final String? id = Get.parameters['id'];
+      late final String? id;
+      this.isIndex = isIndex;
+
+      if(isIndex) {
+        id = 'N1Z1RfyvMRfz52SP2K4g';
+      } else {
+        id = Get.parameters['id'];
+      }
 
       // 잘못된 url 예외처리
       if(id == null) return GlobalFunction.goToBack();
@@ -26,7 +33,6 @@ class ProjectController extends GetxController {
       this.project = project;
     }
 
-    this.isTemp = isTemp;
     isLoading = false;
     update();
   }
