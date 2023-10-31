@@ -13,6 +13,7 @@ import 'package:sheeps_landing/util/components/responsive.dart';
 import 'package:sheeps_landing/util/components/sheeps_ani.dart';
 import 'package:sheeps_landing/util/global_function.dart';
 
+// ignore: must_be_immutable
 class DefaultTemplate extends StatelessWidget {
   DefaultTemplate({super.key, required this.project});
 
@@ -24,8 +25,8 @@ class DefaultTemplate extends StatelessWidget {
 
   late final Color keyColor = Color(project.keyColor);
   late final ColorScheme colorScheme = ColorScheme.fromSeed(seedColor: keyColor);
-  late final TextStyle titleStyle = $style.text.headline32.copyWith(fontSize: 40 * sizeUnit, color: colorScheme.onSurface);
-  late final TextStyle contentsStyle = $style.text.body16.copyWith(height: 1.6, color: colorScheme.onSurface);
+  late TextStyle titleStyle = $style.text.headline32.copyWith(fontSize: 40 * sizeUnit, color: colorScheme.onSurface);
+  late TextStyle contentsStyle = $style.text.body16.copyWith(height: 1.6, color: colorScheme.onSurface);
   late final Color sectionColor = colorScheme.surface;
 
   @override
@@ -33,13 +34,18 @@ class DefaultTemplate extends StatelessWidget {
     final bool isDesktop = Responsive.isDesktop(context);
     final double currentWidth = MediaQuery.of(context).size.width;
 
+    if (!isDesktop) {
+      titleStyle = titleStyle.copyWith(fontSize: 32 * sizeUnit);
+      contentsStyle = contentsStyle.copyWith(fontSize: 15 * sizeUnit);
+    }
+
     return GetBuilder<DefaultTemplateController>(
       initState: (state) => controller.initState(project),
       builder: (_) {
         return Scaffold(
           appBar: CustomAppBar(
             leading: const SizedBox.shrink(),
-            height: 72 * sizeUnit,
+            height: isDesktop ? 72 * sizeUnit : null,
             title: project.name,
             surfaceTintColor: keyColor,
           ),
@@ -50,30 +56,54 @@ class DefaultTemplate extends StatelessWidget {
             itemBuilder: (context, index) {
               switch (index) {
                 case 0:
-                  return header(currentWidth);
+                  return Responsive(
+                    desktop: header(currentWidth),
+                    mobile: mobileHeader(),
+                  );
                 case 1:
-                  return description(
-                    project.descriptions[0],
-                    isOdd: false,
-                    isActive: controller.description01Ani,
-                    currentWidth: currentWidth,
+                  return Responsive(
+                    desktop: description(
+                      project.descriptions[0],
+                      isOdd: false,
+                      isActive: controller.description01Ani,
+                      currentWidth: currentWidth,
+                    ),
+                    mobile: mobileDescription(
+                      project.descriptions[0],
+                      isOdd: false,
+                      isActive: controller.description01Ani,
+                    ),
                   );
                 case 2:
                   return project.descriptions.length > 1
-                      ? description(
-                          project.descriptions[1],
-                          isOdd: true,
-                          isActive: controller.description02Ani,
-                          currentWidth: currentWidth,
+                      ? Responsive(
+                          desktop: description(
+                            project.descriptions[1],
+                            isOdd: true,
+                            isActive: controller.description02Ani,
+                            currentWidth: currentWidth,
+                          ),
+                          mobile: mobileDescription(
+                            project.descriptions[1],
+                            isOdd: true,
+                            isActive: controller.description02Ani,
+                          ),
                         )
                       : const SizedBox.shrink();
                 case 3:
                   return project.descriptions.length > 2
-                      ? description(
-                          project.descriptions[2],
-                          isOdd: false,
-                          isActive: controller.description03Ani,
-                          currentWidth: currentWidth,
+                      ? Responsive(
+                          desktop: description(
+                            project.descriptions[2],
+                            isOdd: false,
+                            isActive: controller.description03Ani,
+                            currentWidth: currentWidth,
+                          ),
+                          mobile: mobileDescription(
+                            project.descriptions[2],
+                            isOdd: false,
+                            isActive: controller.description03Ani,
+                          ),
                         )
                       : const SizedBox.shrink();
                 case 4:
@@ -154,6 +184,52 @@ class DefaultTemplate extends StatelessWidget {
     );
   }
 
+  // 모바일 헤더
+  Widget mobileHeader() {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: $style.insets.$40,
+        horizontal: $style.insets.$16,
+      ),
+      width: double.infinity,
+      color: sectionColor,
+      child: SheepsAniFadeIn(
+        isAction: controller.headerAni,
+        direction: Direction.up,
+        distance: controller.distance,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular($style.corners.$24),
+              child: GetExtendedImage(
+                url: project.imgPath,
+                fit: BoxFit.contain,
+                width: double.infinity,
+                height: 256 * sizeUnit,
+                loadingWidget: const SizedBox.shrink(),
+              ),
+            ),
+            Gap($style.insets.$24),
+            Text(
+              project.title,
+              style: titleStyle,
+              textAlign: TextAlign.center,
+            ),
+            Gap($style.insets.$16),
+            Text(
+              project.contents,
+              style: contentsStyle,
+              textAlign: TextAlign.center,
+            ),
+            Gap($style.insets.$24),
+            callToActionBtn(customButtonStyle: CustomButtonStyle.outline48),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget description(Description description, {required bool isOdd, required bool isActive, required double currentWidth}) {
     Widget titleAndContents() {
       return Expanded(
@@ -215,6 +291,59 @@ class DefaultTemplate extends StatelessWidget {
             ] else ...[
               img(),
             ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget mobileDescription(Description description, {required bool isOdd, required bool isActive}) {
+    Widget titleAndContents() {
+      return Column(
+        children: [
+          Text(
+            description.title,
+            style: titleStyle,
+            textAlign: TextAlign.center,
+          ),
+          Gap($style.insets.$20),
+          Text(
+            description.contents,
+            style: contentsStyle,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      );
+    }
+
+    Widget img() {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular($style.corners.$24),
+        child: GetExtendedImage(
+          url: description.imgPath,
+          fit: BoxFit.contain,
+          height: 357 * sizeUnit,
+          width: 366 * sizeUnit,
+        ),
+      );
+    }
+
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: $style.insets.$40,
+        horizontal: $style.insets.$16,
+      ),
+      color: isOdd ? sectionColor : Colors.white,
+      child: SheepsAniFadeIn(
+        distance: controller.distance * 4,
+        direction: isOdd ? Direction.left : Direction.right,
+        isAction: isActive,
+        child: Column(
+          // mainAxisAlignment: isOdd ? MainAxisAlignment.start : MainAxisAlignment.end,
+          children: [
+            titleAndContents(),
+            Gap($style.insets.$24),
+            img(),
           ],
         ),
       ),
