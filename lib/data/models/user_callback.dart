@@ -54,4 +54,6 @@ class UserCallback {
       "updatedAt": Timestamp.fromDate(updatedAt),
     };
   }
+
+  List<String> get getRows => [typeNone, formTypeName, formTypeEmail, formTypePhoneNumber, ip];
 }
