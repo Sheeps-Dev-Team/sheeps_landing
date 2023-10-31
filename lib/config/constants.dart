@@ -24,3 +24,5 @@ const int standardWidth = 1920; // 표준 width
 double calSizeUnit(double currentWidth, double value) => currentWidth * (value / standardWidth);
 
 const int descriptionMaxCount = 3; // description 최대 개수
+
+const String likedIdListKey = 'likedIdList';

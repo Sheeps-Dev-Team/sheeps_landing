@@ -14,7 +14,7 @@ class ProjectRepository {
       DocumentSnapshot documentSnapshot = await _projectCollection.doc(documentID).get();
       project = Project.fromJson(documentSnapshot.data() as Map<String, dynamic>);
     } catch (e) {
-      if(kDebugMode) print(e.toString());
+      if (kDebugMode) print(e.toString());
       return null;
     }
 
@@ -27,12 +27,12 @@ class ProjectRepository {
 
     try {
       await _projectCollection.where('userDocumentID', isEqualTo: userDocumentID).get().then((QuerySnapshot querySnapshot) {
-        for(QueryDocumentSnapshot<Object?> doc in querySnapshot.docs) {
+        for (QueryDocumentSnapshot<Object?> doc in querySnapshot.docs) {
           projects.add(Project.fromJson(doc.data() as Map<String, dynamic>));
         }
       });
     } catch (e) {
-      if(kDebugMode) print(e.toString());
+      if (kDebugMode) print(e.toString());
     }
 
     return projects;
@@ -43,11 +43,48 @@ class ProjectRepository {
     try {
       final DocumentReference doc = _projectCollection.doc();
       project.documentID = doc.id;
+
+      final DateTime now = DateTime.now();
+      project.createdAt = now;
+      project.updatedAt = now;
+
       await doc.set(project.toJson());
       return project;
     } catch (e) {
-      if(kDebugMode) print(e.toString());
+      if (kDebugMode) print(e.toString());
       return null;
+    }
+  }
+
+  // 조회수 업데이트
+  static Future<bool> updateViewCount({required String documentID, int count = 1}) async {
+    try {
+      _projectCollection.doc(documentID).update(
+        {
+          "viewCount": FieldValue.increment(count),
+          "updatedAt": FieldValue.serverTimestamp(),
+        },
+      );
+      return true;
+    } catch (e) {
+      if (kDebugMode) print(e.toString());
+      return false;
+    }
+  }
+
+  // 좋아요 업데이트
+  static Future<bool> updateLikeCount({required String documentID, int count = 1}) async {
+    try {
+      _projectCollection.doc(documentID).update(
+        {
+          "likeCount": FieldValue.increment(count),
+          "updatedAt": FieldValue.serverTimestamp(),
+        },
+      );
+      return true;
+    } catch (e) {
+      if (kDebugMode) print(e.toString());
+      return false;
     }
   }
 }

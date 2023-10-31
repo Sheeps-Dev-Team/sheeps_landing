@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -26,28 +24,10 @@ class DefaultTemplateController extends GetxController {
 
     itemPositionsListener.itemPositions.addListener(() {
       if (itemPositionsListener.itemPositions.value.isNotEmpty && itemScrollController.isAttached) {
-        // final int idx = itemPositionsListener.itemPositions.value
-        //     .where((ItemPosition position) => position.itemTrailingEdge > 0)
-        //     .reduce((ItemPosition min, ItemPosition position) => position.itemTrailingEdge < min.itemTrailingEdge ? position : min)
-        //     .index;
-
         final int idx = itemPositionsListener.itemPositions.value
             .where((ItemPosition position) => position.itemTrailingEdge > 0)
             .reduce((ItemPosition min, ItemPosition position) => position.itemTrailingEdge < min.itemTrailingEdge * 2.2 ? position : min)
             .index;
-
-        // print('position:  ${itemPositionsListener.itemPositions.value
-        //     .where((ItemPosition position) => position.itemTrailingEdge > 0)
-        //     .reduce((ItemPosition min, ItemPosition position) => position)}');
-        //
-        // print('min:  ${itemPositionsListener.itemPositions.value
-        //     .where((ItemPosition position) => position.itemTrailingEdge > 0)
-        //     .reduce((ItemPosition min, ItemPosition position) => min)}');
-
-        // final int idx = itemPositionsListener.itemPositions.value
-        //     .where((ItemPosition position) => position.itemLeadingEdge < 1)
-        //     .reduce((ItemPosition max, ItemPosition position) => position.itemLeadingEdge > max.itemLeadingEdge * 2.2 ? position : max)
-        //     .index;
 
         if (scrollIndex != idx) {
           scrollIndex = idx;
@@ -61,6 +41,7 @@ class DefaultTemplateController extends GetxController {
     this.project = project;
 
     headerAni = true;
+    description01Ani = true;
     update();
   }
 

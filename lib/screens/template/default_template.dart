@@ -6,15 +6,13 @@ import 'package:sheeps_landing/config/constants.dart';
 import 'package:sheeps_landing/config/routes.dart';
 import 'package:sheeps_landing/data/models/project.dart';
 import 'package:sheeps_landing/data/models/user_callback.dart';
+import 'package:sheeps_landing/screens/project/controllers/project_controller.dart';
 import 'package:sheeps_landing/screens/template/controllers/default_template_controller.dart';
 import 'package:sheeps_landing/util/components/custom_app_bar.dart';
 import 'package:sheeps_landing/util/components/custom_button.dart';
 import 'package:sheeps_landing/util/components/get_extended_image.dart';
 import 'package:sheeps_landing/util/components/responsive.dart';
 import 'package:sheeps_landing/util/components/sheeps_ani.dart';
-import 'package:sheeps_landing/util/global_function.dart';
-
-import '../../util/components/like_button.dart';
 
 // ignore: must_be_immutable
 class DefaultTemplate extends StatelessWidget {
@@ -26,6 +24,7 @@ class DefaultTemplate extends StatelessWidget {
   static const int id = 1;
 
   final DefaultTemplateController controller = Get.put(DefaultTemplateController());
+  final ProjectController projectController = Get.find<ProjectController>();
 
   late final Color keyColor = Color(project.keyColor);
   late final ColorScheme colorScheme = ColorScheme.fromSeed(seedColor: keyColor);
@@ -48,15 +47,6 @@ class DefaultTemplate extends StatelessWidget {
       builder: (_) {
         return Scaffold(
           appBar: appBar(isDesktop),
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: keyColor,
-            child: LikeButton(
-              isChecked: false,
-              color: colorScheme.onTertiary,
-              onTap: () {},
-            ),
-            onPressed: () {},
-          ),
           body: ScrollablePositionedList.builder(
             itemScrollController: controller.itemScrollController,
             itemPositionsListener: controller.itemPositionsListener,
@@ -373,7 +363,7 @@ class DefaultTemplate extends StatelessWidget {
           color: keyColor,
           width: 122 * sizeUnit,
           text: '소식 받기',
-          onTap: () {},
+          onTap: projectController.actionForForm,
         );
       case UserCallback.typeLink:
         return CustomButton(
@@ -382,7 +372,7 @@ class DefaultTemplate extends StatelessWidget {
           color: keyColor,
           width: 122 * sizeUnit,
           text: '자세히 보기',
-          onTap: () => GlobalFunction.launch(Uri.parse(typeList.last)),
+          onTap: projectController.actionForLink,
         );
       default:
         return const SizedBox.shrink();

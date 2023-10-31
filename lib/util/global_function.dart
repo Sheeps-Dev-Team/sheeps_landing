@@ -178,7 +178,7 @@ class GlobalFunction {
   static String? validRealNameErrorText(String name) {
     String? errMsg;
 
-    RegExp regExp = RegExp(r'(^[가-힣]{2,10}$)'); // 2 ~ 10개 한글 입력가능
+    final RegExp regExp = RegExp(r'(^[가-힣]{2,10}$)'); // 2 ~ 10개 한글 입력가능
     if (!regExp.hasMatch(name)) errMsg = '이름을 정확히 입력해 주세요.';
     return errMsg;
   }
@@ -187,8 +187,23 @@ class GlobalFunction {
   static String? validPhoneNumErrorText(String number) {
     String? errMsg;
 
-    RegExp regExp = RegExp(r'^\d{10,11}$'); // 10 ~ 11개 숫자 입력가능
+    final RegExp regExp = RegExp(r'^\d{10,11}$'); // 10 ~ 11개 숫자 입력가능
     if (!regExp.hasMatch(number)) errMsg = '휴대폰 번호를 정확히 입력해 주세요.';
+    return errMsg;
+  }
+
+  // 이메일 유효성 검사
+  static String? validEmailErrorText(String email) {
+    String? errMsg;
+
+    final RegExp regExp = RegExp(r'^[0-9a-zA-Z][0-9a-zA-Z\_\-\.\+]+[0-9a-zA-Z]@[0-9a-zA-Z][0-9a-zA-Z\_\-]*[0-9a-zA-Z](\.[a-zA-Z]{2,6}){1,2}$');
+
+    if (email.length < 6) {
+      errMsg = "최소 6글자 이상의 이메일이어야 해요.";
+    } else if (!regExp.hasMatch(email)) {
+      errMsg = "메일 형식에 맞게 입력해 주세요.";
+    }
+
     return errMsg;
   }
 
