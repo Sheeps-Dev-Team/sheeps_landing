@@ -21,7 +21,7 @@ class SiteAppBar extends StatelessWidget implements PreferredSize{
       leading: const SizedBox.shrink(),
       leadingWidth: 24 * sizeUnit,
       centerTitle: false,
-      titleWidget: SvgPicture.asset(GlobalAssets.svgLogo, height: 19 * sizeUnit),
+      titleWidget: SvgPicture.asset(GlobalAssets.svgLogo, height: 36 * sizeUnit),
       actions: [
         if(GlobalData.loginUser != null) ... {
           InkWell(

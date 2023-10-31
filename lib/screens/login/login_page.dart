@@ -43,11 +43,10 @@ class LoginPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgPicture.asset(GlobalAssets.svgLogo),
-                  Text('LANDING', style: $style.text.headline24.copyWith(color: $style.colors.primary, fontWeight: FontWeight.w900),),
-                  SizedBox(height: 12 * sizeUnit),
-                  Text('로그인', style: $style.text.subTitle20),
+                  SvgPicture.asset(GlobalAssets.svgLogo, height: 100 * sizeUnit,),
                   SizedBox(height: 18 * sizeUnit),
+                  Text('로그인', style: $style.text.subTitle20),
+                  SizedBox(height: 12 * sizeUnit),
                   InkWell(
                     onTap: () async {
                       if(false == await controller.loginFunc() && GlobalData.loginUser != null){ //로그인 성공시
