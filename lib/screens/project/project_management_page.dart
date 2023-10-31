@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:sheeps_landing/config/global_assets.dart';
 import 'package:sheeps_landing/screens/project/controllers/project_management_controller.dart';
 import 'package:sheeps_landing/util/components/base_widget.dart';
-import 'package:sheeps_landing/util/components/custom_app_bar.dart';
 
 import '../../config/constants.dart';
 
@@ -18,7 +18,6 @@ class ProjectManagementPage extends StatelessWidget {
     return BaseWidget(
       child: Scaffold(
         backgroundColor: Colors.white,
-        //appBar: CustomAppBar(),
         body: GetBuilder<ProjectManagementController>(builder: (_) {
           return Row(
             children: [
@@ -57,7 +56,6 @@ class ProjectManagementPage extends StatelessWidget {
                 ),
               ),
             ),
-            //height: 100 * sizeUnit,
             child: Column(
               children: [
                 //Text(controller.user.email, style: $style.text.subTitle18,),
@@ -65,6 +63,7 @@ class ProjectManagementPage extends StatelessWidget {
               ],
             ),
           ),
+          Gap($style.insets.$20),
           Column(
             children: List.generate(controller.pageMap.length, (index) {
               final String key = controller.pageMap.keys.toList()[index];

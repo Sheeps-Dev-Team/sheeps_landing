@@ -44,4 +44,6 @@ class UserCallback {
       'phoneNumber': phoneNumber,
     };
   }
+
+  List<String> get getRows => [typeNone, formTypeName, formTypeEmail, formTypePhoneNumber, ip];
 }
