@@ -14,6 +14,7 @@ import 'package:sheeps_landing/data/global_data.dart';
 import 'package:sheeps_landing/data/models/project.dart';
 import 'package:sheeps_landing/repository/project_repository.dart';
 import 'package:sheeps_landing/screens/login/controllers/login_page_controller.dart';
+import 'package:sheeps_landing/screens/user/user_main_page.dart';
 import 'package:sheeps_landing/util/components/get_extended_image.dart';
 
 import '../../config/constants.dart';
@@ -42,15 +43,15 @@ class LoginPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgPicture.asset(GlobalAssets.svgLogo),
-                  Text('LANDING', style: $style.text.headline24.copyWith(color: $style.colors.primary, fontWeight: FontWeight.w900),),
-                  SizedBox(height: 12 * sizeUnit),
-                  Text('로그인', style: $style.text.subTitle20),
+                  SvgPicture.asset(GlobalAssets.svgLogo, height: 100 * sizeUnit,),
                   SizedBox(height: 18 * sizeUnit),
+                  Text('로그인', style: $style.text.subTitle20),
+                  SizedBox(height: 12 * sizeUnit),
                   InkWell(
                     onTap: () async {
                       if(false == await controller.loginFunc() && GlobalData.loginUser != null){ //로그인 성공시
                         GlobalData.projectList = await ProjectRepository.getProjectListByUserID(GlobalData.loginUser!.documentID);
+                        Get.to(() => const UserMainPage());
                       }else{ //로그인 실패시
 
                       }

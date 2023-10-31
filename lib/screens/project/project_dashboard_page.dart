@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
 import 'package:sheeps_landing/config/constants.dart';
-import 'package:sheeps_landing/config/global_assets.dart';
-import 'package:sheeps_landing/screens/project/controllers/project_management_controller.dart';
+import 'package:sheeps_landing/data/models/project.dart';
 import 'package:sheeps_landing/util/components/custom_button.dart';
 
 class ProjectDashboardPage extends StatelessWidget {
-  ProjectDashboardPage({super.key});
+  const ProjectDashboardPage({super.key, required this.project});
 
-  final ProjectManagementController controller = Get.put(ProjectManagementController());
+  final Project project;
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +37,13 @@ class ProjectDashboardPage extends StatelessWidget {
             width: double.infinity,
             child: Column(
               children: [
-                dashboardWidget('프로젝트 이름', controller.project.name),
+                dashboardWidget('프로젝트 이름', project.name),
                 Gap($style.insets.$20),
-                dashboardWidget('프로젝트 URL', controller.project.url),
+                dashboardWidget('프로젝트 URL', project.getUrl),
                 Gap($style.insets.$20),
-                dashboardWidget('Call To Action 타입', controller.project.callbackType),
+                dashboardWidget('Call To Action 타입', project.callbackType),
                 Gap($style.insets.$20),
-                dashboardWidget('유입 수', controller.project.viewCount.toString()),
+                dashboardWidget('유입 수', project.viewCount.toString()),
                 Gap($style.insets.$20),
               ],
             ),
@@ -113,7 +110,7 @@ class ProjectDashboardPage extends StatelessWidget {
                     TableCell(
                         child: Padding(
                       padding: EdgeInsets.all($style.insets.$10),
-                      child: dashboardWidget('프로젝트 이름', controller.project.name),
+                      child: dashboardWidget('프로젝트 이름', project.name),
                     )),
                   ],
                 ),
@@ -122,7 +119,7 @@ class ProjectDashboardPage extends StatelessWidget {
                     TableCell(
                         child: Padding(
                       padding: EdgeInsets.all($style.insets.$10),
-                      child: dashboardWidget('프로젝트 URL', controller.project.url),
+                      child: dashboardWidget('프로젝트 URL', project.url),
                     )),
                   ],
                 ),
@@ -131,7 +128,7 @@ class ProjectDashboardPage extends StatelessWidget {
                     TableCell(
                         child: Padding(
                       padding: EdgeInsets.all($style.insets.$10),
-                      child: dashboardWidget('Call To Action 타입', controller.project.callbackType),
+                      child: dashboardWidget('Call To Action 타입', project.callbackType),
                     )),
                   ],
                 ),
@@ -140,7 +137,7 @@ class ProjectDashboardPage extends StatelessWidget {
                     TableCell(
                         child: Padding(
                       padding: EdgeInsets.all($style.insets.$10),
-                      child: dashboardWidget('유입 수', controller.project.viewCount.toString()),
+                      child: dashboardWidget('유입 수', project.viewCount.toString()),
                     )),
                   ],
                 ),

@@ -37,6 +37,14 @@ class Project {
   DateTime updatedAt;
 
   factory Project.fromJson(Map<String, dynamic> json) {
+
+    List<Description> list = [];
+    if(json['descriptions'] != null || json['descriptions'].isNotEmpty){
+      for(var i = 0 ; i < json['descriptions'].length ; ++i){
+        list.add(Description.fromJson(json['descriptions'][i]));
+      }
+    }
+
     return Project(
       documentID: json['documentID'] ?? '',
       userDocumentID: json['userDocumentID'] ?? '',
@@ -49,7 +57,7 @@ class Project {
       viewCount: json['viewCount'] ?? 0,
       likeCount: json['likeCount'] ?? 0,
       templateID: json['templateID'] ?? DefaultTemplate.id,
-      descriptions: json['descriptions'] == null ? [] : (json['descriptions'] as List).map((e) => Description.fromJson(e)).toList().cast<Description>(),
+      descriptions: list,
       isPosting: json['isPosting'] ?? true,
       createdAt: json['createdAt'].toDate(),
       updatedAt: json['updatedAt'].toDate(),
@@ -119,7 +127,7 @@ class Project {
     );
   }
 
-  String get url => 'https://sheeps-landing.web.app/project/$documentID';
+  String get getUrl => 'https://sheeps-landing.web.app/project/$documentID';
 }
 
 class Description {

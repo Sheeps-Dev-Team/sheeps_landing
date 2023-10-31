@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -136,16 +137,6 @@ class GlobalFunction {
     );
   }
 
-  // 로그인
-  static Future<void> globalLogin({required String email, required Function nullCallback}) async {
-
-  }
-
-  // 로그아웃
-  static Future<void> logout() async{
-
-  }
-
   // date picker
   static Future<DateTime> datePicker({required BuildContext context, DateTime? initialDateTime, DateTime? minimumDateTime}) async {
     unFocus(); // 포커스 해제
@@ -243,6 +234,18 @@ class GlobalFunction {
       Get.offAllNamed(Routes.home);
     } else {
       Get.back();
+    }
+  }
+
+  // url 직접 접근 차단
+  static bool blockDirectAccess(){
+    if(kDebugMode) return false;
+
+    if (Get.previousRoute.isEmpty) {
+      Get.offAllNamed(Routes.home);
+      return true;
+    } else {
+      return false;
     }
   }
 }
