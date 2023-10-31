@@ -12,6 +12,7 @@ class Project {
     this.callbackType = '',
     this.keyColor = 4283609155,
     this.viewCount = 0,
+    this.likeCount = 0,
     this.templateID = DefaultTemplate.id,
     this.descriptions = const [],
     this.isPosting = true,
@@ -28,6 +29,7 @@ class Project {
   String callbackType;
   int keyColor;
   int viewCount;
+  int likeCount;
   int templateID;
   List<Description> descriptions;
   bool isPosting;
@@ -53,6 +55,7 @@ class Project {
       callbackType: json['callbackType'] ?? '',
       keyColor: json['keyColor'] ?? 4283609155,
       viewCount: json['viewCount'] ?? 0,
+      likeCount: json['likeCount'] ?? 0,
       templateID: json['templateID'] ?? DefaultTemplate.id,
       descriptions: list,
       isPosting: json['isPosting'] ?? true,
@@ -72,6 +75,7 @@ class Project {
       "callbackType": callbackType,
       "keyColor": keyColor,
       "viewCount": viewCount,
+      "likeCount": likeCount,
       "templateID": templateID,
       "descriptions": descriptions.map((e) => e.toJson()).toList(),
       "isPosting": isPosting,
@@ -100,6 +104,7 @@ class Project {
     String? imgPath,
     String? callbackType,
     int? viewCount,
+    int? likeCount,
     int? templateID,
     List<Description>? descriptions,
     DateTime? createdAt,
@@ -114,6 +119,7 @@ class Project {
       imgPath: imgPath ?? this.imgPath,
       callbackType: callbackType ?? this.callbackType,
       viewCount: viewCount ?? this.viewCount,
+      likeCount: likeCount ?? this.likeCount,
       templateID: templateID ?? this.templateID,
       descriptions: descriptions ?? this.descriptions,
       createdAt: createdAt ?? this.createdAt,

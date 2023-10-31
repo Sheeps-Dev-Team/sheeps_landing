@@ -15,6 +15,7 @@ class Routes {
   static const String projectManagement = '/project/management';
   static const String login = '/login';
   static const String project = '/project';
+  static const String index = '/index';
 
   static List<GetPage<dynamic>> getPages = [
     GetPage(name: home, page: () => HomePage()),
@@ -22,6 +23,7 @@ class Routes {
     GetPage(name: createProject, page: () => CreateProjectPage()),
     GetPage(name: '$projectManagement/:id', page: () => ProjectManagementPage()),
     GetPage(name: login, page: () => LoginPage()),
-    GetPage(name: '$project/:id', page: () => ProjectPage(isTemp: false)),
+    GetPage(name: '$project/:id', page: () => ProjectPage()),
+    GetPage(name: index, page: () => ProjectPage(isIndex: true)),
   ];
 }

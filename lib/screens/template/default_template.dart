@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sheeps_landing/config/constants.dart';
+import 'package:sheeps_landing/config/routes.dart';
 import 'package:sheeps_landing/data/models/project.dart';
 import 'package:sheeps_landing/data/models/user_callback.dart';
 import 'package:sheeps_landing/screens/template/controllers/default_template_controller.dart';
@@ -13,11 +14,14 @@ import 'package:sheeps_landing/util/components/responsive.dart';
 import 'package:sheeps_landing/util/components/sheeps_ani.dart';
 import 'package:sheeps_landing/util/global_function.dart';
 
+import '../../util/components/like_button.dart';
+
 // ignore: must_be_immutable
 class DefaultTemplate extends StatelessWidget {
-  DefaultTemplate({super.key, required this.project});
+  DefaultTemplate({super.key, required this.project, required this.isIndex});
 
   final Project project;
+  final bool isIndex;
 
   static const int id = 1;
 
@@ -43,11 +47,15 @@ class DefaultTemplate extends StatelessWidget {
       initState: (state) => controller.initState(project),
       builder: (_) {
         return Scaffold(
-          appBar: CustomAppBar(
-            leading: const SizedBox.shrink(),
-            height: isDesktop ? 72 * sizeUnit : null,
-            title: project.name,
-            surfaceTintColor: keyColor,
+          appBar: appBar(isDesktop),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: keyColor,
+            child: LikeButton(
+              isChecked: false,
+              color: colorScheme.onTertiary,
+              onTap: () {},
+            ),
+            onPressed: () {},
           ),
           body: ScrollablePositionedList.builder(
             itemScrollController: controller.itemScrollController,
@@ -131,7 +139,7 @@ class DefaultTemplate extends StatelessWidget {
           children: [
             Text(project.title, style: titleStyle),
             Gap($style.insets.$40),
-            callToActionBtn(),
+            actionButton(),
           ],
         ),
       ),
@@ -177,7 +185,7 @@ class DefaultTemplate extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             Gap($style.insets.$40),
-            callToActionBtn(customButtonStyle: CustomButtonStyle.outline48),
+            actionButton(customButtonStyle: CustomButtonStyle.outline48),
           ],
         ),
       ),
@@ -223,7 +231,7 @@ class DefaultTemplate extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             Gap($style.insets.$24),
-            callToActionBtn(customButtonStyle: CustomButtonStyle.outline48),
+            actionButton(customButtonStyle: CustomButtonStyle.outline48),
           ],
         ),
       ),
@@ -351,7 +359,7 @@ class DefaultTemplate extends StatelessWidget {
   }
 
   // 콜 투 액션 버튼
-  Widget callToActionBtn({CustomButtonStyle customButtonStyle = CustomButtonStyle.filled48}) {
+  Widget actionButton({CustomButtonStyle customButtonStyle = CustomButtonStyle.filled48}) {
     final List<String> typeList = project.callbackType.split(division);
     final String type = typeList.first;
 
@@ -379,5 +387,26 @@ class DefaultTemplate extends StatelessWidget {
       default:
         return const SizedBox.shrink();
     }
+  }
+
+  CustomAppBar appBar(bool isDesktop) {
+    return CustomAppBar(
+      leading: const SizedBox.shrink(),
+      height: isDesktop ? 72 * sizeUnit : null,
+      actions: isIndex
+          ? [
+        InkWell(
+          onTap: () => Get.toNamed(Routes.login),
+          child: Text(
+            '로그인',
+            style: $style.text.subTitle16.copyWith(color: colorScheme.onSurface),
+          ),
+        ),
+        Gap($style.insets.$16),
+      ]
+          : null,
+      title: project.name,
+      surfaceTintColor: keyColor,
+    );
   }
 }
