@@ -23,7 +23,7 @@ class SiteAppBar extends StatelessWidget implements PreferredSize{
       centerTitle: false,
       titleWidget: SvgPicture.asset(GlobalAssets.svgLogo, height: 36 * sizeUnit),
       actions: [
-        if(GlobalData.loginUser != null) ... {
+        if(GlobalData.loginUser == null) ... {
           InkWell(
               onTap: () {
                 Get.dialog(
@@ -52,7 +52,7 @@ class SiteAppBar extends StatelessWidget implements PreferredSize{
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('국양봉', style: $style.text.headline24,),
+                                  DefaultTextStyle(style: $style.text.headline24, child: Text('국양봉')),
                                   Gap(8 * sizeUnit),
                                   Divider(height: 1, thickness: 2, color: $style.colors.lightGrey),
                                   Gap(8 * sizeUnit),
