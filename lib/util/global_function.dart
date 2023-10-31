@@ -137,16 +137,6 @@ class GlobalFunction {
     );
   }
 
-  // 로그인
-  static Future<void> globalLogin({required String email, required Function nullCallback}) async {
-
-  }
-
-  // 로그아웃
-  static Future<void> logout() async{
-
-  }
-
   // date picker
   static Future<DateTime> datePicker({required BuildContext context, DateTime? initialDateTime, DateTime? minimumDateTime}) async {
     unFocus(); // 포커스 해제
