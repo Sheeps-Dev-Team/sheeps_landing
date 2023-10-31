@@ -52,6 +52,9 @@ dependencies:
   google_sign_in: ^6.1.5
   file_picker: ^6.0.0
   scrollable_positioned_list: ^0.3.8 # 스크롤 포지션
+  shared_preferences: ^2.2.2 # local db
+  get_ip_address: ^0.0.6 # ip 주소 가져오기
+  timezone: ^0.9.2 # 시간 불러오기
   flutter_secure_storage: ^9.0.0 # 보안 저장소
 
 dev_dependencies:
