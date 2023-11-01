@@ -10,7 +10,7 @@ import '../../config/constants.dart';
 class ProjectSettingsPage extends StatelessWidget {
   ProjectSettingsPage({super.key});
 
-  final ProjectCommunicationController controller = Get.put(ProjectCommunicationController());
+  //final ProjectCommunicationController controller = Get.put(ProjectCommunicationController());
 
   @override
   Widget build(BuildContext context) {

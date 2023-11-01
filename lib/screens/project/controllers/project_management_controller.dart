@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sheeps_landing/config/global_assets.dart';
-import 'package:sheeps_landing/data/models/user_callback.dart';
 import 'package:sheeps_landing/repository/project_repository.dart';
 import 'package:sheeps_landing/screens/project/project_settings_page.dart';
 import 'package:sheeps_landing/util/global_function.dart';
@@ -14,15 +13,7 @@ import '../project_dashboard_page.dart';
 class ProjectManagementController extends GetxController {
   late final Map<String, Widget Function()> pageMap = {
     '대시보드': () => ProjectDashboardPage(project: project),
-    '커뮤니케이션': () => ProjectCommunicationPage(userCallback: UserCallback(
-      documentID: '',
-      projectID: '',
-      ip: '',
-      phoneNumber: '',
-      email: '',
-      name: '', createdAt: DateTime.now(),updatedAt: DateTime.now(),
-    )
-    ),
+    '커뮤니케이션': () => ProjectCommunicationPage(project: project),
     '프로젝트 설정': () => ProjectSettingsPage(),
   };
   late String pageKey = pageMap.keys.first;
