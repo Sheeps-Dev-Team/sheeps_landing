@@ -248,4 +248,11 @@ class GlobalFunction {
       return false;
     }
   }
+
+  static String getDateTimeToString(DateTime date){
+
+    String res = date.toString();
+
+    return '${res.substring(0,3)}년 ${res.substring(5,6)}월 ${res.substring(8,9)}일';
+  }
 }

@@ -98,7 +98,11 @@ class LoginPage extends StatelessWidget {
                   SizedBox(height: 18 * sizeUnit),
                   InkWell(
                     onTap: () async {
-                      Get.toNamed(Routes.index);
+                      if(kDebugMode){
+                        Get.toNamed(Routes.home);
+                      }else{
+                        Get.toNamed(Routes.index);
+                      }
                     },
                     child: Container(
                       width: 240 * sizeUnit,
