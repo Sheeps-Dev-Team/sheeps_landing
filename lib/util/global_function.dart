@@ -253,6 +253,8 @@ class GlobalFunction {
 
     String res = date.toString();
 
-    return '${res.substring(0,3)}년 ${res.substring(5,6)}월 ${res.substring(8,9)}일';
+    debugPrint(res);
+
+    return '${res.substring(0,4)}년 ${res.substring(5,7)}월 ${res.substring(8,10)}일';
   }
 }
