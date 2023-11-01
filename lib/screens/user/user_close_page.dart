@@ -38,7 +38,7 @@ class _UserClosePageState extends State<UserClosePage> {
         width: double.infinity,
         height: double.infinity,
         color: $style.colors.lightGrey,
-        padding: EdgeInsets.all(16 * sizeUnit),
+        padding: EdgeInsets.all(40 * sizeUnit),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

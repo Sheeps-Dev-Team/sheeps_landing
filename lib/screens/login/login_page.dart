@@ -18,6 +18,7 @@ import 'package:sheeps_landing/screens/user/user_main_page.dart';
 import 'package:sheeps_landing/util/components/get_extended_image.dart';
 
 import '../../config/constants.dart';
+import '../../config/routes.dart';
 import '../../util/components/base_widget.dart';
 import '../../util/components/custom_button.dart';
 import '../../util/components/custom_text_field.dart';
@@ -51,7 +52,7 @@ class LoginPage extends StatelessWidget {
                     onTap: () async {
                       if(false == await controller.loginFunc() && GlobalData.loginUser != null){ //로그인 성공시
                         GlobalData.projectList = await ProjectRepository.getProjectListByUserID(GlobalData.loginUser!.documentID);
-                        Get.to(() => const UserMainPage());
+                        Get.toNamed(Routes.home);
                       }else{ //로그인 실패시
 
                       }
@@ -97,7 +98,7 @@ class LoginPage extends StatelessWidget {
                   SizedBox(height: 18 * sizeUnit),
                   InkWell(
                     onTap: () async {
-
+                      Get.toNamed(Routes.index);
                     },
                     child: Container(
                       width: 240 * sizeUnit,
