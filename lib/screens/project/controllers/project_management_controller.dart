@@ -20,7 +20,7 @@ class ProjectManagementController extends GetxController {
       ip: '',
       phoneNumber: '',
       email: '',
-      name: '',
+      name: '', createdAt: DateTime.now(),updatedAt: DateTime.now(),
     )
     ),
     '프로젝트 설정': () => ProjectSettingsPage(),

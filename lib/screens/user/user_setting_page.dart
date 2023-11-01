@@ -21,7 +21,7 @@ class UserSettingPage extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         color: $style.colors.lightGrey,
-        padding: EdgeInsets.all(16 * sizeUnit),
+        padding: EdgeInsets.all(40 * sizeUnit),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
