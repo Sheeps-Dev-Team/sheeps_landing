@@ -6,6 +6,7 @@ import 'package:sheeps_landing/screens/project/controllers/project_controller.da
 import 'package:sheeps_landing/screens/template/default_template.dart';
 import 'package:sheeps_landing/util/components/base_widget.dart';
 import 'package:sheeps_landing/util/components/responsive.dart';
+import 'package:sheeps_landing/util/components/site_app_bar.dart';
 
 import '../../config/routes.dart';
 import '../../util/components/custom_app_bar.dart';
@@ -70,32 +71,28 @@ class ProjectPage extends StatelessWidget {
     );
   }
 
-  CustomAppBar appBar(bool isDesktop) {
-    return CustomAppBar(
-      leading: controller.isTmp ? null : const SizedBox.shrink(),
-      height: isDesktop ? 72 * sizeUnit : null,
-      actions: isIndex || controller.isTmp
-          ? [
-              controller.isTmp
-                  ? InkWell(
-                      onTap: controller.isModify ? controller.modifyProject :controller.createProject,
-                      child: Text(
-                        controller.isModify ? '수정하기' : '생성하기',
-                        style: $style.text.subTitle16.copyWith(color: controller.colorScheme.onSurface),
-                      ),
-                    )
-                  : InkWell(
-                      onTap: () => Get.toNamed(Routes.login),
-                      child: Text(
-                        '로그인',
-                        style: $style.text.subTitle16.copyWith(color: controller.colorScheme.onSurface),
-                      ),
-                    ),
-              Gap($style.insets.$16),
-            ]
-          : null,
-      title: controller.project.name,
-      surfaceTintColor: controller.keyColor,
-    );
+  PreferredSizeWidget appBar(bool isDesktop) {
+    if (isIndex) {
+      return const SiteAppBar();
+    } else {
+      return CustomAppBar(
+        leading: controller.isTmp ? null : const SizedBox.shrink(),
+        height: isDesktop ? 72 * sizeUnit : null,
+        actions: controller.isTmp
+            ? [
+                InkWell(
+                  onTap: controller.isModify ? controller.modifyProject : controller.createProject,
+                  child: Text(
+                    controller.isModify ? '수정하기' : '생성하기',
+                    style: $style.text.subTitle16.copyWith(color: controller.colorScheme.onSurface),
+                  ),
+                ),
+                Gap($style.insets.$16),
+              ]
+            : null,
+        title: controller.project.name,
+        surfaceTintColor: controller.keyColor,
+      );
+    }
   }
 }
