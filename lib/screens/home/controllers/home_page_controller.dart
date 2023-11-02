@@ -10,19 +10,4 @@ import '../../../data/models/project.dart';
 class HomePageController extends GetxController {
 
   List<Project> list = [];
-
-  Future<void> init() async {
-
-      if(kDebugMode){
-        if(GlobalData.loginUser == null ){
-          list.add(Project.nullProject);
-        }else{
-          list = await ProjectRepository.getProjectListByUserID(GlobalData.loginUser!.documentID);
-        }
-      }else{
-        list = await ProjectRepository.getProjectListByUserID(GlobalData.loginUser!.documentID);
-      }
-
-      update();
-  }
 }
