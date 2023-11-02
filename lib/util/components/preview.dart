@@ -72,7 +72,7 @@ class _PreviewItemState extends State<PreviewItem> with TickerProviderStateMixin
         break;
       case PreviewItemType.text:
         width = 40 * sizeUnit;
-        height = 4 * sizeUnit;
+        height = 3 * sizeUnit;
         break;
       case PreviewItemType.mainImg:
         width = 60 * sizeUnit;

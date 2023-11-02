@@ -16,6 +16,7 @@ import 'package:sheeps_landing/repository/project_repository.dart';
 import 'package:sheeps_landing/screens/login/controllers/login_page_controller.dart';
 import 'package:sheeps_landing/screens/user/user_main_page.dart';
 import 'package:sheeps_landing/util/components/get_extended_image.dart';
+import 'package:sheeps_landing/util/global_function.dart';
 
 import '../../config/constants.dart';
 import '../../config/routes.dart';
@@ -50,11 +51,10 @@ class LoginPage extends StatelessWidget {
                   SizedBox(height: 12 * sizeUnit),
                   InkWell(
                     onTap: () async {
-                      if(false == await controller.loginFunc() && GlobalData.loginUser != null){ //로그인 성공시
-                        GlobalData.projectList = await ProjectRepository.getProjectListByUserID(GlobalData.loginUser!.documentID);
-                        Get.toNamed(Routes.home);
+                      if(false == await GlobalFunction.globalLogin() && GlobalData.loginUser != null){ //로그인 성공시
+                        Get.offAllNamed(Routes.home);
                       }else{ //로그인 실패시
-
+                        GlobalFunction.showToast(msg: '로그인 실패');
                       }
                     },
                     child: Container(
@@ -98,7 +98,11 @@ class LoginPage extends StatelessWidget {
                   SizedBox(height: 18 * sizeUnit),
                   InkWell(
                     onTap: () async {
-                      Get.toNamed(Routes.index);
+                      if(kDebugMode){
+                        Get.toNamed(Routes.home);
+                      }else{
+                        Get.toNamed(Routes.index);
+                      }
                     },
                     child: Container(
                       width: 240 * sizeUnit,

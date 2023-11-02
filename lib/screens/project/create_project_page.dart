@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -18,7 +19,9 @@ import 'package:url_launcher/url_launcher_string.dart';
 import '../../data/models/user_callback.dart';
 
 class CreateProjectPage extends StatelessWidget {
-  CreateProjectPage({super.key});
+  CreateProjectPage({super.key, this.isModify = false});
+
+  final bool isModify;
 
   final CreateProjectController controller = Get.put(CreateProjectController());
 
@@ -27,6 +30,7 @@ class CreateProjectPage extends StatelessWidget {
     return BaseWidget(
       onWillPop: controller.onWillPop,
       child: GetBuilder<CreateProjectController>(
+        initState: (state) => controller.initState(isModify),
         builder: (_) {
           return Scaffold(
             backgroundColor: Colors.white,
@@ -36,7 +40,7 @@ class CreateProjectPage extends StatelessWidget {
               children: [
                 PageView.builder(
                   controller: controller.pageController,
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics: kDebugMode ? null : const NeverScrollableScrollPhysics(),
                   itemCount: 7,
                   scrollDirection: Axis.vertical,
                   onPageChanged: controller.onPageChanged,
@@ -77,11 +81,21 @@ class CreateProjectPage extends StatelessWidget {
                               subQuestion: '제품이나 서비스를 시각적으로 나타내기에 가장 적합한 이미지는 무엇인가요?',
                               onGetImage: (xFile) {
                                 if (xFile != null) {
+                                  // 수정일 때 삭제되는 이미지 url 세팅
+                                  if (isModify && controller.project.imgPath.contains(defaultImgUrl)) {
+                                    controller.deleteMainImgUrl = controller.project.imgPath;
+                                  }
+
                                   controller.mainImgXFile(xFile);
                                   controller.project.imgPath = xFile.path;
                                 }
                               },
                               onCancel: () {
+                                // 수정일 때 삭제되는 이미지 url 세팅
+                                if (isModify && controller.project.imgPath.contains(defaultImgUrl)) {
+                                  controller.deleteMainImgUrl = controller.project.imgPath;
+                                }
+
                                 controller.mainImgXFile(controller.nullXFile);
                                 controller.project.imgPath = '';
                               },
@@ -116,7 +130,10 @@ class CreateProjectPage extends StatelessWidget {
                                         width: 40 * sizeUnit,
                                         height: 40 * sizeUnit,
                                         decoration: BoxDecoration(
-                                            shape: BoxShape.circle, color: isKeyColor ? color : Colors.transparent, border: Border.all(width: 2 * sizeUnit, color: color)),
+                                          shape: BoxShape.circle,
+                                          color: isKeyColor ? color : Colors.transparent,
+                                          border: Border.all(width: 2 * sizeUnit, color: color),
+                                        ),
                                       ),
                                     );
                                   },
@@ -127,9 +144,9 @@ class CreateProjectPage extends StatelessWidget {
                             CustomButton(
                               width: controller.nextButtonWidth,
                               customButtonStyle: CustomButtonStyle.outline48,
-                              text: '랜딩 페이지 만들기',
-                              color: controller.seedColor,
-                              onTap: controller.createProject,
+                              text: isModify ? '랜딩 페이지 수정' : '랜딩 페이지 만들기',
+                              color: controller.keyColor,
+                              onTap: controller.goToProjectPage,
                             ),
                             Gap($style.insets.$40),
                           ],
@@ -157,7 +174,7 @@ class CreateProjectPage extends StatelessWidget {
                               ),
                               Gap($style.insets.$12),
                               previewHeader(), // 헤더 프리뷰
-                              Gap($style.insets.$12),
+                              Gap($style.insets.$16),
                               // descriptions 프리뷰
                               Column(
                                 children: List.generate(controller.project.descriptions.length, (index) {
@@ -273,7 +290,7 @@ class CreateProjectPage extends StatelessWidget {
 
   // 헤더 프리뷰
   Widget previewHeader() {
-    return Row(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // 이미지
@@ -283,47 +300,35 @@ class CreateProjectPage extends StatelessWidget {
           color: controller.colorScheme.primaryContainer,
           isShow: controller.project.imgPath.isNotEmpty,
         ),
-        Gap($style.insets.$8),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 제목
-            PreviewItem(
-              isTwinkle: controller.currentPage == 1,
-              previewItemType: PreviewItemType.title,
-              color: controller.colorScheme.primaryContainer,
-              isShow: controller.project.title.isNotEmpty,
-            ),
-            Gap($style.insets.$4),
-            PreviewItem(
-              isTwinkle: controller.currentPage == 2,
-              previewItemType: PreviewItemType.text,
-              color: controller.colorScheme.primaryContainer,
-              isShow: controller.project.contents.isNotEmpty,
-            ),
-            Gap($style.insets.$2),
-            PreviewItem(
-              isTwinkle: controller.currentPage == 2,
-              previewItemType: PreviewItemType.text,
-              color: controller.colorScheme.primaryContainer,
-              isShow: controller.project.contents.isNotEmpty,
-            ),
-            Gap($style.insets.$2),
-            PreviewItem(
-              isTwinkle: controller.currentPage == 2,
-              previewItemType: PreviewItemType.text,
-              color: controller.colorScheme.primaryContainer,
-              isShow: controller.project.contents.isNotEmpty,
-            ),
-            Gap($style.insets.$4),
-            // 버튼
-            PreviewItem(
-              isTwinkle: controller.currentPage == 5,
-              previewItemType: PreviewItemType.button,
-              color: controller.colorScheme.primaryContainer,
-              isShow: controller.callToActionIsOk.value,
-            ),
-          ],
+        Gap($style.insets.$4),
+        // 제목
+        PreviewItem(
+          isTwinkle: controller.currentPage == 1,
+          previewItemType: PreviewItemType.title,
+          color: controller.colorScheme.primaryContainer,
+          isShow: controller.project.title.isNotEmpty,
+        ),
+        Gap($style.insets.$4),
+        PreviewItem(
+          isTwinkle: controller.currentPage == 2,
+          previewItemType: PreviewItemType.text,
+          color: controller.colorScheme.primaryContainer,
+          isShow: controller.project.contents.isNotEmpty,
+        ),
+        Gap($style.insets.$2),
+        PreviewItem(
+          isTwinkle: controller.currentPage == 2,
+          previewItemType: PreviewItemType.text,
+          color: controller.colorScheme.primaryContainer,
+          isShow: controller.project.contents.isNotEmpty,
+        ),
+        Gap($style.insets.$4),
+        // 버튼
+        PreviewItem(
+          isTwinkle: controller.currentPage == 5,
+          previewItemType: PreviewItemType.button,
+          color: controller.colorScheme.primaryContainer,
+          isShow: controller.callToActionIsOk.value,
         ),
       ],
     );
@@ -422,15 +427,16 @@ class CreateProjectPage extends StatelessWidget {
             ],
           );
         case UserCallback.typeLink:
+          final TextEditingController textEditingController = TextEditingController(text: controller.detailCallbackTypeList.isEmpty ? '' : controller.detailCallbackTypeList.first);
           RxString errorText = ''.obs;
 
           return Obx(() => CustomTextField(
-                controller: TextEditingController(text: controller.detailCallbackTypeList.isEmpty ? '' : controller.detailCallbackTypeList.first),
+                controller: textEditingController,
                 width: controller.textFiledWidth,
                 hintText: 'url을 입력해 주세요.',
                 autofocus: true,
-                focusBorderColor: controller.seedColor,
-                cursorColor: controller.seedColor,
+                focusBorderColor: controller.keyColor,
+                cursorColor: controller.keyColor,
                 errorText: errorText.isEmpty ? null : errorText.value,
                 onChanged: (p0) async {
                   controller.detailCallbackTypeList.clear();
@@ -495,7 +501,6 @@ class CreateProjectPage extends StatelessWidget {
                       Gap($style.insets.$24),
                       callbackDetailWidget(),
                     ],
-                    // const Spacer(),
                   ],
                 );
               }),
@@ -505,7 +510,7 @@ class CreateProjectPage extends StatelessWidget {
               customButtonStyle: CustomButtonStyle.outline48,
               text: '다음',
               isOk: controller.callToActionIsOk.value,
-              color: controller.seedColor,
+              color: controller.keyColor,
               onTap: controller.nextQuestion,
             )),
         Gap($style.insets.$40),
@@ -532,17 +537,31 @@ class CreateProjectPage extends StatelessWidget {
               height: 457 * sizeUnit,
               xFile: xFile.value,
               onCancel: () {
+                if (isModify && description.imgPath.contains(defaultImgUrl)) {
+                  controller.deleteDescriptionImgUrl.add(description.imgPath); // 삭제하는 이미지 url add
+                } else {
+                  controller.descriptionXFileList.removeAt(index);
+                }
+
                 description.imgPath = '';
                 xFile(controller.nullXFile);
                 controller.descriptionsIsOkCheck(); // ok 체크
-                controller.descriptionXFileList.removeAt(index);
               },
               onGetImage: (value) {
                 if (value != null) {
+                  if (isModify && description.imgPath.contains(defaultImgUrl)) {
+                    controller.deleteDescriptionImgUrl.add(description.imgPath); // 삭제하는 이미지 url add
+                  }
+
+                  if (controller.descriptionXFileList.length - 1 >= index) {
+                    controller.descriptionXFileList[index] = value;
+                  } else {
+                    controller.descriptionXFileList.add(value);
+                  }
+
                   description.imgPath = value.path;
                   xFile(value);
                   controller.descriptionsIsOkCheck(); // ok 체크
-                  controller.descriptionXFileList.add(value);
                 }
               },
             ));
@@ -558,8 +577,8 @@ class CreateProjectPage extends StatelessWidget {
               hintText: titleHintText,
               autofocus: true,
               maxLength: 40,
-              focusBorderColor: controller.seedColor,
-              cursorColor: controller.seedColor,
+              focusBorderColor: controller.keyColor,
+              cursorColor: controller.keyColor,
               onChanged: (p0) {
                 description.title = p0;
                 controller.descriptionsIsOkCheck(); // ok 체크
@@ -574,8 +593,8 @@ class CreateProjectPage extends StatelessWidget {
               maxLines: 10,
               minLines: 10,
               maxLength: 200,
-              focusBorderColor: controller.seedColor,
-              cursorColor: controller.seedColor,
+              focusBorderColor: controller.keyColor,
+              cursorColor: controller.keyColor,
               onChanged: (p0) {
                 description.contents = p0;
                 controller.descriptionsIsOkCheck(); // ok 체크
@@ -615,7 +634,7 @@ class CreateProjectPage extends StatelessWidget {
         child: SvgPicture.asset(
           GlobalAssets.svgCancel,
           width: 24 * sizeUnit,
-          colorFilter: ColorFilter.mode(controller.seedColor, BlendMode.srcIn),
+          colorFilter: ColorFilter.mode(controller.keyColor, BlendMode.srcIn),
         ),
       );
     }
@@ -631,10 +650,10 @@ class CreateProjectPage extends StatelessWidget {
             SvgPicture.asset(
               GlobalAssets.svgPlusCircle,
               width: 24 * sizeUnit,
-              colorFilter: ColorFilter.mode(controller.seedColor, BlendMode.srcIn),
+              colorFilter: ColorFilter.mode(controller.keyColor, BlendMode.srcIn),
             ),
             Gap($style.insets.$4),
-            Text('핵심 기능 추가', style: $style.text.subTitle12.copyWith(color: controller.seedColor)),
+            Text('핵심 기능 추가', style: $style.text.subTitle12.copyWith(color: controller.keyColor)),
           ],
         ),
       );
@@ -675,7 +694,7 @@ class CreateProjectPage extends StatelessWidget {
                                     if (controller.project.descriptions.length < descriptionMaxCount) ...[
                                       addButton(), // 핵심 기능 추가 버튼
                                     ] else ...[
-                                      Text('핵심 기능 설명은 최대 $descriptionMaxCount까지 추가 가능합니다.', style: $style.text.subTitle12.copyWith(color: controller.seedColor)),
+                                      Text('핵심 기능 설명은 최대 $descriptionMaxCount까지 추가 가능합니다.', style: $style.text.subTitle12.copyWith(color: controller.keyColor)),
                                     ],
                                   ],
                                   Gap($style.insets.$40),
@@ -705,7 +724,7 @@ class CreateProjectPage extends StatelessWidget {
               child: Obx(() => CustomButton(
                     width: controller.nextButtonWidth,
                     customButtonStyle: CustomButtonStyle.outline48,
-                    color: controller.seedColor,
+                    color: controller.keyColor,
                     text: '다음',
                     isOk: controller.descriptionsIsOk.value,
                     onTap: controller.nextQuestion,
@@ -748,8 +767,8 @@ class CreateProjectPage extends StatelessWidget {
           width: controller.textFiledWidth,
           autofocus: true,
           hintText: hintText,
-          focusBorderColor: controller.seedColor,
-          cursorColor: controller.seedColor,
+          focusBorderColor: controller.keyColor,
+          cursorColor: controller.keyColor,
           maxLines: maxLine ?? 1,
           minLines: maxLine ?? 1,
           maxLength: maxLength,
@@ -770,7 +789,7 @@ class CreateProjectPage extends StatelessWidget {
             customButtonStyle: CustomButtonStyle.outline48,
             text: '다음',
             isOk: value.isNotEmpty,
-            color: controller.seedColor,
+            color: controller.keyColor,
             onTap: controller.nextQuestion,
           ),
         ),
@@ -819,7 +838,7 @@ class CreateProjectPage extends StatelessWidget {
           customButtonStyle: CustomButtonStyle.outline48,
           text: '다음',
           isOk: !isNullImg,
-          color: controller.seedColor,
+          color: controller.keyColor,
           onTap: onSubmit,
         ),
         Gap($style.insets.$40),
@@ -870,7 +889,7 @@ class CreateProjectPage extends StatelessWidget {
                 child: SvgPicture.asset(
                   GlobalAssets.svgCancel,
                   width: 24 * sizeUnit,
-                  colorFilter: ColorFilter.mode(controller.seedColor, BlendMode.srcIn),
+                  colorFilter: ColorFilter.mode(controller.keyColor, BlendMode.srcIn),
                 ),
               ),
             ),
@@ -896,7 +915,7 @@ class CreateProjectPage extends StatelessWidget {
           ),
         ),
       ),
-      surfaceTintColor: controller.seedColor,
+      surfaceTintColor: controller.keyColor,
     );
   }
 }
