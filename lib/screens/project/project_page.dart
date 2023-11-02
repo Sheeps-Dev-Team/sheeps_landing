@@ -16,12 +16,13 @@ class ProjectPage extends StatelessWidget {
 
   final bool isIndex;
 
-  final ProjectController controller = Get.put(ProjectController());
+  final ProjectController controller = Get.put(ProjectController(), tag: Get.parameters['id']);
 
   @override
   Widget build(BuildContext context) {
     return BaseWidget(
       child: GetBuilder<ProjectController>(
+        tag: Get.parameters['id'],
         initState: (state) => controller.initState(isIndex: isIndex),
         builder: (_) {
           if (controller.isLoading) return Center(child: CircularProgressIndicator(color: $style.colors.primary));

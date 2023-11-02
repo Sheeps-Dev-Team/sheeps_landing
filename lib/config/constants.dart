@@ -16,7 +16,7 @@ const int genderFemale = 1; // 여
 const String division = '|'; // 문자열 구분자
 const String formDivision = '__'; // 폼 문자열 구분자
 
-enum LoginType{kakao, apple, google, none} // 로그인 타입 (카카오, 애플, 구글, 비로그인)
+enum LoginType{google, kakao, apple, none} // 로그인 타입 (구글, 카카오, 애플, 비로그인)
 
 const int standardWidth = 1920; // 표준 width
 

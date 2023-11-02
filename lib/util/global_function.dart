@@ -1,13 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../config/constants.dart';
 import '../config/routes.dart';
+import '../data/global_data.dart';
+import '../data/models/user.dart';
+import '../repository/user_repository.dart';
 
 class GlobalFunction {
   // 포커스 해제 함수
@@ -28,12 +33,7 @@ class GlobalFunction {
     bool barrierDismissible = true,
   }) {
     // 버튼
-    Widget button(
-        {required String text,
-        required GestureTapCallback onTap,
-        required Color bgColor,
-        required Color borderColor,
-        required Color fontColor}) {
+    Widget button({required String text, required GestureTapCallback onTap, required Color bgColor, required Color borderColor, required Color fontColor}) {
       return Material(
         color: Colors.transparent,
         child: InkWell(
@@ -72,7 +72,7 @@ class GlobalFunction {
               mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(height: 24 * sizeUnit),
-                if(title.isNotEmpty) Text(title, style: $style.text.subTitle16),
+                if (title.isNotEmpty) Text(title, style: $style.text.subTitle16),
                 if (child != null) ...[
                   child,
                 ] else ...[
@@ -148,18 +148,18 @@ class GlobalFunction {
     await showCupertinoModalPopup(
         context: context,
         builder: (_) => Container(
-          height: 200 * sizeUnit,
-          width: double.infinity,
-          color: Colors.white,
-          child: CupertinoDatePicker(
-            backgroundColor: Colors.white,
-            initialDateTime: initDateTime,
-            mode: CupertinoDatePickerMode.date,
-            minimumDate: minimumDateTime,
-            maximumYear: now.year,
-            onDateTimeChanged: (val) => date = val,
-          ),
-        ));
+              height: 200 * sizeUnit,
+              width: double.infinity,
+              color: Colors.white,
+              child: CupertinoDatePicker(
+                backgroundColor: Colors.white,
+                initialDateTime: initDateTime,
+                mode: CupertinoDatePickerMode.date,
+                minimumDate: minimumDateTime,
+                maximumYear: now.year,
+                onDateTimeChanged: (val) => date = val,
+              ),
+            ));
 
     date ??= initDateTime;
     return DateTime(date!.year, date!.month, date!.day, 12);
@@ -229,7 +229,7 @@ class GlobalFunction {
   }
 
   // 뒤로가기 (이전 라우트가 없으면 홈으로가기)
-  static void goToBack(){
+  static void goToBack() {
     if (Get.previousRoute.isEmpty) {
       Get.offAllNamed(Routes.index);
     } else {
@@ -238,8 +238,8 @@ class GlobalFunction {
   }
 
   // url 직접 접근 차단
-  static bool blockDirectAccess(){
-    if(kDebugMode) return false;
+  static bool blockDirectAccess() {
+    if (kDebugMode) return false;
 
     if (Get.previousRoute.isEmpty) {
       Get.offAllNamed(Routes.home);
@@ -249,12 +249,69 @@ class GlobalFunction {
     }
   }
 
-  static String getDateTimeToString(DateTime date){
-
+  static String getDateTimeToString(DateTime date) {
     String res = date.toString();
 
     debugPrint(res);
 
-    return '${res.substring(0,4)}년 ${res.substring(5,7)}월 ${res.substring(8,10)}일';
+    return '${res.substring(0, 4)}년 ${res.substring(5, 7)}월 ${res.substring(8, 10)}일';
+  }
+
+  static Future<bool> globalLogin() async {
+    GoogleSignInAccount? currentUser;
+    var errCheck = false;
+
+    const List<String> scopes = <String>[
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ];
+    GoogleSignIn googleSignIn = GoogleSignIn(
+      scopes: scopes,
+    );
+
+    try {
+      currentUser = await googleSignIn.signIn();
+      if (kDebugMode) print('Google sign-in successful.');
+
+      if (currentUser != null) {
+        GlobalData.loginUser = await UserRepository.getUserByEmail(currentUser.email);
+
+        //없으면 새로 생성
+        if (GlobalData.loginUser == null) {
+          GlobalData.loginUser = await UserRepository.createUser(
+            User(
+                email: currentUser.email,
+                loginType: LoginType.google.index,
+                name: currentUser.displayName == null ? '쉽스' : currentUser.displayName!,
+                createdAt: DateTime.now(),
+                updatedAt: DateTime.now()),
+          );
+
+          // 유저 생성 성공 시
+          if (GlobalData.loginUser != null) {
+            if (kDebugMode) debugPrint('create user call');
+
+            // 자동 로그인 정보 저장
+            const storage = FlutterSecureStorage();
+
+            await storage.write(key: 'email', value: GlobalData.loginUser!.email);
+            await storage.write(key: 'loginType', value: GlobalData.loginUser!.loginType.toString());
+
+            if (kDebugMode) debugPrint(GlobalData.loginUser!.documentID);
+          } else {
+            // 유저 생성 실패 시
+            if (kDebugMode) debugPrint('유저 생성 실패');
+            errCheck = true;
+          }
+        } else {
+          if (kDebugMode) debugPrint('is not empty');
+        }
+      }
+    } catch (error) {
+      errCheck = true;
+      if (kDebugMode) print(error);
+    }
+
+    return errCheck;
   }
 }

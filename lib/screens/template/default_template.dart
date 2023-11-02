@@ -20,8 +20,8 @@ class DefaultTemplate extends StatelessWidget {
 
   static const int id = 1;
 
-  final DefaultTemplateController controller = Get.put(DefaultTemplateController());
-  final ProjectController projectController = Get.find<ProjectController>();
+  final DefaultTemplateController controller = Get.put(DefaultTemplateController(), tag: Get.parameters['id']);
+  final ProjectController projectController = Get.find<ProjectController>(tag: Get.parameters['id']);
 
   late final Color keyColor = Color(project.keyColor);
   late final ColorScheme colorScheme = ColorScheme.fromSeed(seedColor: keyColor);
@@ -40,10 +40,10 @@ class DefaultTemplate extends StatelessWidget {
     }
 
     return GetBuilder<DefaultTemplateController>(
+      tag: Get.parameters['id'],
       initState: (state) => controller.initState(project),
       builder: (_) {
         return Scaffold(
-          // appBar: appBar(isDesktop,context),
           body: ScrollablePositionedList.builder(
             itemScrollController: controller.itemScrollController,
             itemPositionsListener: controller.itemPositionsListener,
