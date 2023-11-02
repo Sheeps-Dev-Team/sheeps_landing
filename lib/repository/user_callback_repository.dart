@@ -23,4 +23,21 @@ class UserCallbackRepository {
       return null;
     }
   }
+
+  // projectID 로 콜백 리스트 가져오기
+  static Future<List<UserCallback>> getUserCallbackListByProjectID(String projectID) async {
+    List<UserCallback> userCallbackList = [];
+
+    try {
+      await _userCallbackCollection.where('projectID', isEqualTo: projectID).get().then((QuerySnapshot querySnapshot) {
+        for (QueryDocumentSnapshot<Object?> doc in querySnapshot.docs) {
+          userCallbackList.add(UserCallback.fromJson(doc.data() as Map<String, dynamic>));
+        }
+      });
+    } catch (e) {
+      if (kDebugMode) print(e.toString());
+    }
+
+    return userCallbackList;
+  }
 }

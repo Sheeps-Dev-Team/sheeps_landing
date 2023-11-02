@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class UserCallback {
   static const String typeNone = '선택 안함';
@@ -54,4 +55,6 @@ class UserCallback {
       "updatedAt": Timestamp.fromDate(updatedAt),
     };
   }
+
+  List<String> get getRows => [name ?? '', email ?? '', phoneNumber ?? '', DateFormat('yyyy.MM.dd HH:mm').format(createdAt)];
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:sheeps_landing/config/constants.dart';
 import 'package:sheeps_landing/data/models/project.dart';
 import 'package:sheeps_landing/util/components/custom_button.dart';
+
+import '../../config/routes.dart';
 
 class ProjectDashboardPage extends StatelessWidget {
   const ProjectDashboardPage({super.key, required this.project});
@@ -12,63 +15,69 @@ class ProjectDashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Container(
-      margin: EdgeInsets.all($style.insets.$20),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: $style.colors.barrierColor,
-            //color: $style.colors.primary/*.withOpacity(0.1)*/,
-            spreadRadius: 0,
-            blurRadius: 5,
-            offset: Offset(0, 7),
-          ),
-        ],
-        color: Colors.white,
-        border: Border.all(color: $style.colors.primary),
-        borderRadius: BorderRadius.circular($style.corners.$12),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: EdgeInsets.all($style.insets.$30),
-            width: double.infinity,
-            child: Column(
+      child: Container(
+        margin: EdgeInsets.all($style.insets.$20),
+        padding: EdgeInsets.all($style.insets.$30),
+        decoration: BoxDecoration(
+          boxShadow: $style.boxShadows.bs1,
+          color: Colors.white,
+          border: Border.all(color: $style.colors.primary),
+          borderRadius: BorderRadius.circular($style.corners.$12),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
               children: [
-                dashboardWidget('프로젝트 이름', project.name),
+                dashboardWidget(
+                  '프로젝트 이름',
+                  project.name,
+                ),
                 Gap($style.insets.$20),
-                dashboardWidget('프로젝트 URL', project.getUrl),
+                dashboardWidget(
+                  '프로젝트 URL',
+                  project.getUrl,
+                  () {
+                    Get.toNamed('${Routes.project}/${project.documentID}');
+                  },
+                ),
                 Gap($style.insets.$20),
-                dashboardWidget('Call To Action 타입', project.callbackType),
+                dashboardWidget(
+                  'Call To Action 타입',
+                  project.callbackType.split(division).first,
+                ),
                 Gap($style.insets.$20),
-                dashboardWidget('유입 수', project.viewCount.toString()),
+                dashboardWidget(
+                  '유입 수',
+                  project.viewCount.toString(),
+                ),
                 Gap($style.insets.$20),
+                dashboardWidget(
+                  '좋아요 수',
+                  '20',
+                ),
               ],
             ),
-          ),
-          Gap($style.insets.$20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              CustomButton(
-                customButtonStyle: CustomButtonStyle.outline48,
-                text: '프로젝트 수정하기',
-                width: 200,
-                onTap: () {},
-              ),
-              SizedBox(
-                width: 135 * sizeUnit,
-              )
-            ],
-          ),
-        ],
+            Gap($style.insets.$20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CustomButton(
+                  customButtonStyle: CustomButtonStyle.outline32,
+                  text: '프로젝트 수정',
+                  width: 120 * sizeUnit,
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
-    ));
+    );
   }
 
-  Row dashboardWidget(String label, String contents) {
+  Row dashboardWidget(String label, String contents, [GestureTapCallback? onTap]) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -87,10 +96,13 @@ class ProjectDashboardPage extends StatelessWidget {
               border: Border.all(width: 1 * sizeUnit, color: $style.colors.primary),
               borderRadius: BorderRadius.circular($style.corners.$12),
             ),
-            child: Text(
-              contents,
-              style: $style.text.subTitle18,
-              textAlign: TextAlign.center,
+            child: InkWell(
+              onTap: onTap,
+              child: Text(
+                contents,
+                style: $style.text.subTitle18,
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
         ),
@@ -98,48 +110,3 @@ class ProjectDashboardPage extends StatelessWidget {
     );
   }
 }
-
-
-/*Table(
-              //border: TableBorder.all(),
-              //defaultColumnWidth: FixedColumnWidth(600 * sizeUnit), // 각 열의 너비를 200.0으로 설정
-              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              children: [
-                TableRow(
-                  children: [
-                    TableCell(
-                        child: Padding(
-                      padding: EdgeInsets.all($style.insets.$10),
-                      child: dashboardWidget('프로젝트 이름', project.name),
-                    )),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                        child: Padding(
-                      padding: EdgeInsets.all($style.insets.$10),
-                      child: dashboardWidget('프로젝트 URL', project.url),
-                    )),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                        child: Padding(
-                      padding: EdgeInsets.all($style.insets.$10),
-                      child: dashboardWidget('Call To Action 타입', project.callbackType),
-                    )),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                        child: Padding(
-                      padding: EdgeInsets.all($style.insets.$10),
-                      child: dashboardWidget('유입 수', project.viewCount.toString()),
-                    )),
-                  ],
-                ),
-              ],
-            ),*/

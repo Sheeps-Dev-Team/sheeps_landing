@@ -60,6 +60,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSize {
               title: titleWidget ?? (title != null ? Text(title!, style: $style.text.headline18) : null),
               actions: actions,
               surfaceTintColor: surfaceTintColor,
+
             ),
             if (showBottomLine)
               Divider(
@@ -67,6 +68,21 @@ class CustomAppBar extends StatelessWidget implements PreferredSize {
                 thickness: 1 * sizeUnit,
                 color: $style.colors.lightGrey,
               ),
+            Container(
+              width: double.infinity,
+              height:0 * sizeUnit,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 0.5 * sizeUnit,
+                    blurRadius: 0.5 * sizeUnit,
+                    offset: Offset(0, 0), // 그림자의 위치 조정
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

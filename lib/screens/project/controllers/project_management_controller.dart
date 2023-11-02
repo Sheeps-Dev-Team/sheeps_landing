@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:sheeps_landing/config/global_assets.dart';
 import 'package:sheeps_landing/repository/project_repository.dart';
+import 'package:sheeps_landing/screens/project/project_settings_page.dart';
 import 'package:sheeps_landing/util/global_function.dart';
 
 import '../../../data/models/project.dart';
 import '../../../data/models/user.dart';
+import '../project_communication_page.dart';
 import '../project_dashboard_page.dart';
 
 class ProjectManagementController extends GetxController {
   late final Map<String, Widget Function()> pageMap = {
     '대시보드': () => ProjectDashboardPage(project: project),
-    '커뮤니케이션': () => Text('커뮤니케이션'),
-    '프로젝트 설정': () => Text('프로젝트 설정'),
+    '커뮤니케이션': () => ProjectCommunicationPage(project: project),
+    '프로젝트 설정': () => ProjectSettingsPage(),
   };
   late String pageKey = pageMap.keys.first;
 

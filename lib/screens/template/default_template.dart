@@ -43,6 +43,7 @@ class DefaultTemplate extends StatelessWidget {
       initState: (state) => controller.initState(project),
       builder: (_) {
         return Scaffold(
+          // appBar: appBar(isDesktop,context),
           body: ScrollablePositionedList.builder(
             itemScrollController: controller.itemScrollController,
             itemPositionsListener: controller.itemPositionsListener,

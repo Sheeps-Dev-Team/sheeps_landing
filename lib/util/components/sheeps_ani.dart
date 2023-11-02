@@ -33,7 +33,7 @@ class _SheepsAniFadeInState extends State<SheepsAniFadeIn> with SingleTickerProv
   @override
   Widget build(BuildContext context) {
     if (widget.isAction) {
-      controller.forward().orCancel;
+      controller.forward();
     }
     return AnimatedBuilder(
       animation: animation,

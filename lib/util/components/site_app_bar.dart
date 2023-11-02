@@ -10,6 +10,7 @@ import '../../config/constants.dart';
 import '../../config/global_assets.dart';
 import '../../config/routes.dart';
 import '../../data/models/user.dart';
+import '../../screens/user/user_main_page.dart';
 import 'custom_app_bar.dart';
 
 class SiteAppBar extends StatelessWidget implements PreferredSize{
@@ -21,9 +22,11 @@ class SiteAppBar extends StatelessWidget implements PreferredSize{
       leading: const SizedBox.shrink(),
       leadingWidth: 24 * sizeUnit,
       centerTitle: false,
-      titleWidget: SvgPicture.asset(GlobalAssets.svgLogo, height: 36 * sizeUnit),
+      titleWidget: InkWell(
+          onTap: () => Get.toNamed(Routes.index),
+          child: SvgPicture.asset(GlobalAssets.svgLogo, height: 36 * sizeUnit)),
       actions: [
-        if(GlobalData.loginUser == null) ... {
+        if(GlobalData.loginUser != null) ... {
           InkWell(
               onTap: () {
                 Get.dialog(
@@ -52,16 +55,16 @@ class SiteAppBar extends StatelessWidget implements PreferredSize{
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  DefaultTextStyle(style: $style.text.headline24, child: Text('국양봉')),
+                                  DefaultTextStyle(style: $style.text.headline24, child: Text(GlobalData.loginUser!.name)),
                                   Gap(8 * sizeUnit),
                                   Divider(height: 1, thickness: 2, color: $style.colors.lightGrey),
                                   Gap(8 * sizeUnit),
                                   TextButton(onPressed: () {
-                                    Get.to(() => const UserSettingPage());
+                                    Get.to(() => const UserMainPage());
                                   }, child: Text('계정 설정', style: $style.text.subTitle14,),),
                                   Gap(8 * sizeUnit),
                                   TextButton(onPressed: () {
-                                    Get.to(() => const UserSettingPage());  //내 앱 페이지로 이동 필요
+                                    Get.toNamed(Routes.home);
                                   }, child: Text('나의 앱', style: $style.text.subTitle14,),),
                                   Gap(8 * sizeUnit),
                                   Divider(height: 1, thickness: 2, color: $style.colors.lightGrey),
@@ -81,7 +84,7 @@ class SiteAppBar extends StatelessWidget implements PreferredSize{
                                             GlobalData.loginUser = null;
                                             GlobalData.projectList = [];
 
-                                            //소개 페이지로 이동 필요
+                                            Get.toNamed(Routes.index);
                                           },
                                           child: Text('로그아웃',style: $style.text.subTitle14.copyWith(color: $style.colors.primary),)),
                                     ),
