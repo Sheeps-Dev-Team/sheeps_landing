@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -24,8 +22,8 @@ import '../../../util/components/custom_text_field.dart';
 class ProjectController extends GetxController {
   late final Project project;
   late final bool isIndex; // 쉽스 랜딩 페이지
-  late final bool isModify; // 수정 여부
-  late final bool isTmp; // 임시 여부
+  late bool isModify; // 수정 여부
+  late bool isTmp; // 임시 여부
 
   late final Color keyColor;
   late final ColorScheme colorScheme;
@@ -100,9 +98,13 @@ class ProjectController extends GetxController {
         description: '프로젝트 생성 및 게시는\n로그인이 필요한 서비스입니다.',
         showCancelBtn: true,
         okText: '로그인',
-        okFunc: () {
+        okFunc: () async {
           Get.close(1); // 다이얼로그 끄기
-          Get.toNamed(Routes.login);
+
+          GlobalFunction.loadingDialog(); // 로딩 시작
+          await GlobalFunction.globalLogin(); // 로그인
+          Get.close(1); // 로딩 끝
+          GlobalFunction.showToast(msg: '로그인이 완료되었습니다.');
         },
       );
 
@@ -209,6 +211,7 @@ class ProjectController extends GetxController {
     if (res != null) {
       Get.close(3); // 로딩 끝, 임시 프로젝트 페이지, 프로젝트 수정 페이지
       Get.toNamed('${Routes.project}/${res.documentID}', arguments: res); // 프로젝트 페이지로 이동
+      // Get.until((route) => Get.currentRoute == '${Routes.projectManagement}/${project.documentID}');
     } else {
       Get.close(1); // 로딩 끝
       GlobalFunction.showToast(msg: '잠시후 다시 시도해 주세요.');

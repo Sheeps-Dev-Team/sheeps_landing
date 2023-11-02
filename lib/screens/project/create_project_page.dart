@@ -511,7 +511,6 @@ class CreateProjectPage extends StatelessWidget {
                       Gap($style.insets.$24),
                       callbackDetailWidget(),
                     ],
-                    // const Spacer(),
                   ],
                 );
               }),

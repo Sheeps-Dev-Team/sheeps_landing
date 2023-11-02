@@ -76,8 +76,6 @@ class CreateProjectController extends GetxController {
         callbackType = typeList.first;
         detailCallbackTypeList = callbackType == UserCallback.typeNone ? [] : typeList.last.split(formDivision);
 
-        // descriptionXFileList = project.descriptions.map((e) => XFile(e.imgPath)).toList(); // description xFile 세팅
-
         descriptionsIsOk(true); // description ok 세팅
         callToActionIsOk(true); // callToAction ok 세팅
       } catch (e) {
@@ -114,12 +112,9 @@ class CreateProjectController extends GetxController {
         },
         cancelText: '종료',
         cancelFunc: () {
+          Get.close(2); // 다이얼로그
           value = true;
-          if (Get.previousRoute == Routes.home) {
-            Get.close(2); // 다이얼로그, 현재 페이지
-          } else {
-            Get.offAllNamed(Routes.home);
-          }
+          Get.delete<CreateProjectController>();
         });
 
     return value;
