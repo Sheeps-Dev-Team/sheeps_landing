@@ -31,8 +31,8 @@ class _LikeButtonState extends State<LikeButton> with SingleTickerProviderStateM
       borderRadius: BorderRadius.circular($style.corners.$12),
       onTap: () async {
         widget.onTap();
-        await controller.forward().orCancel;
-        await controller.reverse().orCancel;
+        await controller.forward();
+        await controller.reverse();
       },
       child: Container(
         width: 68 * sizeUnit,
