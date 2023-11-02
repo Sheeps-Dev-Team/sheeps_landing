@@ -4,6 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:sheeps_landing/config/routes.dart';
+import 'package:sheeps_landing/screens/project/controllers/project_controller.dart';
+import 'package:sheeps_landing/screens/project/project_page.dart';
+import 'package:sheeps_landing/screens/template/controllers/default_template_controller.dart';
+import 'package:sheeps_landing/screens/template/default_template.dart';
 import 'package:sheeps_landing/util/components/responsive.dart';
 import 'package:sheeps_landing/util/components/site_app_bar.dart';
 import 'package:sheeps_landing/util/global_function.dart';
@@ -68,11 +72,6 @@ class HomePage extends StatelessWidget {
     return GestureDetector(
       onTap: (){
 
-        if(kDebugMode) {
-          Get.toNamed('${Routes.projectManagement}/${project.documentID == '' ? 'N1Z1RfyvMRfz52SP2K4g' : project.documentID}');
-        } else{
-          Get.toNamed('${Routes.projectManagement}/${project.documentID}');
-        }
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,24 +79,60 @@ class HomePage extends StatelessWidget {
           Expanded(
             flex: 3,
             child: InkWell(
-              onTap: (){Get.toNamed('${Routes.projectManagement}/${project.documentID}');},
+              onTap: (){
+                Get.delete<ProjectController>();
+                Get.delete<DefaultTemplateController>();
+
+                if(kDebugMode) {
+                  Get.toNamed('${Routes.project}/${project.documentID == '' ? 'N1Z1RfyvMRfz52SP2K4g' : project.documentID}', arguments: project);
+                } else{
+                  Get.toNamed('${Routes.project}/${project.documentID}', arguments: project);
+                }
+              },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular($style.insets.$12),
-                child: GetExtendedImage(
-                  url: project.imgPath,
-                  fit: BoxFit.contain,
+                child: Center(
+                  child: GetExtendedImage(
+                    url: project.imgPath,
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             ),
           ),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
-                Gap($style.insets.$4),
-                Text(project.name, style: $style.text.subTitle16),
-                Gap($style.insets.$2),
-                Text(GlobalFunction.getDateTimeToString(project.updatedAt), style: $style.text.body12.copyWith(color: $style.colors.darkGrey)),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Gap($style.insets.$4),
+                    Text(project.name, style: $style.text.subTitle16),
+                    Gap($style.insets.$2),
+                    Text(GlobalFunction.getDateTimeToString(project.updatedAt), style: $style.text.body12.copyWith(color: $style.colors.darkGrey)),
+                  ],
+                ),
+                const Spacer(),
+                Container(
+                  width: 80 * sizeUnit,
+                  height: 30 * sizeUnit,
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(12 * sizeUnit),
+                      border: Border.all(color: $style.colors.primary)
+                  ),
+                  child: TextButton(
+                      onPressed: (){
+                        if(kDebugMode) {
+                          Get.toNamed('${Routes.projectManagement}/${project.documentID == '' ? 'N1Z1RfyvMRfz52SP2K4g' : project.documentID}');
+                        } else{
+                          Get.toNamed('${Routes.projectManagement}/${project.documentID}');
+                        }
+                      },
+                      child: Text('관리',style: $style.text.subTitle14.copyWith(color: $style.colors.primary),
+                      )
+                  ),
+                )
               ],
             ),
           ),
