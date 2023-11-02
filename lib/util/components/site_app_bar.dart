@@ -82,7 +82,6 @@ class SiteAppBar extends StatelessWidget implements PreferredSize{
                                       child: TextButton(
                                           onPressed: () {
                                             GlobalData.loginUser = null;
-                                            GlobalData.projectList = [];
 
                                             Get.toNamed(Routes.index);
                                           },

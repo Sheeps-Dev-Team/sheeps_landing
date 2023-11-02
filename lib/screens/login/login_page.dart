@@ -51,7 +51,6 @@ class LoginPage extends StatelessWidget {
                   InkWell(
                     onTap: () async {
                       if(false == await controller.loginFunc() && GlobalData.loginUser != null){ //로그인 성공시
-                        GlobalData.projectList = await ProjectRepository.getProjectListByUserID(GlobalData.loginUser!.documentID);
                         Get.toNamed(Routes.home);
                       }else{ //로그인 실패시
 
