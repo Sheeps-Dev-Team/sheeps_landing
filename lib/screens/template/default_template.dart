@@ -25,9 +25,9 @@ class DefaultTemplate extends StatelessWidget {
 
   late final Color keyColor = Color(project.keyColor);
   late final ColorScheme colorScheme = ColorScheme.fromSeed(seedColor: keyColor);
-  late TextStyle titleStyle = $style.text.headline32.copyWith(fontSize: 40 * sizeUnit, color: colorScheme.onSurface);
-  late TextStyle contentsStyle = $style.text.body16.copyWith(height: 1.6, color: colorScheme.onSurface);
-  late final Color sectionColor = colorScheme.surface;
+  late TextStyle titleStyle = $style.text.headline32.copyWith(fontSize: 40 * sizeUnit, color: colorScheme.onPrimaryContainer);
+  late TextStyle contentsStyle = $style.text.body16.copyWith(height: 1.6, color: colorScheme.onPrimaryContainer);
+  late final Color sectionColor = colorScheme.primaryContainer.withOpacity(.2);
 
   @override
   Widget build(BuildContext context) {
@@ -116,8 +116,10 @@ class DefaultTemplate extends StatelessWidget {
   Container callToAction() {
     return Container(
       width: double.infinity,
+      constraints: BoxConstraints(minHeight: Get.height *.48),
       padding: EdgeInsets.symmetric(vertical: $style.insets.$160),
       color: project.descriptions.length.isOdd ? sectionColor : Colors.white,
+      alignment: Alignment.center,
       child: SheepsAniFadeIn(
         isAction: controller.callToActionAni,
         direction: Direction.up,
@@ -334,7 +336,6 @@ class DefaultTemplate extends StatelessWidget {
         direction: isOdd ? Direction.left : Direction.right,
         isAction: isActive,
         child: Column(
-          // mainAxisAlignment: isOdd ? MainAxisAlignment.start : MainAxisAlignment.end,
           children: [
             titleAndContents(),
             Gap($style.insets.$24),
