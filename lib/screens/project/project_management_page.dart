@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:sheeps_landing/config/global_assets.dart';
+import 'package:sheeps_landing/data/models/project.dart';
 import 'package:sheeps_landing/screens/project/controllers/project_management_controller.dart';
 import 'package:sheeps_landing/util/components/base_widget.dart';
 
 import '../../config/constants.dart';
+import '../../util/components/site_app_bar.dart';
 
 class ProjectManagementPage extends StatelessWidget {
   ProjectManagementPage({super.key});
@@ -17,81 +17,86 @@ class ProjectManagementPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseWidget(
       child: Scaffold(
-        backgroundColor: Colors.white,
-        body: GetBuilder<ProjectManagementController>(builder: (_) {
-          return Row(
-            children: [
-              sideBar(),
-              Expanded(
-                child: controller.isLoading ? const SizedBox.shrink() : controller.page,
-              ),
-            ],
+        appBar: const SiteAppBar(),
+        body: GetBuilder<ProjectManagementController>(
+            builder: (_) {
+              return Row(
+                children: [
+                  sideMenu(),
+                  Expanded(
+                    child: controller.page,
+                  ),
+                ],
+              );
+            }
+        ),
+      ),
+    );
+  }
+
+  //사이드바
+  Container sideMenu() {
+    return Container(
+      margin: EdgeInsets.only(top: $style.insets.$8),
+      width: 240 * sizeUnit,
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: List.generate(controller.pageMap.length, (index) {
+          final String key = controller.pageMap.keys.toList()[index];
+
+          return menuListItem(
+            key,
+            onPressedFunc: () {
+              controller.onChangedPageKey(key);
+            },
           );
         }),
       ),
     );
   }
 
-  Container sideBar() {
-    return Container(
-      width: 300 * sizeUnit,
-      height: double.infinity,
-      child: Column(
-        children: [
-          InkWell(
-            onTap: () => Get.back(),
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            child: Container(
-              color: Colors.white, //inkwell hover 효과 안보이게 하려고
-              height: 100 * sizeUnit,
-              child: SvgPicture.asset(GlobalAssets.svgLogo),
-            ),
-          ),
-          Container(
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Colors.black87,
+  //사이드바 메뉴
+  Widget menuListItem(String text, {required Function onPressedFunc}) {
+      final bool isSelected = controller.pageKey == text; // 현재 항목의 선택 상태 확인
+
+      return Material(
+        color: Colors.transparent,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: InkWell(
+                highlightColor: $style.colors.primary.withOpacity(0.1),
+                borderRadius: BorderRadius.all(Radius.circular($style.corners.$12)),
+                onTap: (){
+                  onPressedFunc();
+                },
+                hoverColor: const Color.fromRGBO(243, 237, 246, 0.5),
+                child: Container(
+                  width: double.infinity,
+                  height: 32 * sizeUnit,
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(left: $style.insets.$16),
+                  decoration: BoxDecoration(
+                    color: isSelected ? $style.colors.primary : Colors.transparent,
+                    borderRadius: BorderRadius.circular($style.corners.$12),
+                    border: Border.all(color: $style.colors.primary),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        text,
+                        style: $style.text.body14.copyWith(color: isSelected ? Colors.white : $style.colors.primary),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-            child: Column(
-              children: [
-                //Text(controller.user.email, style: $style.text.subTitle18,),
-                Text('user@gmail.com', style: $style.text.subTitle18),
-              ],
-            ),
-          ),
-          Gap($style.insets.$20),
-          Column(
-            children: List.generate(controller.pageMap.length, (index) {
-              final String key = controller.pageMap.keys.toList()[index];
-              return ListTile(
-                focusColor: $style.colors.primary,
-                hoverColor: $style.colors.primary.withOpacity(0.3),
-                leading: SvgPicture.asset(
-                  controller.sidebarIcons[index],
-                  width: 18 * sizeUnit,
-                  height: 18 * sizeUnit,
-                ),
-                title: Obx(() {
-                  final isSelected = controller.selectedSidebar.contains(key);
-                  return Text(
-                    key,
-                    style: $style.text.subTitle18.copyWith(color: isSelected ? $style.colors.primary : Colors.black),
-                    textAlign: TextAlign.center,
-                  );
-                }),
-                onTap: (){
-                  controller.onChangedPageKey(key);
-                  controller.selectedSidebar.value = <String>[key];
-                },
-              );
-            }),
-          ),
-        ],
-      ),
-    );
+            Gap($style.insets.$12),
+          ],
+        ),
+      );
   }
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sheeps_landing/config/global_assets.dart';
-import 'package:sheeps_landing/repository/project_repository.dart';
 import 'package:sheeps_landing/screens/project/project_settings_page.dart';
 import 'package:sheeps_landing/util/global_function.dart';
 
@@ -21,10 +19,6 @@ class ProjectManagementController extends GetxController {
   Widget get page => pageMap[pageKey]!();
 
   late final Project project;
-  bool isLoading = true;
-
-  //사이드바 선택됬을때 변수
-  RxList<String> selectedSidebar = <String>[].obs;
 
   final user = User(
     email: '',
@@ -34,35 +28,36 @@ class ProjectManagementController extends GetxController {
     updatedAt: DateTime.now(),
   );
 
-  //사이드바 메뉴 아이콘
-  final List<String> sidebarIcons = [
-    GlobalAssets.svgDashboard,
-    GlobalAssets.svgCommunication,
-    GlobalAssets.svgProjectSettings,
-  ];
-
   @override
-  void onInit() async{
+  void onInit() async {
     super.onInit();
 
     // 직접 접근 차단
-    if(GlobalFunction.blockDirectAccess()) return;
+    if (GlobalFunction.blockDirectAccess()) return;
 
-    final String? id = Get.parameters['id'];
+    Project? tmpProject = Get.arguments;
 
-    if(id != null) {
-      Project? res = await ProjectRepository.getProjectByID(id);
-      if(res != null) {
-        project = res;
-
-        isLoading = false;
-        update();
-      } else {
-        GlobalFunction.goToBack();
-      }
+    if (tmpProject != null) {
+      project = tmpProject;
     } else {
       GlobalFunction.goToBack();
     }
+
+    // final String? id = Get.parameters['id'];
+    //
+    // if(id != null) {
+    //   Project? res = await ProjectRepository.getProjectByID(id);
+    //   if(res != null) {
+    //     project = res;
+    //
+    //     isLoading = false;
+    //     update();
+    //   } else {
+    //     GlobalFunction.goToBack();
+    //   }
+    // } else {
+    //   GlobalFunction.goToBack();
+    // }
   }
 
   // 페이지 키 변경

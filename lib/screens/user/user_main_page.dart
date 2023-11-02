@@ -159,3 +159,4 @@ class UserMainPageController extends GetxController {
     update(['body']);
   }
 }
+

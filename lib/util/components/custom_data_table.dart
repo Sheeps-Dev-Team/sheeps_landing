@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 import '../../config/constants.dart';
 
@@ -32,11 +33,11 @@ class _CustomDataTableState extends State<CustomDataTable> {
       return Column(
         children: [
           header(),
-          const SizedBox(height: 16),
+          SizedBox(height: 16 * sizeUnit),
           Expanded(
             child: ListView.separated(
               itemCount: widget.rows.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 12),
+              separatorBuilder: (context, index) => SizedBox(height: 12 * sizeUnit),
               itemBuilder: (context, index) {
                 return dataRow(
                   dataRow: widget.rows[index],
@@ -61,18 +62,18 @@ class _CustomDataTableState extends State<CustomDataTable> {
         }
       }),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 18),
+        padding: EdgeInsets.symmetric(horizontal: 18 * sizeUnit),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular($style.corners.$4),
           border: Border.all(color: hoverIndex == index ? $style.colors.primary : $style.colors.grey),
         ),
         child: Row(
           children: List.generate(
               dataRow.length,
                   (i) => Container(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 width: widget.widthList.isEmpty ? w : widget.widthList[i] < 0 ? extendWidth : widget.widthList[i],
-                height: 56,
+                height: 56 * sizeUnit,
                 child: Text(
                   dataRow[i],
                   style: $style.text.body16,
@@ -86,18 +87,28 @@ class _CustomDataTableState extends State<CustomDataTable> {
 
   Widget header() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: EdgeInsets.symmetric(horizontal: $style.insets.$24),
       child: Row(
         children: List.generate(
             widget.columns.length,
                 (index) => Container(
               width: widget.widthList.isEmpty ? w : widget.widthList[index] < 0 ? extendWidth : widget.widthList[index],
-              height: 56,
+              height: 56 * sizeUnit,
               alignment: Alignment.centerLeft,
-              child: Text(
-                widget.columns[index],
-                style: $style.text.headline20,
-                overflow: TextOverflow.ellipsis,
+              child: Column(
+                children: [
+                  Text(
+                    widget.columns[index],
+                    style: $style.text.headline20,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Gap($style.insets.$16),
+                  Divider(
+                    height: 1 * sizeUnit,
+                    thickness: 2 * sizeUnit,
+                    color: $style.colors.lightGrey,
+                  ),
+                ],
               ),
             )),
       ),
