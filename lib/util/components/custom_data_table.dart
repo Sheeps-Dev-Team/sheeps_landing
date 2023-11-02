@@ -71,7 +71,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
           children: List.generate(
               dataRow.length,
                   (i) => Container(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 width: widget.widthList.isEmpty ? w : widget.widthList[i] < 0 ? extendWidth : widget.widthList[i],
                 height: 56 * sizeUnit,
                 child: Text(

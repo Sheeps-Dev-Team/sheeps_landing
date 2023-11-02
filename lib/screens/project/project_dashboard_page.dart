@@ -58,7 +58,7 @@ class ProjectDashboardPage extends StatelessWidget {
                     '프로젝트 URL',
                     project.getUrl,
                     () {
-                      Get.toNamed('${Routes.project}/${project.documentID}');
+                      Get.toNamed('${Routes.project}/${project.documentID}', arguments: project);
                     },
                   ),
                   Gap($style.insets.$20),
@@ -102,7 +102,7 @@ class ProjectDashboardPage extends StatelessWidget {
                     //height: 28 * sizeUnit,
                     decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular($style.corners.$32), border: Border.all(color: $style.colors.primary)),
                     child: TextButton(
-                        onPressed: () {},
+                        onPressed: () => Get.toNamed(Routes.modifyProject, arguments: project),
                         child: Text(
                           '프로젝트 수정',
                           style: $style.text.subTitle14.copyWith(color: $style.colors.primary),

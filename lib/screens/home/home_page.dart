@@ -5,9 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:sheeps_landing/config/routes.dart';
 import 'package:sheeps_landing/screens/project/controllers/project_controller.dart';
-import 'package:sheeps_landing/screens/project/project_page.dart';
 import 'package:sheeps_landing/screens/template/controllers/default_template_controller.dart';
-import 'package:sheeps_landing/screens/template/default_template.dart';
 import 'package:sheeps_landing/util/components/responsive.dart';
 import 'package:sheeps_landing/util/components/site_app_bar.dart';
 import 'package:sheeps_landing/util/global_function.dart';
@@ -32,35 +30,34 @@ class HomePage extends StatelessWidget {
           return Scaffold(
             appBar: const SiteAppBar(),
             body: GetBuilder<HomePageController>(
-              id: 'table',
-              initState: (_) => controller.init(),
-              builder: (_) {
-                return GridView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 24 * sizeUnit, vertical: 24 * sizeUnit),
-                  itemCount: controller.list.isEmpty ? 1 : (controller.list.length + 1),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: Responsive.isMobile(context)
-                        ? 2
-                        : Responsive.isTablet(context)
-                        ? 3
-                        : 4,
-                    childAspectRatio: 4 / 3,
-                    mainAxisSpacing: 40 * sizeUnit,
-                    crossAxisSpacing: 40 * sizeUnit,
-                  ),
-                  itemBuilder: (context, index) {
-                    if(controller.list.isEmpty){
-                      return addProjectItem();
-                    }else{
-                      if(index == (controller.list.length)){
+                id: 'table',
+                initState: (_) => controller.init(),
+                builder: (_) {
+                  return GridView.builder(
+                    padding: EdgeInsets.symmetric(horizontal: 24 * sizeUnit, vertical: 24 * sizeUnit),
+                    itemCount: controller.list.isEmpty ? 1 : (controller.list.length + 1),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: Responsive.isMobile(context)
+                          ? 2
+                          : Responsive.isTablet(context)
+                              ? 3
+                              : 4,
+                      childAspectRatio: 4 / 3,
+                      mainAxisSpacing: 40 * sizeUnit,
+                      crossAxisSpacing: 40 * sizeUnit,
+                    ),
+                    itemBuilder: (context, index) {
+                      if (controller.list.isEmpty) {
                         return addProjectItem();
+                      } else {
+                        if (index == (controller.list.length)) {
+                          return addProjectItem();
+                        }
+                        return projectItem(controller.list[index]);
                       }
-                      return projectItem(controller.list[index]);
-                    }
-                  },
-                );
-              }
-            ),
+                    },
+                  );
+                }),
           );
         },
       ),
@@ -70,22 +67,20 @@ class HomePage extends StatelessWidget {
   GestureDetector projectItem(Project project) {
     // print('${Routes.projectManagement}/1');
     return GestureDetector(
-      onTap: (){
-
-      },
+      onTap: () {},
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             flex: 3,
             child: InkWell(
-              onTap: (){
+              onTap: () {
                 Get.delete<ProjectController>();
                 Get.delete<DefaultTemplateController>();
 
-                if(kDebugMode) {
+                if (kDebugMode) {
                   Get.toNamed('${Routes.project}/${project.documentID == '' ? 'N1Z1RfyvMRfz52SP2K4g' : project.documentID}', arguments: project);
-                } else{
+                } else {
                   Get.toNamed('${Routes.project}/${project.documentID}', arguments: project);
                 }
               },
@@ -116,22 +111,25 @@ class HomePage extends StatelessWidget {
                 Container(
                   width: 80 * sizeUnit,
                   height: 30 * sizeUnit,
-                  decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(12 * sizeUnit),
-                      border: Border.all(color: $style.colors.primary)
-                  ),
+                  decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular(12 * sizeUnit), border: Border.all(color: $style.colors.primary)),
                   child: TextButton(
-                      onPressed: (){
-                        if(kDebugMode) {
-                          Get.toNamed('${Routes.projectManagement}/${project.documentID == '' ? 'N1Z1RfyvMRfz52SP2K4g' : project.documentID}');
-                        } else{
-                          Get.toNamed('${Routes.projectManagement}/${project.documentID}');
+                      onPressed: () {
+                        if (kDebugMode) {
+                          Get.toNamed(
+                            '${Routes.projectManagement}/${project.documentID == '' ? 'N1Z1RfyvMRfz52SP2K4g' : project.documentID}',
+                            arguments: project,
+                          );
+                        } else {
+                          Get.toNamed(
+                            '${Routes.projectManagement}/${project.documentID}',
+                            arguments: project,
+                          );
                         }
                       },
-                      child: Text('관리',style: $style.text.subTitle14.copyWith(color: $style.colors.primary),
-                      )
-                  ),
+                      child: Text(
+                        '관리',
+                        style: $style.text.subTitle14.copyWith(color: $style.colors.primary),
+                      )),
                 )
               ],
             ),
