@@ -40,7 +40,25 @@ class CreateProjectController extends GetxController {
   int currentPage = 0; // 현재 페이지
 
   Color keyColor = $style.colors.primary; // 키 컬러
-  ColorScheme get colorScheme => ColorScheme.fromSeed(seedColor: keyColor); // 시드 호환 컬러
+  ColorScheme get colorScheme{
+    ColorScheme colorScheme =ColorScheme.fromSeed(seedColor: keyColor);
+    if(keyColor == Colors.black){
+      colorScheme = ColorScheme(
+        brightness: Brightness.light,
+        primary: Colors.black,
+        onPrimary: Colors.black.withOpacity(0.04),
+        secondary: Colors.black.withOpacity(0.04),
+        onSecondary: Colors.black,
+        error: Colors.red,
+        onError: Colors.black.withOpacity(0.04),
+        background: Colors.black.withOpacity(0.04),
+        onBackground: Colors.black,
+        surface: Colors.black.withOpacity(0.04),
+        onSurface: Colors.black,
+      );
+    }
+    return colorScheme;
+  } // 시드 호환 컬러
 
   late Rx<XFile> mainImgXFile = XFile(project.imgPath).obs; // 헤더 이미지
 
