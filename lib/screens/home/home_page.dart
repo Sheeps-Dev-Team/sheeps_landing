@@ -14,7 +14,6 @@ import 'package:sheeps_landing/util/global_function.dart';
 
 import '../../config/constants.dart';
 import '../../config/global_assets.dart';
-import '../../data/global_data.dart';
 import '../../data/models/project.dart';
 import '../../util/components/base_widget.dart';
 import '../../util/components/get_extended_image.dart';
@@ -32,29 +31,35 @@ class HomePage extends StatelessWidget {
         builder: (_) {
           return Scaffold(
             appBar: const SiteAppBar(),
-            body: GridView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 24 * sizeUnit, vertical: 24 * sizeUnit),
-              itemCount: GlobalData.projectList.isEmpty ? 1 : (GlobalData.projectList.length + 1),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: Responsive.isMobile(context)
-                    ? 2
-                    : Responsive.isTablet(context)
-                    ? 3
-                    : 4,
-                childAspectRatio: 4 / 3,
-                mainAxisSpacing: 40 * sizeUnit,
-                crossAxisSpacing: 40 * sizeUnit,
-              ),
-              itemBuilder: (context, index) {
-                if(GlobalData.projectList.isEmpty){
-                  return addProjectItem();
-                }else{
-                  if(index == (GlobalData.projectList.length)){
-                    return addProjectItem();
-                  }
-                  return projectItem(GlobalData.projectList[index]);
-                }
-              },
+            body: GetBuilder<HomePageController>(
+              id: 'table',
+              initState: (_) => controller.init(),
+              builder: (_) {
+                return GridView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: 24 * sizeUnit, vertical: 24 * sizeUnit),
+                  itemCount: controller.list.isEmpty ? 1 : (controller.list.length + 1),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: Responsive.isMobile(context)
+                        ? 2
+                        : Responsive.isTablet(context)
+                        ? 3
+                        : 4,
+                    childAspectRatio: 4 / 3,
+                    mainAxisSpacing: 40 * sizeUnit,
+                    crossAxisSpacing: 40 * sizeUnit,
+                  ),
+                  itemBuilder: (context, index) {
+                    if(controller.list.isEmpty){
+                      return addProjectItem();
+                    }else{
+                      if(index == (controller.list.length)){
+                        return addProjectItem();
+                      }
+                      return projectItem(controller.list[index]);
+                    }
+                  },
+                );
+              }
             ),
           );
         },
