@@ -112,11 +112,16 @@ class _PreviewItemState extends State<PreviewItem> with TickerProviderStateMixin
   }
 
   Widget item() {
+    int r = (widget.color.red * 0.9).toInt();
+    int g = (widget.color.green * 0.9).toInt();
+    int b = (widget.color.blue * 0.9).toInt();
+    Color color = Color.fromRGBO(r, g, b, 1);
+
     return Container(
       width: width * 1.2,
       height: height * 1.2,
       decoration: BoxDecoration(
-        color: widget.isTwinkle ? ColorScheme.fromSeed(seedColor: widget.color).inversePrimary : widget.color.withOpacity(widget.isShow ? 1 : .3),
+        color: widget.isTwinkle ? Color.lerp(widget.color, color, 0.1) : widget.color.withOpacity(widget.isShow ? 1 : .3),
         borderRadius: BorderRadius.circular($style.corners.$4),
       ),
     );
