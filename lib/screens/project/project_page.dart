@@ -8,7 +8,6 @@ import 'package:sheeps_landing/util/components/base_widget.dart';
 import 'package:sheeps_landing/util/components/responsive.dart';
 import 'package:sheeps_landing/util/components/site_app_bar.dart';
 
-import '../../config/routes.dart';
 import '../../util/components/custom_app_bar.dart';
 import '../../util/components/like_button.dart';
 

@@ -258,7 +258,7 @@ class CreateProjectController extends GetxController {
     Get.toNamed(
       '${Routes.project}/${DateTime.now().millisecondsSinceEpoch}',
       arguments: project,
-      parameters: {'isModify': '$isModify'}
+      parameters: {'isTmp': 'true', 'isModify': '$isModify'}
     );
   }
 }

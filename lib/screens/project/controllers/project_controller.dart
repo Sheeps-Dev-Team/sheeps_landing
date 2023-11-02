@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +23,9 @@ import '../../../util/components/custom_text_field.dart';
 
 class ProjectController extends GetxController {
   late final Project project;
-  late final bool isIndex;
-  late final bool isModify;
-  late final bool isTmp;
+  late final bool isIndex; // 쉽스 랜딩 페이지
+  late final bool isModify; // 수정 여부
+  late final bool isTmp; // 임시 여부
 
   late final Color keyColor;
   late final ColorScheme colorScheme;
@@ -33,8 +35,10 @@ class ProjectController extends GetxController {
   bool isDesktopView = true; // 데스크탑 모드로 보기
 
   void initState({required bool isIndex}) async {
-    this.isIndex = isIndex;
+    this.isIndex = isIndex; // 쉽스 랜딩 페이지인지
     final Project? tmpProject = Get.arguments;
+
+    // 수정 여부
     final String? isModify = Get.parameters['isModify'];
     this.isModify = isModify == null
         ? false
@@ -42,8 +46,15 @@ class ProjectController extends GetxController {
             ? true
             : false;
 
+    // 임시 여부
+    final String? isTmp = Get.parameters['isTmp'];
+    this.isTmp = isTmp == null
+        ? false
+        : isTmp == 'true'
+            ? true
+            : false;
+
     if (tmpProject == null) {
-      isTmp = false;
       late final String? id;
 
       if (isIndex) {
@@ -71,7 +82,6 @@ class ProjectController extends GetxController {
         return GlobalFunction.goToBack(); // 잘못된 project 예외처리
       }
     } else {
-      isTmp = true;
       project = tmpProject;
     }
 
@@ -138,12 +148,12 @@ class ProjectController extends GetxController {
 
     project.userDocumentID = GlobalData.loginUser!.documentID; // userID 설정
 
-    // 프로젝트 업로드
+    // 프로젝트 생성
     Project? res = await ProjectRepository.createProject(project);
 
     if (res != null) {
       Get.close(3); // 로딩 끝, 임시 프로젝트 페이지, 프로젝트 생성 페이지
-      Get.toNamed('${Routes.project}/${res.documentID}'); // 프로젝트 페이지로 이동
+      Get.toNamed('${Routes.project}/${res.documentID}', arguments: res); // 프로젝트 페이지로 이동
     } else {
       Get.close(1); // 로딩 끝
       GlobalFunction.showToast(msg: '잠시후 다시 시도해 주세요.');
@@ -198,7 +208,7 @@ class ProjectController extends GetxController {
 
     if (res != null) {
       Get.close(3); // 로딩 끝, 임시 프로젝트 페이지, 프로젝트 수정 페이지
-      Get.toNamed('${Routes.project}/${res.documentID}'); // 프로젝트 페이지로 이동
+      Get.toNamed('${Routes.project}/${res.documentID}', arguments: res); // 프로젝트 페이지로 이동
     } else {
       Get.close(1); // 로딩 끝
       GlobalFunction.showToast(msg: '잠시후 다시 시도해 주세요.');
@@ -261,7 +271,7 @@ class ProjectController extends GetxController {
     final String url = project.callbackType.split(division).last;
     GlobalFunction.launch(Uri.parse(url));
 
-    if(isTmp) return; // 임시일 때 서버에 쏘지 않도록
+    if (isTmp) return; // 임시일 때 서버에 쏘지 않도록
 
     final DateTime now = DateTime.now();
     final String ipAddress = await IpAddress().getIpAddress();
@@ -307,7 +317,7 @@ class ProjectController extends GetxController {
     // 제출
     void submit() async {
       // 임시인 경우
-      if(isTmp) {
+      if (isTmp) {
         Get.close(1); // 다이얼로그 끄기
         return;
       }
