@@ -3,12 +3,10 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sheeps_landing/config/constants.dart';
-import 'package:sheeps_landing/config/routes.dart';
 import 'package:sheeps_landing/data/models/project.dart';
 import 'package:sheeps_landing/data/models/user_callback.dart';
 import 'package:sheeps_landing/screens/project/controllers/project_controller.dart';
 import 'package:sheeps_landing/screens/template/controllers/default_template_controller.dart';
-import 'package:sheeps_landing/util/components/custom_app_bar.dart';
 import 'package:sheeps_landing/util/components/custom_button.dart';
 import 'package:sheeps_landing/util/components/get_extended_image.dart';
 import 'package:sheeps_landing/util/components/responsive.dart';
@@ -16,10 +14,9 @@ import 'package:sheeps_landing/util/components/sheeps_ani.dart';
 
 // ignore: must_be_immutable
 class DefaultTemplate extends StatelessWidget {
-  DefaultTemplate({super.key, required this.project, required this.isIndex});
+  DefaultTemplate({super.key, required this.project});
 
   final Project project;
-  final bool isIndex;
 
   static const int id = 1;
 
@@ -46,7 +43,6 @@ class DefaultTemplate extends StatelessWidget {
       initState: (state) => controller.initState(project),
       builder: (_) {
         return Scaffold(
-          appBar: appBar(isDesktop),
           body: ScrollablePositionedList.builder(
             itemScrollController: controller.itemScrollController,
             itemPositionsListener: controller.itemPositionsListener,
@@ -377,26 +373,5 @@ class DefaultTemplate extends StatelessWidget {
       default:
         return const SizedBox.shrink();
     }
-  }
-
-  CustomAppBar appBar(bool isDesktop) {
-    return CustomAppBar(
-      leading: const SizedBox.shrink(),
-      height: isDesktop ? 72 * sizeUnit : null,
-      actions: isIndex
-          ? [
-        InkWell(
-          onTap: () => Get.toNamed(Routes.login),
-          child: Text(
-            '로그인',
-            style: $style.text.subTitle16.copyWith(color: colorScheme.onSurface),
-          ),
-        ),
-        Gap($style.insets.$16),
-      ]
-          : null,
-      title: project.name,
-      surfaceTintColor: keyColor,
-    );
   }
 }

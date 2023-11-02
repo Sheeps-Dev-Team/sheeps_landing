@@ -199,12 +199,12 @@ class GlobalFunction {
   }
 
   // 로딩 다이어로그
-  static void loadingDialog() {
+  static void loadingDialog({Color? color}) {
     Get.dialog(
       Material(
         color: Colors.transparent,
         child: Center(
-          child: CircularProgressIndicator(color: $style.colors.primary),
+          child: CircularProgressIndicator(color: color ?? $style.colors.primary),
         ),
       ),
     );
@@ -231,7 +231,7 @@ class GlobalFunction {
   // 뒤로가기 (이전 라우트가 없으면 홈으로가기)
   static void goToBack(){
     if (Get.previousRoute.isEmpty) {
-      Get.offAllNamed(Routes.home);
+      Get.offAllNamed(Routes.index);
     } else {
       Get.back();
     }
