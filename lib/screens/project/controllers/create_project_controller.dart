@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,7 +7,6 @@ import 'package:sheeps_landing/config/constants.dart';
 import 'package:sheeps_landing/config/routes.dart';
 import 'package:sheeps_landing/data/models/project.dart';
 import 'package:sheeps_landing/data/models/user_callback.dart';
-import 'package:sheeps_landing/repository/project_repository.dart';
 import 'package:sheeps_landing/util/global_function.dart';
 
 class CreateProjectController extends GetxController {
@@ -38,11 +34,13 @@ class CreateProjectController extends GetxController {
     Colors.black,
   ];
 
+  late final bool isModify; // 수정 여부
+
   Project project = Project.nullProject.copyWith(); // 생성되는 프로젝트
   int currentPage = 0; // 현재 페이지
 
-  Color seedColor = $style.colors.primary; // 시드 컬러
-  ColorScheme get colorScheme => ColorScheme.fromSeed(seedColor: seedColor); // 시드 호환 컬러
+  Color keyColor = $style.colors.primary; // 키 컬러
+  ColorScheme get colorScheme => ColorScheme.fromSeed(seedColor: keyColor); // 시드 호환 컬러
 
   late Rx<XFile> mainImgXFile = XFile(project.imgPath).obs; // 헤더 이미지
 
@@ -53,12 +51,40 @@ class CreateProjectController extends GetxController {
   List<String> detailCallbackTypeList = []; // 디테일 콜백 타입 리스트
   RxBool callToActionIsOk = false.obs; // callToAction isOk
 
+  String? deleteMainImgUrl; // 삭제하는 main 이미지 url (수정일 때만 씀)
+  List<String> deleteDescriptionImgUrl = []; // 삭제하는 description 이미지 url (수정일 때만 씀)
+
   @override
   void onClose() {
     super.onClose();
 
     pageController.dispose();
     descriptionScrollController.dispose();
+  }
+
+  void initState(bool isModify) {
+    this.isModify = isModify;
+
+    // 수정 데이터 세팅
+    if (isModify) {
+      try {
+        project = Get.arguments;
+        keyColor = Color(project.keyColor);
+
+        // 콜백 타입 세팅
+        final List<String> typeList = project.callbackType.split(division);
+        callbackType = typeList.first;
+        detailCallbackTypeList = callbackType == UserCallback.typeNone ? [] : typeList.last.split(formDivision);
+
+        // descriptionXFileList = project.descriptions.map((e) => XFile(e.imgPath)).toList(); // description xFile 세팅
+
+        descriptionsIsOk(true); // description ok 세팅
+        callToActionIsOk(true); // callToAction ok 세팅
+      } catch (e) {
+        if (kDebugMode) print(e);
+        GlobalFunction.goToBack();
+      }
+    }
   }
 
   // 다음 질문
@@ -138,6 +164,10 @@ class CreateProjectController extends GetxController {
 
   // description 삭제
   void removeDescription(int index) {
+    // 수정인 경우 기존 이미지 삭제
+    final String imgUrl = project.descriptions[index].imgPath;
+    if(isModify && imgUrl.contains(defaultImgUrl)) deleteDescriptionImgUrl.add(imgUrl);
+
     project.descriptions.removeAt(index);
     update(['descriptions']);
     update(['preview']);
@@ -147,7 +177,7 @@ class CreateProjectController extends GetxController {
 
   // descriptions isOk 체크
   void descriptionsIsOkCheck() {
-    for (Description description in project.descriptions) {
+    for (Description description in project.descriptions){
       if (description.title.isEmpty || description.contents.isEmpty || description.imgPath.isEmpty) {
         descriptionsIsOk(false);
         return;
@@ -216,76 +246,19 @@ class CreateProjectController extends GetxController {
 
   // 키 컬러 변경
   void onChangedKeyColor(Color color) {
-    seedColor = color;
+    keyColor = color;
     project.keyColor = color.value;
 
     update();
   }
 
-  // 프로젝트 생성
-  Future<void> createProject() async {
-    GlobalFunction.loadingDialog(); // 로딩 시작
-
-    // 메인 이미지 등록
-    final String? mainImageUrl = await imgUpload(mainImgXFile.value);
-
-    List<String> descriptionImageUrlList = []; // description 이미지 url 리스트
-
-    if (mainImageUrl != null) {
-      // description 이미지 등록
-      for (XFile xFile in descriptionXFileList) {
-        final String? imageUrl = await imgUpload(xFile);
-
-        if (imageUrl != null) {
-          descriptionImageUrlList.add(imageUrl);
-        } else {
-          Get.close(1); // 로딩 끝
-
-          // description 이미지 등록 실패 시 리턴
-          return GlobalFunction.showToast(msg: '이미지 등록 실패');
-        }
-      }
-    } else {
-      Get.close(1); // 로딩 끝
-
-      // 메인 이미지 등록 실패 시 리턴
-      return GlobalFunction.showToast(msg: '이미지 등록 실패');
-    }
-
-    project.imgPath = mainImageUrl; // 메인 이미지 url 설정
-
-    // description 이미지 url 설정
-    for (int i = 0; i < descriptionImageUrlList.length; i++) {
-      project.descriptions[i].imgPath = descriptionImageUrlList[i];
-    }
+  // 프로젝트 페이지로 이동
+  Future<void> goToProjectPage() async {
     project.callbackType = assemblyCallbackType(); // 콜백 타입 설정
-
-    // 프로젝트 업로드
-    Project? res = await ProjectRepository.createProject(project);
-
-    if (res != null) {
-      Get.close(1); // 로딩 끝
-      // 결과물 페이지로 이동
-    } else {
-      Get.close(1); // 로딩 끝
-      GlobalFunction.showToast(msg: '잠시후 다시 시도해 주세요.');
-    }
-  }
-
-  // 이미지 업로드
-  Future<String?> imgUpload(XFile xFile) async {
-    String? url;
-
-    try {
-      Uint8List? fileBytes = await xFile.readAsBytes();
-      String fileName = '${DateTime.now().millisecondsSinceEpoch}.${xFile.name.split('.').last}';
-
-      TaskSnapshot uploadTask = await FirebaseStorage.instance.ref('project/$fileName').putData(fileBytes);
-      url = await uploadTask.ref.getDownloadURL();
-    } catch (e) {
-      if (kDebugMode) print(e);
-    }
-
-    return url;
+    Get.toNamed(
+      '${Routes.project}/${DateTime.now().millisecondsSinceEpoch}',
+      arguments: project,
+      parameters: {'isModify': '$isModify'}
+    );
   }
 }

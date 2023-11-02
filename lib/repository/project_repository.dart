@@ -56,6 +56,19 @@ class ProjectRepository {
     }
   }
 
+  // 프로젝트 수정
+  static Future<Project?> modifyProject(Project project) async {
+    try {
+      project.updatedAt = DateTime.now();
+
+      _projectCollection.doc(project.documentID).update(project.toJson());
+      return project;
+    } catch (e) {
+      if (kDebugMode) print(e.toString());
+      return null;
+    }
+  }
+
   // 조회수 업데이트
   static Future<bool> updateViewCount({required String documentID, int count = 1}) async {
     try {

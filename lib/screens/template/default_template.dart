@@ -1,30 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sheeps_landing/config/constants.dart';
-import 'package:sheeps_landing/config/routes.dart';
-import 'package:sheeps_landing/data/global_data.dart';
 import 'package:sheeps_landing/data/models/project.dart';
 import 'package:sheeps_landing/data/models/user_callback.dart';
 import 'package:sheeps_landing/screens/project/controllers/project_controller.dart';
 import 'package:sheeps_landing/screens/template/controllers/default_template_controller.dart';
-import 'package:sheeps_landing/util/components/custom_app_bar.dart';
 import 'package:sheeps_landing/util/components/custom_button.dart';
 import 'package:sheeps_landing/util/components/get_extended_image.dart';
 import 'package:sheeps_landing/util/components/responsive.dart';
 import 'package:sheeps_landing/util/components/sheeps_ani.dart';
 
-import '../../config/global_assets.dart';
-import '../user/user_main_page.dart';
-
 // ignore: must_be_immutable
 class DefaultTemplate extends StatelessWidget {
-  DefaultTemplate({super.key, required this.project, required this.isIndex});
+  DefaultTemplate({super.key, required this.project});
 
   final Project project;
-  final bool isIndex;
 
   static const int id = 1;
 
@@ -51,7 +43,7 @@ class DefaultTemplate extends StatelessWidget {
       initState: (state) => controller.initState(project),
       builder: (_) {
         return Scaffold(
-          appBar: appBar(isDesktop,context),
+          // appBar: appBar(isDesktop,context),
           body: ScrollablePositionedList.builder(
             itemScrollController: controller.itemScrollController,
             itemPositionsListener: controller.itemPositionsListener,
@@ -382,104 +374,5 @@ class DefaultTemplate extends StatelessWidget {
       default:
         return const SizedBox.shrink();
     }
-  }
-
-  CustomAppBar appBar(bool isDesktop,BuildContext context) {
-    return CustomAppBar(
-      leading: const SizedBox.shrink(),
-      height: isDesktop ? 72 * sizeUnit : null,
-      actions: isIndex
-          ? [
-
-            if(GlobalData.loginUser == null) ... {
-              InkWell(
-                onTap: () => Get.toNamed(Routes.login),
-                child: Text(
-                  '로그인',
-                  style: $style.text.subTitle16.copyWith(color: colorScheme.onSurface),
-                ),
-              ),
-            } else ... {
-              InkWell(
-                  onTap: () {
-                    Get.dialog(
-                      Center(
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              top: 48 * sizeUnit,
-                              right: Responsive.isDesktop(context) ? MediaQuery.of(context).size.width * 0.1 : 0,
-                              child: Container(
-                                  width: 240 * sizeUnit,
-                                  height: 208 * sizeUnit,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(14 * sizeUnit),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
-                                        offset: const Offset(0, 4),
-                                        blurRadius: 16 * sizeUnit,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(12.0 * sizeUnit),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        DefaultTextStyle(style: $style.text.headline24, child: Text(GlobalData.loginUser!.name)),
-                                        Gap(8 * sizeUnit),
-                                        Divider(height: 1, thickness: 2, color: $style.colors.lightGrey),
-                                        Gap(8 * sizeUnit),
-                                        TextButton(onPressed: () {
-                                          Get.to(() => const UserMainPage());
-                                        }, child: Text('계정 설정', style: $style.text.subTitle14,),),
-                                        Gap(8 * sizeUnit),
-                                        TextButton(onPressed: () {
-                                          Get.toNamed(Routes.home);
-                                        }, child: Text('나의 앱', style: $style.text.subTitle14,),),
-                                        Gap(8 * sizeUnit),
-                                        Divider(height: 1, thickness: 2, color: $style.colors.lightGrey),
-                                        Gap(16 * sizeUnit),
-                                        Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Container(
-                                            width: 80 * sizeUnit,
-                                            height: 28 * sizeUnit,
-                                            decoration: BoxDecoration(
-                                                color: Colors.transparent,
-                                                borderRadius: BorderRadius.circular(32 * sizeUnit),
-                                                border: Border.all(color: $style.colors.primary)
-                                            ),
-                                            child: TextButton(
-                                                onPressed: () {
-                                                  GlobalData.loginUser = null;
-                                                  GlobalData.projectList = [];
-
-                                                  Get.toNamed(Routes.index);
-                                                },
-                                                child: Text('로그아웃',style: $style.text.subTitle14.copyWith(color: $style.colors.primary),)),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      barrierColor: Colors.transparent,
-                    );
-                  },
-                  child: SvgPicture.asset(GlobalAssets.svgProfile, width: 32 * sizeUnit)),
-            },
-        Gap($style.insets.$16),
-      ]
-          : null,
-      title: project.name,
-      surfaceTintColor: keyColor,
-    );
   }
 }
