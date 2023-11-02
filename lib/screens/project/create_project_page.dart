@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -39,7 +40,7 @@ class CreateProjectPage extends StatelessWidget {
               children: [
                 PageView.builder(
                   controller: controller.pageController,
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics: kDebugMode ? null : const NeverScrollableScrollPhysics(),
                   itemCount: 7,
                   scrollDirection: Axis.vertical,
                   onPageChanged: controller.onPageChanged,
@@ -173,7 +174,7 @@ class CreateProjectPage extends StatelessWidget {
                               ),
                               Gap($style.insets.$12),
                               previewHeader(), // 헤더 프리뷰
-                              Gap($style.insets.$12),
+                              Gap($style.insets.$16),
                               // descriptions 프리뷰
                               Column(
                                 children: List.generate(controller.project.descriptions.length, (index) {
@@ -289,7 +290,7 @@ class CreateProjectPage extends StatelessWidget {
 
   // 헤더 프리뷰
   Widget previewHeader() {
-    return Row(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // 이미지
@@ -299,47 +300,35 @@ class CreateProjectPage extends StatelessWidget {
           color: controller.colorScheme.primaryContainer,
           isShow: controller.project.imgPath.isNotEmpty,
         ),
-        Gap($style.insets.$8),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 제목
-            PreviewItem(
-              isTwinkle: controller.currentPage == 1,
-              previewItemType: PreviewItemType.title,
-              color: controller.colorScheme.primaryContainer,
-              isShow: controller.project.title.isNotEmpty,
-            ),
-            Gap($style.insets.$4),
-            PreviewItem(
-              isTwinkle: controller.currentPage == 2,
-              previewItemType: PreviewItemType.text,
-              color: controller.colorScheme.primaryContainer,
-              isShow: controller.project.contents.isNotEmpty,
-            ),
-            Gap($style.insets.$2),
-            PreviewItem(
-              isTwinkle: controller.currentPage == 2,
-              previewItemType: PreviewItemType.text,
-              color: controller.colorScheme.primaryContainer,
-              isShow: controller.project.contents.isNotEmpty,
-            ),
-            Gap($style.insets.$2),
-            PreviewItem(
-              isTwinkle: controller.currentPage == 2,
-              previewItemType: PreviewItemType.text,
-              color: controller.colorScheme.primaryContainer,
-              isShow: controller.project.contents.isNotEmpty,
-            ),
-            Gap($style.insets.$4),
-            // 버튼
-            PreviewItem(
-              isTwinkle: controller.currentPage == 5,
-              previewItemType: PreviewItemType.button,
-              color: controller.colorScheme.primaryContainer,
-              isShow: controller.callToActionIsOk.value,
-            ),
-          ],
+        Gap($style.insets.$4),
+        // 제목
+        PreviewItem(
+          isTwinkle: controller.currentPage == 1,
+          previewItemType: PreviewItemType.title,
+          color: controller.colorScheme.primaryContainer,
+          isShow: controller.project.title.isNotEmpty,
+        ),
+        Gap($style.insets.$4),
+        PreviewItem(
+          isTwinkle: controller.currentPage == 2,
+          previewItemType: PreviewItemType.text,
+          color: controller.colorScheme.primaryContainer,
+          isShow: controller.project.contents.isNotEmpty,
+        ),
+        Gap($style.insets.$2),
+        PreviewItem(
+          isTwinkle: controller.currentPage == 2,
+          previewItemType: PreviewItemType.text,
+          color: controller.colorScheme.primaryContainer,
+          isShow: controller.project.contents.isNotEmpty,
+        ),
+        Gap($style.insets.$4),
+        // 버튼
+        PreviewItem(
+          isTwinkle: controller.currentPage == 5,
+          previewItemType: PreviewItemType.button,
+          color: controller.colorScheme.primaryContainer,
+          isShow: controller.callToActionIsOk.value,
         ),
       ],
     );
@@ -438,10 +427,11 @@ class CreateProjectPage extends StatelessWidget {
             ],
           );
         case UserCallback.typeLink:
+          final TextEditingController textEditingController = TextEditingController(text: controller.detailCallbackTypeList.isEmpty ? '' : controller.detailCallbackTypeList.first);
           RxString errorText = ''.obs;
 
           return Obx(() => CustomTextField(
-                controller: TextEditingController(text: controller.detailCallbackTypeList.isEmpty ? '' : controller.detailCallbackTypeList.first),
+                controller: textEditingController,
                 width: controller.textFiledWidth,
                 hintText: 'url을 입력해 주세요.',
                 autofocus: true,
