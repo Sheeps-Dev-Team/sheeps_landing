@@ -7,6 +7,7 @@ import 'package:sheeps_landing/config/constants.dart';
 import 'package:sheeps_landing/config/routes.dart';
 import 'package:sheeps_landing/data/models/project.dart';
 import 'package:sheeps_landing/data/models/user_callback.dart';
+import 'package:sheeps_landing/screens/home/controllers/home_page_controller.dart';
 import 'package:sheeps_landing/util/global_function.dart';
 
 class CreateProjectController extends GetxController {
@@ -112,7 +113,14 @@ class CreateProjectController extends GetxController {
         },
         cancelText: '종료',
         cancelFunc: () {
-          Get.close(2); // 다이얼로그
+          Get.close(1); // 다이얼로그
+
+          if(Get.isRegistered<HomePageController>()) {
+            Get.back();
+          } else {
+            Get.offAllNamed(Routes.index);
+          }
+
           value = true;
           Get.delete<CreateProjectController>();
         });
