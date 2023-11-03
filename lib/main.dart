@@ -103,7 +103,7 @@ class _MyAppState extends State<MyApp> {
         Locale('ko', 'KR'),
       ],
       // initialRoute: '${Routes.project}/N1Z1RfyvMRfz52SP2K4g',
-      initialRoute: Routes.index,
+      initialRoute: Routes.home,
       getPages: Routes.getPages,
     );
   }

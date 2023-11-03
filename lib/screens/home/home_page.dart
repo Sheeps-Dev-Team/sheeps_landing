@@ -5,9 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:sheeps_landing/config/routes.dart';
 import 'package:sheeps_landing/screens/project/controllers/project_controller.dart';
-import 'package:sheeps_landing/screens/project/project_page.dart';
 import 'package:sheeps_landing/screens/template/controllers/default_template_controller.dart';
-import 'package:sheeps_landing/screens/template/default_template.dart';
 import 'package:sheeps_landing/util/components/responsive.dart';
 import 'package:sheeps_landing/util/components/site_app_bar.dart';
 import 'package:sheeps_landing/util/global_function.dart';
@@ -124,9 +122,9 @@ class HomePage extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       if (kDebugMode) {
-                        Get.toNamed('${Routes.projectManagement}/${project.documentID == '' ? 'N1Z1RfyvMRfz52SP2K4g' : project.documentID}');
+                        Get.toNamed('${Routes.projectManagement}/${project.documentID == '' ? 'N1Z1RfyvMRfz52SP2K4g' : project.documentID}', arguments: project,);
                       } else {
-                        Get.toNamed('${Routes.projectManagement}/${project.documentID}');
+                        Get.toNamed('${Routes.projectManagement}/${project.documentID}', arguments: project,);
                       }
                     },
                     child: Text(

@@ -15,7 +15,7 @@ class ProjectCommunicationController extends GetxController {
     '이름',
     '이메일',
     '전화번호',
-    'IP',
+    '일시',
   ];
   
   //calltoback 데이터 받아오기

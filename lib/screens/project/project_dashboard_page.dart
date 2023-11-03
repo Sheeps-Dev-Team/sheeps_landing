@@ -14,62 +14,102 @@ class ProjectDashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        margin: EdgeInsets.all($style.insets.$20),
-        padding: EdgeInsets.all($style.insets.$30),
-        decoration: BoxDecoration(
-          boxShadow: $style.boxShadows.bs1,
-          color: Colors.white,
-          border: Border.all(color: $style.colors.primary),
-          borderRadius: BorderRadius.circular($style.corners.$12),
-        ),
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: $style.colors.lightGrey,
+        padding: EdgeInsets.all($style.insets.$40),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              children: [
-                dashboardWidget(
-                  '프로젝트 이름',
-                  project.name,
-                ),
-                Gap($style.insets.$20),
-                dashboardWidget(
-                  '프로젝트 URL',
-                  project.getUrl,
-                  () {
-                    Get.toNamed('${Routes.project}/${project.documentID}');
-                  },
-                ),
-                Gap($style.insets.$20),
-                dashboardWidget(
-                  'Call To Action 타입',
-                  project.callbackType.split(division).first,
-                ),
-                Gap($style.insets.$20),
-                dashboardWidget(
-                  '유입 수',
-                  project.viewCount.toString(),
-                ),
-                Gap($style.insets.$20),
-                dashboardWidget(
-                  '좋아요 수',
-                  '20',
-                ),
-              ],
+            Text(
+              '대시보드',
+              style: $style.text.headline32,
+            ),
+            Text(
+              '프로젝트 정보 확인 및 수정이 가능합니다',
+              style: $style.text.body16,
+            ),
+            Gap(24 * sizeUnit),
+            contentsArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 40 * sizeUnit,
+                    child: Text(
+                      '프로젝트 정보',
+                      style: $style.text.subTitle20,
+                    ),
+                  ),
+                  Divider(
+                    height: 1,
+                    thickness: 2 * sizeUnit,
+                    color: $style.colors.lightGrey,
+                  ),
+                  Gap($style.insets.$12),
+                  dashboardWidget(
+                    '프로젝트 이름',
+                    project.name,
+                  ),
+                  Gap($style.insets.$20),
+                  dashboardWidget(
+                    '프로젝트 URL',
+                    project.getUrl,
+                    () {
+                      Get.toNamed('${Routes.project}/${project.documentID}', arguments: project);
+                    },
+                  ),
+                  Gap($style.insets.$20),
+                  dashboardWidget(
+                    'Call To Action 타입',
+                    project.callbackType.split(division).first,
+                  ),
+                  Gap($style.insets.$20),
+                  dashboardWidget(
+                    '유입 수',
+                    project.viewCount.toString(),
+                  ),
+                  Gap($style.insets.$20),
+                  dashboardWidget(
+                    '좋아요 수',
+                    '20',
+                  ),
+                ],
+              ),
             ),
             Gap($style.insets.$20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                CustomButton(
-                  customButtonStyle: CustomButtonStyle.outline32,
-                  text: '프로젝트 수정',
-                  width: 120 * sizeUnit,
-                  onTap: () {},
-                ),
-              ],
+            contentsArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 40 * sizeUnit,
+                    child: Text(
+                      '프로젝트 수정',
+                      style: $style.text.subTitle20,
+                    ),
+                  ),
+                  Divider(
+                    height: 1,
+                    thickness: 2 * sizeUnit,
+                    color: $style.colors.lightGrey,
+                  ),
+                  Gap($style.insets.$12),
+                  Container(
+                    width: 120 * sizeUnit,
+                    //height: 28 * sizeUnit,
+                    decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular($style.corners.$32), border: Border.all(color: $style.colors.primary)),
+                    child: TextButton(
+                        onPressed: () => Get.toNamed(Routes.modifyProject, arguments: project),
+                        child: Text(
+                          '프로젝트 수정',
+                          style: $style.text.subTitle14.copyWith(color: $style.colors.primary),
+                        )),
+                  )
+                ],
+              ),
             ),
           ],
         ),
@@ -77,36 +117,50 @@ class ProjectDashboardPage extends StatelessWidget {
     );
   }
 
-  Row dashboardWidget(String label, String contents, [GestureTapCallback? onTap]) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+  Column dashboardWidget(String label, String contents, [GestureTapCallback? onTap]) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          width: 200 * sizeUnit,
-          child: Text(
-            label,
-            style: $style.text.headline20,
-          ),
+        Text(
+          label,
+          style: $style.text.subTitle16,
         ),
-        Expanded(
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: $style.insets.$8),
-            height: 44 * sizeUnit,
-            decoration: BoxDecoration(
-              border: Border.all(width: 1 * sizeUnit, color: $style.colors.primary),
-              borderRadius: BorderRadius.circular($style.corners.$12),
-            ),
-            child: InkWell(
-              onTap: onTap,
-              child: Text(
-                contents,
-                style: $style.text.subTitle18,
-                textAlign: TextAlign.center,
-              ),
+        Gap($style.insets.$4),
+        Container(
+          padding: EdgeInsets.all($style.insets.$8),
+          //width: 280 * sizeUnit,
+          constraints: BoxConstraints(
+            minWidth: 800 * sizeUnit,
+            minHeight: 44 * sizeUnit,
+          ),
+          height: 38 * sizeUnit,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular($style.corners.$4),
+            border: Border.all(color: $style.colors.barrierColor),
+          ),
+          child: InkWell(
+            onTap: onTap,
+            child: Text(
+              contents,
+              style: $style.text.subTitle18,
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Container contentsArea({required Widget child}) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all($style.insets.$16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular($style.corners.$8),
+        border: Border.all(color: $style.colors.lightGrey),
+      ),
+      child: child,
     );
   }
 }

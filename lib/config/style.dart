@@ -60,6 +60,7 @@ class Corners {
   late final double $12 = 12 * scale;
   late final double $16 = 16 * scale;
   late final double $24 = 24 * scale;
+  late final double $32 = 32 * scale;
 }
 
 /// Box shadow

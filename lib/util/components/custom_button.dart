@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../config/constants.dart';
 
-enum CustomButtonStyle { filled48, filled32, outline48, outline32 }
+enum CustomButtonStyle { filled48, filled32, outline48, outline32, outline28 }
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
@@ -68,6 +68,16 @@ class CustomButton extends StatelessWidget {
         }
         height = 32 * sizeUnit;
         break;
+      case CustomButtonStyle.outline28:
+        fillColor = Colors.white;
+        fontColor = color;
+        fontSize = 14 * sizeUnit;
+        if (color == $style.colors.grey) {
+          fontWeight = FontWeight.w500;
+          borderColor = $style.colors.grey;
+        }
+        height = 28 * sizeUnit;
+        break;
     }
 
     TextStyle textStyle = $style.text.headline16.copyWith(
@@ -83,7 +93,8 @@ class CustomButton extends StatelessWidget {
         style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: borderRadius ?? BorderRadius.circular($style.corners.$8),
+              //borderRadius: borderRadius ?? BorderRadius.circular($style.corners.$8),
+              borderRadius: borderRadius ?? BorderRadius.circular($style.corners.$32),
               side: BorderSide(color: borderColor),
             ),
           ),
