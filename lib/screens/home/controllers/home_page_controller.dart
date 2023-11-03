@@ -12,8 +12,6 @@ class HomePageController extends GetxController {
   List<Project> list = [];
 
   Future<void> init() async {
-    // url 직접 접근 차단
-    if (GlobalFunction.blockDirectAccess()) return;
 
     if (kDebugMode) {
       if (GlobalData.loginUser == null) {
@@ -22,6 +20,9 @@ class HomePageController extends GetxController {
         list = await ProjectRepository.getProjectListByUserID(GlobalData.loginUser!.documentID);
       }
     } else {
+      // url 직접 접근 차단
+      if (GlobalFunction.blockDirectAccess()) return;
+
       list = await ProjectRepository.getProjectListByUserID(GlobalData.loginUser!.documentID);
     }
 

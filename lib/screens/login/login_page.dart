@@ -13,6 +13,7 @@ import 'package:sheeps_landing/config/global_assets.dart';
 import 'package:sheeps_landing/data/global_data.dart';
 import 'package:sheeps_landing/data/models/project.dart';
 import 'package:sheeps_landing/repository/project_repository.dart';
+import 'package:sheeps_landing/screens/home/controllers/home_page_controller.dart';
 import 'package:sheeps_landing/screens/login/controllers/login_page_controller.dart';
 import 'package:sheeps_landing/screens/user/user_main_page.dart';
 import 'package:sheeps_landing/util/components/get_extended_image.dart';
@@ -99,6 +100,8 @@ class LoginPage extends StatelessWidget {
                   InkWell(
                     onTap: () async {
                       if(kDebugMode){
+                        Get.delete<HomePageController>();
+
                         Get.toNamed(Routes.home);
                       }else{
                         Get.toNamed(Routes.index);

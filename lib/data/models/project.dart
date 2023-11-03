@@ -86,10 +86,10 @@ class Project {
 
   static final Project nullProject = Project(
     userDocumentID: '',
-    name: '',
+    name: 'test',
     title: '',
     contents: '',
-    imgPath: '',
+    imgPath: 'https://firebasestorage.googleapis.com/v0/b/sheeps-landing.appspot.com/o/project%2F1698908879096.jpg?alt=media&token=8fa603ef-5707-4219-aaf0-ffd9a210b537',
     descriptions: [Description.nullDescription.copyWith()],
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),

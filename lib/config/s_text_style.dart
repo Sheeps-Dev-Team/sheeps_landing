@@ -130,4 +130,11 @@ class STextStyle {
     height: height,
     color: fontColor,
   );
+
+  late final TextStyle body10 = TextStyle(
+    fontSize: 10 * scale,
+    fontWeight: FontWeight.normal,
+    height: height,
+    color: fontColor,
+  );
 }
