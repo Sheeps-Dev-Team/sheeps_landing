@@ -93,8 +93,8 @@ class CustomButton extends StatelessWidget {
         style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              //borderRadius: borderRadius ?? BorderRadius.circular($style.corners.$8),
-              borderRadius: borderRadius ?? BorderRadius.circular($style.corners.$32),
+              borderRadius: borderRadius ?? BorderRadius.circular($style.corners.$8),
+              // borderRadius: borderRadius ?? BorderRadius.circular($style.corners.$32),
               side: BorderSide(color: borderColor),
             ),
           ),

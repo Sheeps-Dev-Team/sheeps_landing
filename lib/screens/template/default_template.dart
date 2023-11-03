@@ -11,6 +11,7 @@ import 'package:sheeps_landing/util/components/custom_button.dart';
 import 'package:sheeps_landing/util/components/get_extended_image.dart';
 import 'package:sheeps_landing/util/components/responsive.dart';
 import 'package:sheeps_landing/util/components/sheeps_ani.dart';
+import 'package:sheeps_landing/util/global_function.dart';
 
 // ignore: must_be_immutable
 class DefaultTemplate extends StatelessWidget {
@@ -24,7 +25,7 @@ class DefaultTemplate extends StatelessWidget {
   final ProjectController projectController = Get.find<ProjectController>(tag: Get.parameters['id']);
 
   late final Color keyColor = Color(project.keyColor);
-  late final ColorScheme colorScheme = ColorScheme.fromSeed(seedColor: keyColor);
+  late final ColorScheme colorScheme = GlobalFunction.getColorScheme(keyColor);
   late TextStyle titleStyle = $style.text.headline32.copyWith(fontSize: 40 * sizeUnit, color: colorScheme.onPrimaryContainer);
   late TextStyle contentsStyle = $style.text.body16.copyWith(height: 1.6, color: colorScheme.onPrimaryContainer);
   late final Color sectionColor = colorScheme.primaryContainer.withOpacity(.2);

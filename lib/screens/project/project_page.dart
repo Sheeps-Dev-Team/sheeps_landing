@@ -55,9 +55,9 @@ class ProjectPage extends StatelessWidget {
                     bottom: 16 * sizeUnit,
                     child: CustomButton(
                       customButtonStyle: CustomButtonStyle.filled48,
-                      width: isDesktop ? 360 * sizeUnit : 260 * sizeUnit,
+                      width: 360 * sizeUnit,
                       color: controller.keyColor,
-                      text: controller.isModify ? '수정하기' : '생성하기',
+                      text: controller.isModify ? '수정완료' : '생성하기',
                       onTap: controller.isModify ? controller.modifyProject : controller.createProject,
                     ),
                   ),

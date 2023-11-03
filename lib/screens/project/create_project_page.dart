@@ -144,7 +144,7 @@ class CreateProjectPage extends StatelessWidget {
                             CustomButton(
                               width: controller.nextButtonWidth,
                               customButtonStyle: CustomButtonStyle.outline48,
-                              text: isModify ? '랜딩 페이지 수정' : '랜딩 페이지 만들기',
+                              text: isModify ? '수정 페이지 확인' : '랜딩 페이지 확인',
                               color: controller.keyColor,
                               onTap: controller.goToProjectPage,
                             ),
@@ -344,9 +344,9 @@ class CreateProjectPage extends StatelessWidget {
           controller.setCallbackType(type);
           controller.callToActionOkCheck();
         },
-        hoverColor: controller.colorScheme.surface,
-        splashColor: controller.colorScheme.surfaceVariant,
-        highlightColor: controller.colorScheme.surfaceVariant,
+        hoverColor: controller.colorScheme.primaryContainer.withOpacity(.15),
+        splashColor: controller.colorScheme.primaryContainer.withOpacity(.3),
+        highlightColor: controller.colorScheme.primaryContainer.withOpacity(.3),
         borderRadius: BorderRadius.circular($style.corners.$12),
         child: Container(
           width: 320 * sizeUnit,
@@ -388,9 +388,9 @@ class CreateProjectPage extends StatelessWidget {
             controller.setDetailCallbackType(type, isContain);
             controller.callToActionOkCheck();
           },
-          hoverColor: controller.colorScheme.surface,
-          splashColor: controller.colorScheme.surfaceVariant,
-          highlightColor: controller.colorScheme.surfaceVariant,
+          hoverColor: controller.colorScheme.primaryContainer.withOpacity(.15),
+          splashColor: controller.colorScheme.primaryContainer.withOpacity(.3),
+          highlightColor: controller.colorScheme.primaryContainer.withOpacity(.3),
           borderRadius: BorderRadius.circular($style.corners.$12),
           child: Container(
             width: 160 * sizeUnit,
@@ -859,13 +859,16 @@ class CreateProjectPage extends StatelessWidget {
     return InkWell(
       onTap: () async => onGetImage(await controller.getImage()),
       borderRadius: BorderRadius.circular($style.corners.$12),
+      hoverColor: controller.colorScheme.primaryContainer.withOpacity(.05),
+      splashColor: controller.colorScheme.primaryContainer.withOpacity(.1),
+      highlightColor: controller.colorScheme.primaryContainer.withOpacity(.1),
       child: Stack(
         children: [
           Container(
             width: width,
             height: height,
             decoration: BoxDecoration(
-              color: controller.colorScheme.surface,
+              color: controller.colorScheme.primaryContainer.withOpacity(.15),
               borderRadius: BorderRadius.circular($style.corners.$12),
             ),
             alignment: Alignment.center,
