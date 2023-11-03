@@ -82,8 +82,14 @@ class ProjectController extends GetxController {
       if (res != null) {
         project = res;
 
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        isLike((prefs.getStringList(likedIdListKey) ?? []).contains(project.documentID));
+        SharedPreferences prefs;
+        try{
+          prefs = await SharedPreferences.getInstance();
+          isLike((prefs.getStringList(likedIdListKey) ?? []).contains(project.documentID));
+
+        } catch (error) {
+          debugPrint(error.toString());
+        }
       } else {
         return GlobalFunction.goToBack(); // 잘못된 project 예외처리
       }
