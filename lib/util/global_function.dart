@@ -240,7 +240,7 @@ class GlobalFunction {
   // url 직접 접근 차단
   static bool blockDirectAccess() {
     if (GlobalData.loginUser == null) {
-      Get.offAllNamed(Routes.index);
+      WidgetsBinding.instance.addPostFrameCallback((_) => Get.offAllNamed(Routes.index));
       return true;
     } else {
       return false;

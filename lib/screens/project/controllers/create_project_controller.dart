@@ -80,7 +80,7 @@ class CreateProjectController extends GetxController {
         callToActionIsOk(true); // callToAction ok 세팅
       } catch (e) {
         if (kDebugMode) print(e);
-        GlobalFunction.goToBack();
+        WidgetsBinding.instance.addPostFrameCallback((_) => Get.offAllNamed(Routes.index));
       }
     }
   }
@@ -161,7 +161,7 @@ class CreateProjectController extends GetxController {
   void removeDescription(int index) {
     // 수정인 경우 기존 이미지 삭제
     final String imgUrl = project.descriptions[index].imgPath;
-    if(isModify && imgUrl.contains(defaultImgUrl)) deleteDescriptionImgUrl.add(imgUrl);
+    if (isModify && imgUrl.contains(defaultImgUrl)) deleteDescriptionImgUrl.add(imgUrl);
 
     project.descriptions.removeAt(index);
     update(['descriptions']);
@@ -172,7 +172,7 @@ class CreateProjectController extends GetxController {
 
   // descriptions isOk 체크
   void descriptionsIsOkCheck() {
-    for (Description description in project.descriptions){
+    for (Description description in project.descriptions) {
       if (description.title.isEmpty || description.contents.isEmpty || description.imgPath.isEmpty) {
         descriptionsIsOk(false);
         return;
@@ -250,10 +250,6 @@ class CreateProjectController extends GetxController {
   // 프로젝트 페이지로 이동
   Future<void> goToProjectPage() async {
     project.callbackType = assemblyCallbackType(); // 콜백 타입 설정
-    Get.toNamed(
-      '${Routes.project}/${DateTime.now().millisecondsSinceEpoch}',
-      arguments: project,
-      parameters: {'isTmp': 'true', 'isModify': '$isModify'}
-    );
+    Get.toNamed('${Routes.project}/${DateTime.now().millisecondsSinceEpoch}', arguments: project, parameters: {'isTmp': 'true', 'isModify': '$isModify'});
   }
 }

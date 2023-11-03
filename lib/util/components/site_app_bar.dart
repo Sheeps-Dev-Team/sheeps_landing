@@ -73,7 +73,7 @@ class SiteAppBar extends StatelessWidget implements PreferredSize {
                                     if (Get.currentRoute != Routes.home) ...[
                                       TextButton(
                                         onPressed: () {
-                                          Get.toNamed(Routes.home);
+                                          Get.offAllNamed(Routes.home);
                                         },
                                         child: Text(
                                           '나의 프로젝트',

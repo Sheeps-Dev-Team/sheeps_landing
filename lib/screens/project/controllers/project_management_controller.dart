@@ -12,7 +12,7 @@ class ProjectManagementController extends GetxController {
   late final Map<String, Widget Function()> pageMap = {
     '대시보드': () => ProjectDashboardPage(project: project),
     '커뮤니케이션': () => ProjectCommunicationPage(project: project),
-    '프로젝트 설정': () => ProjectSettingsPage(),
+    '프로젝트 설정': () => ProjectSettingsPage(project: project),
   };
   late String pageKey = pageMap.keys.first;
 
@@ -42,22 +42,6 @@ class ProjectManagementController extends GetxController {
     } else {
       GlobalFunction.goToBack();
     }
-
-    // final String? id = Get.parameters['id'];
-    //
-    // if(id != null) {
-    //   Project? res = await ProjectRepository.getProjectByID(id);
-    //   if(res != null) {
-    //     project = res;
-    //
-    //     isLoading = false;
-    //     update();
-    //   } else {
-    //     GlobalFunction.goToBack();
-    //   }
-    // } else {
-    //   GlobalFunction.goToBack();
-    // }
   }
 
   // 페이지 키 변경
