@@ -303,7 +303,7 @@ class GlobalFunction {
     }
 
     // 자동 로그인 정보 저장
-    if(GlobalData.loginUser != null){
+    if (GlobalData.loginUser != null) {
       const storage = FlutterSecureStorage();
 
       await storage.write(key: 'email', value: GlobalData.loginUser!.email);
@@ -314,7 +314,7 @@ class GlobalFunction {
   }
 
   // 로그아웃
-  static Future<void> logout() async{
+  static Future<void> logout() async {
     GlobalData.loginUser = null;
     // 자동 로그인 정보 삭제
     const storage = FlutterSecureStorage();
@@ -322,5 +322,27 @@ class GlobalFunction {
     await storage.delete(key: 'loginType');
 
     Get.offAllNamed(Routes.index);
+  }
+
+  // 키 컬러 호환 컬러
+  static ColorScheme getColorScheme(Color keyColor) {
+    ColorScheme colorScheme = ColorScheme.fromSeed(seedColor: keyColor);
+
+    if (keyColor == Colors.black) {
+      colorScheme = ColorScheme(
+        brightness: Brightness.light,
+        primary: Colors.black,
+        onPrimary: Colors.black.withOpacity(0.04),
+        secondary: Colors.black.withOpacity(0.04),
+        onSecondary: Colors.black,
+        error: Colors.red,
+        onError: Colors.black.withOpacity(0.04),
+        background: Colors.black.withOpacity(0.04),
+        onBackground: Colors.black,
+        surface: Colors.black.withOpacity(0.04),
+        onSurface: Colors.black,
+      );
+    }
+    return colorScheme;
   }
 }
