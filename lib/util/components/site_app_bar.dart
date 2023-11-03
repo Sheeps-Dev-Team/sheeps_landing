@@ -19,6 +19,8 @@ class SiteAppBar extends StatelessWidget implements PreferredSize {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDesktop = Responsive.isDesktopToFont(context);
+
     return CustomAppBar(
       leading: const SizedBox.shrink(),
       leadingWidth: 24 * sizeUnit,
@@ -34,9 +36,9 @@ class SiteAppBar extends StatelessWidget implements PreferredSize {
                       children: [
                         Positioned(
                           top: 48 * sizeUnit,
-                          right: Responsive.isDesktop(context) ? 24 * sizeUnit : 0,
+                          right: isDesktop ? 24 * sizeUnit : 0,
                           child: Container(
-                              width: 240 * sizeUnit,
+                              width: isDesktop ? 240 * sizeUnit : 160 * sizeUnit,
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(14 * sizeUnit),
@@ -54,19 +56,19 @@ class SiteAppBar extends StatelessWidget implements PreferredSize {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     DefaultTextStyle(
-                                      style: $style.text.headline20,
+                                      style: isDesktop ? $style.text.headline20 : $style.text.headline16,
                                       child: Text(GlobalData.loginUser!.name),
                                     ),
-                                    Gap(10 * sizeUnit),
+                                    Gap(isDesktop ? 10 * sizeUnit : 6 * sizeUnit),
                                     Divider(height: 1, thickness: 2, color: $style.colors.lightGrey),
-                                    Gap(10 * sizeUnit),
+                                    Gap(isDesktop ? 10 * sizeUnit : 6 * sizeUnit),
                                     TextButton(
                                       onPressed: () {
                                         Get.to(() => const UserMainPage());
                                       },
                                       child: Text(
                                         '계정 설정',
-                                        style: $style.text.subTitle14,
+                                        style: isDesktop ? $style.text.subTitle14 : $style.text.subTitle10,
                                       ),
                                     ),
                                     Gap(8 * sizeUnit),
@@ -87,15 +89,15 @@ class SiteAppBar extends StatelessWidget implements PreferredSize {
                                     Align(
                                       alignment: Alignment.centerRight,
                                       child: Container(
-                                        width: 80 * sizeUnit,
-                                        height: 28 * sizeUnit,
+                                        width: isDesktop ? 80 * sizeUnit : 70 * sizeUnit,
+                                        height: isDesktop ? 28 * sizeUnit : 20 * sizeUnit,
                                         decoration: BoxDecoration(
                                             color: Colors.transparent, borderRadius: BorderRadius.circular(32 * sizeUnit), border: Border.all(color: $style.colors.primary)),
                                         child: TextButton(
                                             onPressed: GlobalFunction.logout,
                                             child: Text(
                                               '로그아웃',
-                                              style: $style.text.subTitle14.copyWith(color: $style.colors.primary),
+                                              style: isDesktop ? $style.text.subTitle14.copyWith(color: $style.colors.primary) : $style.text.subTitle10.copyWith(color: $style.colors.primary),
                                             )),
                                       ),
                                     )
