@@ -29,7 +29,7 @@ class UserCallbackRepository {
     List<UserCallback> userCallbackList = [];
 
     try {
-      await _userCallbackCollection.where('projectID', isEqualTo: projectID).get().then((QuerySnapshot querySnapshot) {
+      await _userCallbackCollection.where('projectID', isEqualTo: projectID).orderBy('createdAt', descending: true).get().then((QuerySnapshot querySnapshot) {
         for (QueryDocumentSnapshot<Object?> doc in querySnapshot.docs) {
           userCallbackList.add(UserCallback.fromJson(doc.data() as Map<String, dynamic>));
         }
