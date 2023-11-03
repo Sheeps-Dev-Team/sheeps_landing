@@ -74,7 +74,7 @@ class ProjectDashboardPage extends StatelessWidget {
                   Gap($style.insets.$20),
                   dashboardWidget(
                     '좋아요 수',
-                    '20',
+                    project.likeCount.toString(),
                   ),
                 ],
               ),
