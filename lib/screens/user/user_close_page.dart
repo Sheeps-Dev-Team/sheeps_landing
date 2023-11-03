@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -90,7 +91,7 @@ class _UserClosePageState extends State<UserClosePage> {
                         );
                       }).toList(),
                       onChanged: (String? value) {
-                        debugPrint(value!);
+                        if(kDebugMode) debugPrint(value!);
                       },
                     ),
                   ),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:sheeps_landing/config/constants.dart';
 import 'package:sheeps_landing/screens/project/controllers/project_controller.dart';
 import 'package:sheeps_landing/screens/template/default_template.dart';
 import 'package:sheeps_landing/util/components/base_widget.dart';
+import 'package:sheeps_landing/util/components/custom_button.dart';
 import 'package:sheeps_landing/util/components/responsive.dart';
 import 'package:sheeps_landing/util/components/site_app_bar.dart';
 
@@ -41,11 +41,28 @@ class ProjectPage extends StatelessWidget {
 
           return Scaffold(
             appBar: appBar(isDesktop),
-            body: Center(
-              child: SizedBox(
-                width: controller.isDesktopView ? double.infinity : 360 * sizeUnit,
-                child: template,
-              ),
+            body: Stack(
+              alignment: Alignment.center,
+              children: [
+                Center(
+                  child: SizedBox(
+                    width: controller.isDesktopView ? double.infinity : 360 * sizeUnit,
+                    child: template,
+                  ),
+                ),
+                if(controller.isTmp)...[
+                  Positioned(
+                    bottom: 16 * sizeUnit,
+                    child: CustomButton(
+                      customButtonStyle: CustomButtonStyle.filled48,
+                      width: isDesktop ? 360 * sizeUnit : 260 * sizeUnit,
+                      color: controller.keyColor,
+                      text: controller.isModify ? '수정하기' : '생성하기',
+                      onTap: controller.isModify ? controller.modifyProject : controller.createProject,
+                    ),
+                  ),
+                ],
+              ],
             ),
             floatingActionButton: controller.isTmp
                 ? isDesktop
@@ -78,18 +95,6 @@ class ProjectPage extends StatelessWidget {
       return CustomAppBar(
         leading: controller.isTmp ? null : const SizedBox.shrink(),
         height: isDesktop ? 72 * sizeUnit : null,
-        actions: controller.isTmp
-            ? [
-                InkWell(
-                  onTap: controller.isModify ? controller.modifyProject : controller.createProject,
-                  child: Text(
-                    controller.isModify ? '수정하기' : '생성하기',
-                    style: $style.text.subTitle16.copyWith(color: controller.colorScheme.onSurface),
-                  ),
-                ),
-                Gap($style.insets.$16),
-              ]
-            : null,
         title: controller.project.name,
         surfaceTintColor: controller.keyColor,
       );

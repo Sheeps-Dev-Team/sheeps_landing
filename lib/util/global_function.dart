@@ -239,10 +239,8 @@ class GlobalFunction {
 
   // url 직접 접근 차단
   static bool blockDirectAccess() {
-    if (kDebugMode) return false;
-
-    if (Get.previousRoute.isEmpty) {
-      Get.offAllNamed(Routes.home);
+    if (GlobalData.loginUser == null) {
+      Get.offAllNamed(Routes.index);
       return true;
     } else {
       return false;
@@ -251,8 +249,6 @@ class GlobalFunction {
 
   static String getDateTimeToString(DateTime date) {
     String res = date.toString();
-
-    debugPrint(res);
 
     return '${res.substring(0, 4)}년 ${res.substring(5, 7)}월 ${res.substring(8, 10)}일';
   }
@@ -291,12 +287,6 @@ class GlobalFunction {
           if (GlobalData.loginUser != null) {
             if (kDebugMode) debugPrint('create user call');
 
-            // 자동 로그인 정보 저장
-            const storage = FlutterSecureStorage();
-
-            await storage.write(key: 'email', value: GlobalData.loginUser!.email);
-            await storage.write(key: 'loginType', value: GlobalData.loginUser!.loginType.toString());
-
             if (kDebugMode) debugPrint(GlobalData.loginUser!.documentID);
           } else {
             // 유저 생성 실패 시
@@ -312,6 +302,25 @@ class GlobalFunction {
       if (kDebugMode) print(error);
     }
 
+    // 자동 로그인 정보 저장
+    if(GlobalData.loginUser != null){
+      const storage = FlutterSecureStorage();
+
+      await storage.write(key: 'email', value: GlobalData.loginUser!.email);
+      await storage.write(key: 'loginType', value: GlobalData.loginUser!.loginType.toString());
+    }
+
     return errCheck;
+  }
+
+  // 로그아웃
+  static Future<void> logout() async{
+    GlobalData.loginUser = null;
+    // 자동 로그인 정보 삭제
+    const storage = FlutterSecureStorage();
+    await storage.delete(key: 'email');
+    await storage.delete(key: 'loginType');
+
+    Get.offAllNamed(Routes.index);
   }
 }

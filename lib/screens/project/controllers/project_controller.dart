@@ -1,6 +1,7 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:get_ip_address/get_ip_address.dart';
@@ -9,7 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sheeps_landing/config/routes.dart';
 import 'package:sheeps_landing/data/global_data.dart';
 import 'package:sheeps_landing/data/models/project.dart';
+import 'package:sheeps_landing/data/models/user.dart';
 import 'package:sheeps_landing/repository/project_repository.dart';
+import 'package:sheeps_landing/repository/user_repository.dart';
 import 'package:sheeps_landing/screens/project/controllers/create_project_controller.dart';
 import 'package:sheeps_landing/util/global_function.dart';
 
@@ -34,6 +37,16 @@ class ProjectController extends GetxController {
 
   void initState({required bool isIndex}) async {
     this.isIndex = isIndex; // 쉽스 랜딩 페이지인지
+    if (isIndex) {
+      await loginCheck(); // 로그인 체크
+
+      // 로그인이 된 경우 홈으로
+      if (GlobalData.loginUser != null) {
+        Get.offAllNamed(Routes.home);
+        return;
+      }
+    }
+
     final Project? tmpProject = Get.arguments;
 
     // 수정 여부
@@ -73,9 +86,7 @@ class ProjectController extends GetxController {
         isLike((prefs.getStringList(likedIdListKey) ?? []).contains(project.documentID));
 
         // 프로젝트 조회수 up
-        if (kReleaseMode) {
-          ProjectRepository.updateViewCount(documentID: project.documentID);
-        }
+        if (kReleaseMode) ProjectRepository.updateViewCount(documentID: project.documentID);
       } else {
         return GlobalFunction.goToBack(); // 잘못된 project 예외처리
       }
@@ -88,6 +99,23 @@ class ProjectController extends GetxController {
 
     isLoading = false;
     update();
+  }
+
+  // 로그인 체크
+  Future<void> loginCheck() async {
+    // 로그인 안되어있는 경우
+    if (GlobalData.loginUser == null) {
+      const storage = FlutterSecureStorage();
+      final String? email = await storage.read(key: 'email');
+
+      // 자동 로그인 정보 있는 경우
+      if (email != null) {
+        final User? user = await UserRepository.getUserByEmail(email);
+
+        // 로그인 성공
+        if (user != null) GlobalData.loginUser = user;
+      }
+    }
   }
 
   // 프로젝트 생성

@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
                 builder: (_) {
                   return GridView.builder(
                     padding: EdgeInsets.symmetric(horizontal: 24 * sizeUnit, vertical: 24 * sizeUnit),
-                    itemCount: controller.list.isEmpty ? 1 : (controller.list.length + 1),
+                    itemCount: controller.list.length + 1,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: Responsive.isMobile(context)
                           ? 2
@@ -64,78 +64,78 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  GestureDetector projectItem(Project project) {
-    // print('${Routes.projectManagement}/1');
-    return GestureDetector(
-      onTap: () {},
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 3,
-            child: InkWell(
-              onTap: () {
-                Get.delete<ProjectController>();
-                Get.delete<DefaultTemplateController>();
+  Widget projectItem(Project project) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 3,
+          child: InkWell(
+            borderRadius: BorderRadius.circular($style.insets.$12),
+            onTap: () {
+              Get.delete<ProjectController>();
+              Get.delete<DefaultTemplateController>();
 
-                if (kDebugMode) {
-                  Get.toNamed('${Routes.project}/${project.documentID == '' ? 'N1Z1RfyvMRfz52SP2K4g' : project.documentID}', arguments: project);
-                } else {
-                  Get.toNamed('${Routes.project}/${project.documentID}', arguments: project);
-                }
-              },
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular($style.insets.$12),
-                child: Center(
-                  child: GetExtendedImage(
-                    url: project.imgPath,
-                    fit: BoxFit.contain,
-                  ),
+              if (kDebugMode) {
+                Get.toNamed('${Routes.project}/${project.documentID == '' ? 'N1Z1RfyvMRfz52SP2K4g' : project.documentID}', arguments: project);
+              } else {
+                Get.toNamed('${Routes.project}/${project.documentID}', arguments: project);
+              }
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular($style.insets.$12),
+              child: Center(
+                child: GetExtendedImage(
+                  url: project.imgPath,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
           ),
-          Expanded(
-            child: Row(
-              children: [
-                Column(
+        ),
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Gap($style.insets.$4),
-                    Text(project.name, style: $style.text.subTitle16),
+                    Text(
+                      project.name,
+                      style: $style.text.subTitle16,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     Gap($style.insets.$2),
-                    Text(GlobalFunction.getDateTimeToString(project.updatedAt), style: $style.text.body12.copyWith(color: $style.colors.darkGrey)),
+                    Text(
+                      GlobalFunction.getDateTimeToString(project.updatedAt),
+                      style: $style.text.body12.copyWith(color: $style.colors.darkGrey),
+                    ),
                   ],
                 ),
-                const Spacer(),
-                Container(
-                  width: 80 * sizeUnit,
-                  height: 30 * sizeUnit,
-                  decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular(12 * sizeUnit), border: Border.all(color: $style.colors.primary)),
-                  child: TextButton(
-                      onPressed: () {
-                        if (kDebugMode) {
-                          Get.toNamed(
-                            '${Routes.projectManagement}/${project.documentID == '' ? 'N1Z1RfyvMRfz52SP2K4g' : project.documentID}',
-                            arguments: project,
-                          );
-                        } else {
-                          Get.toNamed(
-                            '${Routes.projectManagement}/${project.documentID}',
-                            arguments: project,
-                          );
-                        }
-                      },
-                      child: Text(
-                        '관리',
-                        style: $style.text.subTitle14.copyWith(color: $style.colors.primary),
-                      )),
-                )
-              ],
-            ),
+              ),
+              Container(
+                width: 80 * sizeUnit,
+                height: 30 * sizeUnit,
+                decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular(12 * sizeUnit), border: Border.all(color: $style.colors.primary)),
+                child: TextButton(
+                    onPressed: () {
+                      if (kDebugMode) {
+                        Get.toNamed('${Routes.projectManagement}/${project.documentID == '' ? 'N1Z1RfyvMRfz52SP2K4g' : project.documentID}', arguments: project,);
+                      } else {
+                        Get.toNamed('${Routes.projectManagement}/${project.documentID}', arguments: project,);
+                      }
+                    },
+                    child: Text(
+                      '관리',
+                      style: $style.text.subTitle14.copyWith(color: $style.colors.primary),
+                    )),
+              )
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
