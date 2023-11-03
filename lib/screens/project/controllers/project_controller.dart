@@ -331,7 +331,7 @@ class ProjectController extends GetxController {
 
         switch (type) {
           case UserCallback.formTypeName:
-            if (GlobalFunction.validRealNameErrorText(name) != null) return false;
+            if (name.isEmpty) return false;
             break;
           case UserCallback.formTypeEmail:
             if (GlobalFunction.validEmailErrorText(email) != null) return false;
@@ -407,7 +407,6 @@ class ProjectController extends GetxController {
                           hintText: '이름을 입력해 주세요.',
                           focusBorderColor: keyColor,
                           cursorColor: keyColor,
-                          errorText: name.isEmpty ? null : GlobalFunction.validRealNameErrorText(name),
                           onChanged: (p0) => setState(() => name = p0),
                         );
                         break;
