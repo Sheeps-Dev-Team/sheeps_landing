@@ -868,7 +868,7 @@ class CreateProjectPage extends StatelessWidget {
             width: width,
             height: height,
             decoration: BoxDecoration(
-              color: controller.colorScheme.primaryContainer.withOpacity(.15),
+              color: controller.colorScheme.primaryContainer.withOpacity(.1),
               borderRadius: BorderRadius.circular($style.corners.$12),
             ),
             alignment: Alignment.center,
