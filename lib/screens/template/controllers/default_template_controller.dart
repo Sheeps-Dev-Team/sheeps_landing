@@ -26,7 +26,7 @@ class DefaultTemplateController extends GetxController {
       if (itemPositionsListener.itemPositions.value.isNotEmpty && itemScrollController.isAttached) {
         final int idx = itemPositionsListener.itemPositions.value
             .where((ItemPosition position) => position.itemTrailingEdge > 0)
-            .reduce((ItemPosition min, ItemPosition position) => position.itemTrailingEdge < min.itemTrailingEdge * 2.1 ? position : min)
+            .reduce((ItemPosition min, ItemPosition position) => position.itemTrailingEdge < min.itemTrailingEdge * 2.2 ? position : min)
             .index;
 
         if (scrollIndex != idx) {
