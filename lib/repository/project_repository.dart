@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sheeps_landing/data/models/project.dart';
 
@@ -61,7 +62,7 @@ class ProjectRepository {
     try {
       project.updatedAt = DateTime.now();
 
-      _projectCollection.doc(project.documentID).update(project.toJson());
+      await _projectCollection.doc(project.documentID).update(project.toJson());
       return project;
     } catch (e) {
       if (kDebugMode) print(e.toString());
@@ -72,7 +73,7 @@ class ProjectRepository {
   // 조회수 업데이트
   static Future<bool> updateViewCount({required String documentID, int count = 1}) async {
     try {
-      _projectCollection.doc(documentID).update(
+      await _projectCollection.doc(documentID).update(
         {
           "viewCount": FieldValue.increment(count),
           "updatedAt": FieldValue.serverTimestamp(),
@@ -88,12 +89,33 @@ class ProjectRepository {
   // 좋아요 업데이트
   static Future<bool> updateLikeCount({required String documentID, int count = 1}) async {
     try {
-      _projectCollection.doc(documentID).update(
+      await _projectCollection.doc(documentID).update(
         {
           "likeCount": FieldValue.increment(count),
           "updatedAt": FieldValue.serverTimestamp(),
         },
       );
+      return true;
+    } catch (e) {
+      if (kDebugMode) print(e.toString());
+      return false;
+    }
+  }
+
+  // 프로젝트 삭제
+  static Future<bool> deleteProject(Project project) async {
+    try {
+      // main 이미지 삭제
+      await FirebaseStorage.instance.refFromURL(project.imgPath).delete();
+
+      // description 이미지 삭제
+      for(Description description in project.descriptions) {
+        await FirebaseStorage.instance.refFromURL(description.imgPath).delete();
+      }
+
+      // 프로젝트 삭제
+      await _projectCollection.doc(project.documentID).delete();
+
       return true;
     } catch (e) {
       if (kDebugMode) print(e.toString());

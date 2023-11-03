@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:sheeps_landing/data/models/project.dart';
+import 'package:sheeps_landing/repository/project_repository.dart';
+import 'package:sheeps_landing/screens/home/controllers/home_page_controller.dart';
 import 'package:sheeps_landing/util/components/custom_button.dart';
+import 'package:sheeps_landing/util/global_function.dart';
 
 import '../../config/constants.dart';
 
 class ProjectSettingsPage extends StatelessWidget {
-  const ProjectSettingsPage({super.key});
+  const ProjectSettingsPage({super.key, required this.project});
+
+  final Project project;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +30,7 @@ class ProjectSettingsPage extends StatelessWidget {
               style: $style.text.headline32,
             ),
             Text(
-              '프로젝트 삭제가 가능합니다.',
+              '프로젝트 관련 설정이 가능합니다.',
               style: $style.text.body16,
             ),
             Gap($style.insets.$24),
@@ -48,17 +54,43 @@ class ProjectSettingsPage extends StatelessWidget {
                   Container(
                     width: 120 * sizeUnit,
                     //height: 28 * sizeUnit,
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular($style.corners.$32),
-                        border: Border.all(color: $style.colors.red)
-                    ),
+                    decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular($style.corners.$32), border: Border.all(color: $style.colors.red)),
                     child: TextButton(
-                      style: ButtonStyle(
-                        overlayColor: MaterialStateProperty.all($style.colors.red.withOpacity(0.1)),
-                      ),
-                        onPressed: () {},
-                        child: Text('프로젝트 삭제', style: $style.text.subTitle14.copyWith(color: $style.colors.red),)),
+                        style: ButtonStyle(
+                          overlayColor: MaterialStateProperty.all($style.colors.red.withOpacity(0.1)),
+                        ),
+                        onPressed: () {
+                          GlobalFunction.showCustomDialog(
+                              title: '정말 삭제하시겠어요?',
+                              description: '삭제하면 데이터를 복원할 수 없어요.',
+                              showCancelBtn: true,
+                              okText: '삭제',
+                              okFunc: () async {
+                                Get.close(1); // 다이얼로그 끄기
+
+                                GlobalFunction.loadingDialog(); // 로딩 시작
+                                final bool isDeleted = await ProjectRepository.deleteProject(project);
+                                Get.close(1); // 로딩 끝
+
+                                // 삭제 성공 시
+                                if (isDeleted) {
+                                  final HomePageController homeController = Get.find<HomePageController>();
+
+                                  // 홈 페이지에서 프로젝트 삭제
+                                  homeController.list.removeWhere((element) => element.documentID == project.documentID);
+                                  homeController.update();
+
+                                  Get.back(); // 홈 페이지로 이동
+                                } else {
+                                  // 삭제 실패 시
+                                  GlobalFunction.showToast(msg: '잠시 후 다시 시도해 주세요.');
+                                }
+                              });
+                        },
+                        child: Text(
+                          '프로젝트 삭제',
+                          style: $style.text.subTitle14.copyWith(color: $style.colors.red),
+                        )),
                   )
                 ],
               ),
@@ -68,7 +100,6 @@ class ProjectSettingsPage extends StatelessWidget {
       ),
     );
   }
-
 
   Container contentsArea({required Widget child}) {
     return Container(
@@ -82,5 +113,4 @@ class ProjectSettingsPage extends StatelessWidget {
       child: child,
     );
   }
-
 }

@@ -31,7 +31,7 @@ class ProjectCommunicationPage extends StatelessWidget {
                 style: $style.text.headline32,
               ),
               Text(
-                'User callback 데이터를 확인할 수 있습니다.',
+                'Call To Action 데이터를 확인할 수 있습니다.',
                 style: $style.text.body16,
               ),
               Gap(24 * sizeUnit),
