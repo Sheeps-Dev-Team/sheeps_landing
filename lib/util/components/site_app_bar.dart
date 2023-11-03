@@ -113,17 +113,20 @@ class SiteAppBar extends StatelessWidget implements PreferredSize {
               },
               child: SvgPicture.asset(GlobalAssets.svgProfile, width: 32 * sizeUnit)),
         } else ...{
-          Container(
-            width: 80 * sizeUnit,
-            height: 34 * sizeUnit,
-            decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular(32 * sizeUnit), border: Border.all(color: $style.colors.primary)),
-            child: TextButton(
-                onPressed: () => Get.toNamed(Routes.login),
-                child: Text(
-                  '로그인',
-                  style: $style.text.subTitle14.copyWith(color: $style.colors.primary),
-                )),
-          )
+
+          if(!Responsive.isMobile(context)) ... [
+            Container(
+              width: 80 * sizeUnit,
+              height: 34 * sizeUnit,
+              decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular(32 * sizeUnit), border: Border.all(color: $style.colors.primary)),
+              child: TextButton(
+                  onPressed: () => Get.toNamed(Routes.login),
+                  child: Text(
+                    '로그인',
+                    style: $style.text.subTitle14.copyWith(color: $style.colors.primary),
+                  )),
+            )
+          ]
         },
         Gap($style.insets.$24),
       ],
