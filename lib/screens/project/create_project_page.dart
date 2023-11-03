@@ -59,7 +59,7 @@ class CreateProjectPage extends StatelessWidget {
                           value: controller.project.title.obs,
                           question: '제목을 입력해 주세요.',
                           subQuestion: '제품이나 서비스를 한 문장으로 설명할 수 있다면 어떻게 설명하시겠어요?',
-                          hintText: '아이디어 검증을 위한, 5분만에 만드는 랜딩 페이지',
+                          hintText: '가장 간단한 랜딩 페이지',
                           maxLength: 40,
                           onChanged: (value) => controller.project.title = value,
                         );

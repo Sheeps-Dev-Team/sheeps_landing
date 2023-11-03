@@ -46,20 +46,32 @@ class DefaultTemplateController extends GetxController {
   }
 
   void aniFunc() {
+    if(headerAni && description01Ani && description02Ani && description03Ani && callToActionAni) return;
+
     switch (scrollIndex) {
       case 0:
         headerAni = true;
         break;
       case 1:
+        headerAni = true;
         description01Ani = true;
         break;
       case 2:
+        headerAni = true;
+        description01Ani = true;
         description02Ani = true;
         break;
       case 3:
+        headerAni = true;
+        description01Ani = true;
+        description02Ani = true;
         description03Ani = true;
         break;
       case 4:
+        headerAni = true;
+        description01Ani = true;
+        description02Ani = true;
+        description03Ani = true;
         callToActionAni = true;
         break;
     }
