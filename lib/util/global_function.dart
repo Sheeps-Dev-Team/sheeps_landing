@@ -332,15 +332,17 @@ class GlobalFunction {
       colorScheme = ColorScheme(
         brightness: Brightness.light,
         primary: Colors.black,
-        onPrimary: Colors.black.withOpacity(0.04),
+        primaryContainer: Colors.black.withOpacity(0.04),
+        onPrimaryContainer: Colors.black,
+        onPrimary: Colors.black.withOpacity(0.08),
         secondary: Colors.black.withOpacity(0.04),
-        onSecondary: Colors.black,
+        onSecondary: Colors.black.withOpacity(0.08),
         error: Colors.red,
         onError: Colors.black.withOpacity(0.04),
         background: Colors.black.withOpacity(0.04),
-        onBackground: Colors.black,
+        onBackground: Colors.black.withOpacity(0.08),
         surface: Colors.black.withOpacity(0.04),
-        onSurface: Colors.black,
+        onSurface: Colors.black.withOpacity(0.08),
       );
     }
     return colorScheme;
