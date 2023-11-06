@@ -14,8 +14,6 @@ class CreateProjectController extends GetxController {
   final PageController pageController = PageController();
   final ScrollController descriptionScrollController = ScrollController();
   final nullXFile = XFile('');
-  final double textFiledWidth = 400 * sizeUnit;
-  final double nextButtonWidth = 320 * sizeUnit;
   final List<String> descriptionTitleList = ['번뜩이는 아이디어가 있으신가요?💡', '내 아이디어의 온도는?🌡️', '쉬운 검증, 빠른 도전🏎️'];
   final List<String> descriptionContentsList = [
     '연구 끝에 만들어진 몇 가지 핵심 질문에 답변하는 것만으로도\n매력적인 랜딩 페이지가 완성됩니다.',
@@ -146,7 +144,7 @@ class CreateProjectController extends GetxController {
   // 페이지 변경
   void onPageChanged(int index) {
     currentPage = index;
-    update(['preview']);
+    update();
   }
 
   // description 추가
