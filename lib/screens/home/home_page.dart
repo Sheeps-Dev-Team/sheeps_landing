@@ -118,8 +118,8 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Gap(10 * sizeUnit),
                   Container(
                     width: (isDesktop ? 80 : 48) * sizeUnit,
                     height: (isDesktop ? 30 : 20) * sizeUnit,

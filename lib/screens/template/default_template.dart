@@ -35,7 +35,10 @@ class DefaultTemplate extends StatelessWidget {
     final bool isDesktop = Responsive.isDesktop(context);
     final double currentWidth = MediaQuery.of(context).size.width;
 
-    if (!isDesktop) {
+    if (isDesktop) {
+      titleStyle = $style.text.headline32.copyWith(fontSize: 40 * sizeUnit, color: colorScheme.onPrimaryContainer);
+      contentsStyle = $style.text.body16.copyWith(height: 1.6, color: colorScheme.onPrimaryContainer);
+    } else {
       titleStyle = titleStyle.copyWith(fontSize: 32 * sizeUnit);
       contentsStyle = contentsStyle.copyWith(fontSize: 15 * sizeUnit);
     }
