@@ -77,7 +77,5 @@ class DefaultTemplateController extends GetxController {
     }
 
     update();
-
-    if (kDebugMode) print('scrollIndex: $scrollIndex');
   }
 }

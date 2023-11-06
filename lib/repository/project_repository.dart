@@ -27,7 +27,7 @@ class ProjectRepository {
     List<Project> projects = [];
 
     try {
-      await _projectCollection.where('userDocumentID', isEqualTo: userDocumentID).get().then((QuerySnapshot querySnapshot) {
+      await _projectCollection.where('userDocumentID', isEqualTo: userDocumentID).orderBy('updatedAt', descending: true).get().then((QuerySnapshot querySnapshot) {
         for (QueryDocumentSnapshot<Object?> doc in querySnapshot.docs) {
           projects.add(Project.fromJson(doc.data() as Map<String, dynamic>));
         }
@@ -109,7 +109,7 @@ class ProjectRepository {
       await FirebaseStorage.instance.refFromURL(project.imgPath).delete();
 
       // description 이미지 삭제
-      for(Description description in project.descriptions) {
+      for (Description description in project.descriptions) {
         await FirebaseStorage.instance.refFromURL(description.imgPath).delete();
       }
 

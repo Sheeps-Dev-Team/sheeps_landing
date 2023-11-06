@@ -103,6 +103,13 @@ class STextStyle {
     color: fontColor,
   );
 
+  late final TextStyle subTitle10 = TextStyle(
+    fontSize: 12 * scale,
+    fontWeight: FontWeight.w500,
+    height: height,
+    color: fontColor,
+  );
+
   late final TextStyle body18 = TextStyle(
     fontSize: 18 * scale,
     fontWeight: FontWeight.normal,
@@ -126,6 +133,13 @@ class STextStyle {
 
   late final TextStyle body12 = TextStyle(
     fontSize: 12 * scale,
+    fontWeight: FontWeight.normal,
+    height: height,
+    color: fontColor,
+  );
+
+  late final TextStyle body10 = TextStyle(
+    fontSize: 10 * scale,
     fontWeight: FontWeight.normal,
     height: height,
     color: fontColor,

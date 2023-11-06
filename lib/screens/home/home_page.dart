@@ -24,6 +24,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final bool isDesktop = Responsive.isDesktopToFont(context);
+
     return BaseWidget(
       child: GetBuilder<HomePageController>(
         builder: (_) {
@@ -53,7 +56,7 @@ class HomePage extends StatelessWidget {
                         if (index == (controller.list.length)) {
                           return addProjectItem();
                         }
-                        return projectItem(controller.list[index]);
+                        return projectItem(controller.list[index], isDesktop);
                       }
                     },
                   );
@@ -64,7 +67,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget projectItem(Project project) {
+  Widget projectItem(Project project,bool isDesktop) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -93,6 +96,9 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ),
+        if(!isDesktop) ... [
+          Gap($style.insets.$8)
+        ],
         Expanded(
           child: Row(
             children: [
@@ -102,35 +108,36 @@ class HomePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Gap($style.insets.$4),
-                    Text(
-                      project.name,
-                      style: $style.text.subTitle16,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    Text(project.name, style: isDesktop ? $style.text.subTitle16 : $style.text.subTitle12),
                     Gap($style.insets.$2),
-                    Text(
-                      GlobalFunction.getDateTimeToString(project.updatedAt),
-                      style: $style.text.body12.copyWith(color: $style.colors.darkGrey),
+                    Text(GlobalFunction.getDateTimeToString(project.updatedAt),
+                        style: isDesktop ? $style.text.body12.copyWith(color: $style.colors.darkGrey) :
+                        $style.text.body10.copyWith(color: $style.colors.darkGrey)
                     ),
                   ],
                 ),
               ),
-              Container(
-                width: 80 * sizeUnit,
-                height: 30 * sizeUnit,
-                decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular(12 * sizeUnit), border: Border.all(color: $style.colors.primary)),
-                child: TextButton(
-                    onPressed: () {
-                      if (kDebugMode) {
-                        Get.toNamed('${Routes.projectManagement}/${project.documentID == '' ? 'N1Z1RfyvMRfz52SP2K4g' : project.documentID}', arguments: project,);
-                      } else {
-                        Get.toNamed('${Routes.projectManagement}/${project.documentID}', arguments: project,);
-                      }
-                    },
-                    child: Text(
-                      '관리',
-                      style: $style.text.subTitle14.copyWith(color: $style.colors.primary),
-                    )),
+              Column(
+                children: [
+                  Gap(10 * sizeUnit),
+                  Container(
+                    width: (isDesktop ? 80 : 48) * sizeUnit,
+                    height: (isDesktop ? 30 : 20) * sizeUnit,
+                    decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular(12 * sizeUnit), border: Border.all(color: $style.colors.primary)),
+                    child: TextButton(
+                        onPressed: () {
+                          if (kDebugMode) {
+                            Get.toNamed('${Routes.projectManagement}/${project.documentID == '' ? 'N1Z1RfyvMRfz52SP2K4g' : project.documentID}', arguments: project,);
+                          } else {
+                            Get.toNamed('${Routes.projectManagement}/${project.documentID}', arguments: project,);
+                          }
+                        },
+                        child: Text(
+                          '관리',
+                          style: isDesktop ? $style.text.subTitle14.copyWith(color: $style.colors.primary) : $style.text.body10.copyWith(color: $style.colors.primary),
+                        )),
+                  ),
+                ],
               )
             ],
           ),

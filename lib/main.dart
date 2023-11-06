@@ -87,7 +87,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Sheeps Landing',
+      title: '쉽스랜딩',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Pretendard',
@@ -103,7 +103,7 @@ class _MyAppState extends State<MyApp> {
         Locale('ko', 'KR'),
       ],
       // initialRoute: '${Routes.project}/N1Z1RfyvMRfz52SP2K4g',
-      initialRoute: Routes.home,
+      initialRoute: Routes.index,
       getPages: Routes.getPages,
     );
   }
