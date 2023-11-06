@@ -32,6 +32,7 @@ class CreateProjectPage extends StatelessWidget {
   late TextStyle questionStyle;
   late TextStyle subQuestionStyle;
   late double buttonWidth;
+  late bool autoFocus;
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +42,12 @@ class CreateProjectPage extends StatelessWidget {
       questionStyle = $style.text.headline32;
       subQuestionStyle = $style.text.subTitle18;
       buttonWidth = 200 * sizeUnit;
+      autoFocus = true;
     } else {
       questionStyle = $style.text.headline24.copyWith(fontSize: 26 * sizeUnit);
       subQuestionStyle = $style.text.subTitle15;
       buttonWidth = 160 * sizeUnit;
+      autoFocus = false;
     }
 
     return BaseWidget(
@@ -478,7 +481,7 @@ class CreateProjectPage extends StatelessWidget {
                 controller: textEditingController,
                 width: textFiledWidth,
                 hintText: 'url을 입력해 주세요.',
-                autofocus: true,
+                autofocus: autoFocus,
                 focusBorderColor: controller.keyColor,
                 cursorColor: controller.keyColor,
                 errorText: errorText.isEmpty ? null : errorText.value,
@@ -621,7 +624,7 @@ class CreateProjectPage extends StatelessWidget {
               controller: TextEditingController(text: description.title),
               width: textFiledWidth,
               hintText: titleHintText,
-              autofocus: true,
+              autofocus: autoFocus,
               maxLength: 40,
               focusBorderColor: controller.keyColor,
               cursorColor: controller.keyColor,
@@ -635,7 +638,7 @@ class CreateProjectPage extends StatelessWidget {
               controller: TextEditingController(text: description.contents),
               width: textFiledWidth,
               hintText: contentsHintText,
-              autofocus: true,
+              autofocus: autoFocus,
               maxLines: isDesktop ? 10 : 5,
               minLines: isDesktop ? 10 : 5,
               maxLength: 200,
@@ -819,7 +822,7 @@ class CreateProjectPage extends StatelessWidget {
         CustomTextField(
           controller: TextEditingController(text: value.value),
           width: textFiledWidth,
-          autofocus: true,
+          autofocus: autoFocus,
           hintText: hintText,
           focusBorderColor: controller.keyColor,
           cursorColor: controller.keyColor,
