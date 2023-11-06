@@ -86,6 +86,7 @@ class CreateProjectController extends GetxController {
 
   // 다음 질문
   void nextQuestion() {
+    GlobalFunction.unFocus;
     pageController.nextPage(duration: $style.times.ms300, curve: Curves.easeIn);
   }
 
