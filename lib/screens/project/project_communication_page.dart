@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:sheeps_landing/data/models/project.dart';
-import 'package:sheeps_landing/data/models/user_callback.dart';
-import 'package:sheeps_landing/repository/user_callback_repository.dart';
 import 'package:sheeps_landing/screens/project/controllers/project_communication_controller.dart';
 import 'package:sheeps_landing/util/components/custom_data_table.dart';
 
@@ -46,7 +44,7 @@ class ProjectCommunicationPage extends StatelessWidget {
                         controller.userCallbackList.length,
                         (index) => [
                           (index + 1).toString(),
-                          project.callbackType.split(division).first,
+                          controller.callbackTypes[index],
                           ...controller.userCallbackList[index].getRows,
                         ],
                       ),
@@ -62,9 +60,10 @@ class ProjectCommunicationPage extends StatelessWidget {
   }
 
 
-  Container contentsArea({required Widget child}) {
+  Widget contentsArea({required Widget child}) {
     return Container(
       width: double.infinity,
+      height: double.infinity,
       padding: EdgeInsets.all($style.insets.$16),
       decoration: BoxDecoration(
         color: Colors.white,
