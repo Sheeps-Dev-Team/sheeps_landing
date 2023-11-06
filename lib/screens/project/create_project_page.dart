@@ -973,7 +973,7 @@ class CreateProjectPage extends StatelessWidget {
         height: 24 * sizeUnit,
         child: Center(
           child: InkWell(
-            onTap: controller.previousQuestion,
+            onTap: controller.onWillPop,
             child: SvgPicture.asset(
               GlobalAssets.svgArrowLeft,
               width: 24 * sizeUnit,
