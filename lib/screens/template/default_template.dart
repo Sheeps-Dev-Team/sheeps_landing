@@ -260,6 +260,7 @@ class DefaultTemplate extends StatelessWidget {
             fit: BoxFit.contain,
             width: 632 * sizeUnit,
             height: 477 * sizeUnit,
+            loadingWidget: const SizedBox.shrink(),
           ),
         ),
       );
@@ -322,6 +323,7 @@ class DefaultTemplate extends StatelessWidget {
           fit: BoxFit.contain,
           height: 357 * sizeUnit,
           width: 366 * sizeUnit,
+          loadingWidget: const SizedBox.shrink(),
         ),
       );
     }
