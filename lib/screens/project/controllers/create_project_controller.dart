@@ -86,11 +86,14 @@ class CreateProjectController extends GetxController {
 
   // 다음 질문
   void nextQuestion() {
+    GlobalFunction.unFocus;
     pageController.nextPage(duration: $style.times.ms300, curve: Curves.easeIn);
   }
 
   // 이전 질문
   void previousQuestion() {
+    GlobalFunction.unFocus;
+
     if (currentPage > 0) {
       pageController.previousPage(duration: $style.times.ms300, curve: Curves.easeIn);
     } else {
