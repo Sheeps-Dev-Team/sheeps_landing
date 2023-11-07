@@ -130,7 +130,11 @@ class DefaultTemplate extends StatelessWidget {
         distance: controller.distance,
         child: Column(
           children: [
-            Text(project.title, style: titleStyle),
+            Text(
+              project.title,
+              style: titleStyle,
+              textAlign: TextAlign.center,
+            ),
             Gap($style.insets.$40),
             actionButton(),
           ],
