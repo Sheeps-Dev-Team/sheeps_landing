@@ -68,7 +68,7 @@ class ProjectDashboardPage extends StatelessWidget {
                   ),
                   Gap($style.insets.$20),
                   dashboardWidget(
-                    '유입 수',
+                    '조회 수',
                     project.viewCount.toString(),
                   ),
                   Gap($style.insets.$20),
