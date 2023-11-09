@@ -24,6 +24,7 @@ import '../../config/routes.dart';
 import '../../util/components/base_widget.dart';
 import '../../util/components/custom_button.dart';
 import '../../util/components/custom_text_field.dart';
+import '../../util/components/responsive.dart';
 import '../../util/components/site_app_bar.dart';
 import '../project/controllers/create_project_controller.dart';
 
@@ -38,6 +39,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDesktop = Responsive.isDesktop(context);
+
     return BaseWidget(
       child: GetBuilder<LoginPageController>(
         builder: (_) {
@@ -46,7 +49,7 @@ class LoginPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgPicture.asset(GlobalAssets.svgLogo, height: 100 * sizeUnit,),
+                  SvgPicture.asset(GlobalAssets.svgLogo, height: isDesktop ? 100 * sizeUnit : 80 * sizeUnit,),
                   SizedBox(height: 18 * sizeUnit),
                   Text('로그인', style: $style.text.subTitle20),
                   SizedBox(height: 12 * sizeUnit),
