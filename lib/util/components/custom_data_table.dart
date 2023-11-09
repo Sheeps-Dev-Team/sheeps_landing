@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:sheeps_landing/util/components/responsive.dart';
 
 import '../../config/constants.dart';
 
 class CustomDataTable extends StatefulWidget {
-  CustomDataTable({Key? key, required this.columns, required this.rows, required this.onRowTap, this.widthList = const <double>[]}) : super(key: key);
+  const CustomDataTable({Key? key, required this.columns, required this.rows, required this.onRowTap, this.widthFlexList = const <int>[]}) : super(key: key);
 
   final List<String> columns;
   final List<List<String>> rows;
   final Function(int index) onRowTap;
-  List<double> widthList;
+  final List<int> widthFlexList;
 
   @override
   State<CustomDataTable> createState() => _CustomDataTableState();
@@ -17,31 +18,40 @@ class CustomDataTable extends StatefulWidget {
 
 class _CustomDataTableState extends State<CustomDataTable> {
   late double w; //열의 너비
-  late double extendWidth; // 추가 너비 계산
-  int hoverIndex = nullInt;
+  List<double> extendWidthList = [];
+  int hoverIndex = nullInt; // 현재 마우스 커서가 위치한 행의 인덱스 저장
 
   @override
   Widget build(BuildContext context) {
+    final bool isDesktop = Responsive.isDesktop(context);
+
     return LayoutBuilder(builder: (context, constraints) {
-      w = (constraints.maxWidth - 48 - 2) / widget.columns.length; // (maxWidth - tablePadding - borderWidth) / columns.length;
-      double tmpSum = 1;
-      for(double element in widget.widthList){
-        tmpSum += element;
+      extendWidthList.clear();
+
+      w = (constraints.maxWidth - 2) / widget.columns.length; // (maxWidth - tablePadding - borderWidth) / columns.length;
+
+      int maxFlex = 0;
+      for (int element in widget.widthFlexList) {
+        maxFlex += element;
       }
-      extendWidth = constraints.maxWidth - 48 - 2 - tmpSum;
+
+      if (widget.widthFlexList.isNotEmpty) {
+        extendWidthList = List.generate(widget.widthFlexList.length, (index) => (constraints.maxWidth - 2) * (widget.widthFlexList[index] / maxFlex));
+      }
 
       return Column(
         children: [
-          header(),
+          header(isDesktop),
           SizedBox(height: 16 * sizeUnit),
           Expanded(
             child: ListView.separated(
               itemCount: widget.rows.length,
-              separatorBuilder: (context, index) => SizedBox(height: 12 * sizeUnit),
+              separatorBuilder: (context, index) => SizedBox(height: isDesktop ? 12 * sizeUnit : 8 * sizeUnit),
               itemBuilder: (context, index) {
                 return dataRow(
                   dataRow: widget.rows[index],
                   index: index,
+                  isDesktop: isDesktop,
                 );
               },
             ),
@@ -51,67 +61,62 @@ class _CustomDataTableState extends State<CustomDataTable> {
     });
   }
 
-  Widget dataRow({required List<String> dataRow, required int index}) {
+  Widget dataRow({required List<String> dataRow, required int index, required bool isDesktop}) {
     return InkWell(
       onTap: () => widget.onRowTap(index),
       onHover: (value) => setState(() {
-        if(value) {
+        if (value) {
           hoverIndex = index;
         } else {
           hoverIndex = nullInt;
         }
       }),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 18 * sizeUnit),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular($style.corners.$4),
           border: Border.all(color: hoverIndex == index ? $style.colors.primary : $style.colors.grey),
         ),
         child: Row(
-          children: List.generate(
-              dataRow.length,
-                  (i) => Container(
-                alignment: Alignment.center,
-                width: widget.widthList.isEmpty ? w : widget.widthList[i] < 0 ? extendWidth : widget.widthList[i],
-                height: 56 * sizeUnit,
-                child: Text(
-                  dataRow[i],
-                  style: $style.text.body16,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              )),
+          children: List.generate(dataRow.length, (i) {
+            return Container(
+              alignment: Alignment.center,
+              width: extendWidthList.isNotEmpty ? extendWidthList[i] : w,
+              height: isDesktop ? 56 * sizeUnit : 36 * sizeUnit,
+              child: Text(
+                dataRow[i],
+                style: isDesktop ? $style.text.body18 : $style.text.body14,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            );
+          }),
         ),
       ),
     );
   }
 
-  Widget header() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: $style.insets.$24),
-      child: Row(
-        children: List.generate(
-            widget.columns.length,
-                (index) => Container(
-              width: widget.widthList.isEmpty ? w : widget.widthList[index] < 0 ? extendWidth : widget.widthList[index],
-              height: 56 * sizeUnit,
-              alignment: Alignment.centerLeft,
-              child: Column(
-                children: [
-                  Text(
-                    widget.columns[index],
-                    style: $style.text.headline20,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Gap($style.insets.$16),
-                  Divider(
-                    height: 1 * sizeUnit,
-                    thickness: 2 * sizeUnit,
-                    color: $style.colors.lightGrey,
-                  ),
-                ],
-              ),
-            )),
-      ),
-    );
+  Widget header(bool isDesktop) {
+    return Row(
+        children: List.generate(widget.columns.length, (index) {
+      return SizedBox(
+        width: extendWidthList.isNotEmpty ? extendWidthList[index] : w,
+        child: Column(
+          children: [
+            Text(
+              widget.columns[index],
+              style: isDesktop ? $style.text.headline20 : $style.text.headline14,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+            Gap(isDesktop ? $style.insets.$16 : $style.insets.$8),
+            Divider(
+              height: 1 * sizeUnit,
+              thickness: 2 * sizeUnit,
+              color: $style.colors.lightGrey,
+            ),
+          ],
+        ),
+      );
+    }));
   }
 }
