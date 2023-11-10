@@ -58,7 +58,7 @@ class UserRepository {
   static Future<bool> setUserClose() async {
     try {
       final DocumentReference doc = _userCollection.doc(GlobalData.loginUser!.documentID);
-      await doc.update({'state' : 1});
+      await doc.update({'state' : UserState.deActive.index});
       return true;
     } catch (e) {
       if(kDebugMode) print(e.toString());

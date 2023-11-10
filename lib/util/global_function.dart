@@ -295,6 +295,18 @@ class GlobalFunction {
           }
         } else {
           if (kDebugMode) debugPrint('is not empty');
+
+          if(kReleaseMode) {
+            // 닫힌 계정 예외처리
+            if(GlobalData.loginUser!.state == UserState.deActive.index) {
+              showCustomDialog(
+                title: '닫힌 계정입니다.',
+                description: '계정을 다시 활성화 하려면\ncompany@noteasy.kr로 문의해 주세요.',
+              );
+
+              return true;
+            }
+          }
         }
       }
     } catch (error) {

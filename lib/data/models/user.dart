@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+enum UserState {active, deActive}
+
 class User {
   User({
     this.documentID = '',
@@ -25,7 +27,7 @@ class User {
       email: json['email'] ?? '',
       loginType: json['loginType'] ?? 0,
       name: json['name'] ?? '',
-      state: json['state'] ?? 0,
+      state: json['state'] ?? UserState.active.index,
       createdAt: json['createdAt'].toDate(),
       updatedAt: json['updatedAt'].toDate(),
     );
