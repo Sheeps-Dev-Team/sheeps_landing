@@ -27,7 +27,7 @@ class ProjectManagementPage extends StatelessWidget {
           leading: isDesktop
               ? const SizedBox.shrink()
               : Padding(
-                  padding: EdgeInsets.only(left: 16 * sizeUnit),
+                  padding: EdgeInsets.only(left: $style.insets.$16),
                   child: SizedBox(
                     width: 24 * sizeUnit,
                     height: 24 * sizeUnit,

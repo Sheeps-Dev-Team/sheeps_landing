@@ -42,7 +42,7 @@ class SiteAppBar extends StatelessWidget implements PreferredSize {
                             width: isDesktop ? 240 * sizeUnit : 160 * sizeUnit,
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(14 * sizeUnit),
+                              borderRadius: BorderRadius.circular($style.insets.$14),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withOpacity(0.2),
@@ -52,7 +52,7 @@ class SiteAppBar extends StatelessWidget implements PreferredSize {
                               ],
                             ),
                             child: Padding(
-                              padding: EdgeInsets.all(12.0 * sizeUnit),
+                              padding: EdgeInsets.all($style.insets.$12),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -60,9 +60,9 @@ class SiteAppBar extends StatelessWidget implements PreferredSize {
                                     style: isDesktop ? $style.text.headline20 : $style.text.headline16,
                                     child: Text(GlobalData.loginUser!.name),
                                   ),
-                                  Gap(isDesktop ? 10 * sizeUnit : 6 * sizeUnit),
+                                  Gap(isDesktop ? $style.insets.$10 : $style.insets.$6),
                                   Divider(height: 1, thickness: 2, color: $style.colors.lightGrey),
-                                  Gap(isDesktop ? 10 * sizeUnit : 6 * sizeUnit),
+                                  Gap(isDesktop ? $style.insets.$10 : $style.insets.$6),
                                   TextButton(
                                     onPressed: () {
                                       Get.to(() => const UserMainPage());
@@ -72,7 +72,7 @@ class SiteAppBar extends StatelessWidget implements PreferredSize {
                                       style: isDesktop ? $style.text.subTitle14 : $style.text.subTitle10,
                                     ),
                                   ),
-                                  Gap(8 * sizeUnit),
+                                  Gap($style.insets.$8),
                                   if (Get.currentRoute != Routes.home) ...[
                                     TextButton(
                                       onPressed: () {
@@ -80,19 +80,19 @@ class SiteAppBar extends StatelessWidget implements PreferredSize {
                                       },
                                       child: Text(
                                         '나의 프로젝트',
-                                        style: $style.text.subTitle14,
+                                        style: isDesktop ? $style.text.subTitle14 : $style.text.subTitle10,
                                       ),
                                     ),
-                                    Gap(8 * sizeUnit),
+                                    Gap($style.insets.$8),
                                   ],
                                   Divider(height: 1, thickness: 2, color: $style.colors.lightGrey),
-                                  Gap(16 * sizeUnit),
+                                  Gap($style.insets.$16),
                                   Align(
                                     alignment: Alignment.centerRight,
                                     child: Container(
                                       width: isDesktop ? 80 * sizeUnit : 70 * sizeUnit,
                                       height: isDesktop ? 28 * sizeUnit : 20 * sizeUnit,
-                                      decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular(32 * sizeUnit), border: Border.all(color: $style.colors.primary)),
+                                      decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular($style.corners.$32), border: Border.all(color: $style.colors.primary)),
                                       child: TextButton(
                                           onPressed: GlobalFunction.logout,
                                           child: Text(
@@ -120,7 +120,7 @@ class SiteAppBar extends StatelessWidget implements PreferredSize {
           Container(
             width: 58 * sizeUnit,
             height: 30 * sizeUnit,
-            decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular(32 * sizeUnit), border: Border.all(color: $style.colors.primary)),
+            decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular($style.corners.$32), border: Border.all(color: $style.colors.primary)),
             child: TextButton(
                 onPressed: () => Get.toNamed(Routes.login),
                 child: Text(
