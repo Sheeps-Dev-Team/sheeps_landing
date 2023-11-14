@@ -36,7 +36,7 @@ class UserSettingPage extends StatelessWidget {
             Gap(isDesktop ? $style.insets.$24 : $style.insets.$12),
             Container(
               width: double.infinity,
-              height: 240 * sizeUnit,
+              //height: 240 * sizeUnit,
               padding: EdgeInsets.all($style.insets.$16),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -153,7 +153,7 @@ class UserSettingPage extends StatelessWidget {
                           ),
                           child: TextButton(
                               onPressed: () {
-                                Get.to(() => UserClosePage());
+                                Get.to(() => const UserClosePage());
                               },
                               child: Text(
                                 '계정 닫기',
@@ -189,7 +189,7 @@ class UserSettingPage extends StatelessWidget {
                                   overlayColor: MaterialStateProperty.all($style.colors.red.withOpacity(0.1)),
                                 ),
                                 onPressed: () {
-                                  Get.to(() => UserClosePage());
+                                  Get.to(() => const UserClosePage());
                                 },
                                 child: Text(
                                   '계정 닫기',
