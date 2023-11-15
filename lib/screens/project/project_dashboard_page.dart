@@ -470,7 +470,19 @@ class _ProjectDashboardPageState extends State<ProjectDashboardPage> {
         widget.project.orderID = jsonMap['order_id'];
         widget.project.orderedAt = DateTime.now();
 
+        GlobalFunction.showCustomDialog();
+
         Bootpay().dismiss(context);
+
+        GlobalFunction.showCustomDialog(
+          title: '결제 성공',
+          description: '결제 해주셔서 정말 감사합니다.🙏\n보다 나은 서비스로 보답하겠습니다.🙇‍',
+        ).then((value) {
+          setState(() {
+
+          });
+        });
+
         return false;
       },
       onDone: (String data) {
