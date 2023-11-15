@@ -1,8 +1,11 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:image_network/image_network.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sheeps_landing/config/constants.dart';
 import 'package:sheeps_landing/config/global_assets.dart';
@@ -12,8 +15,8 @@ import 'package:sheeps_landing/util/components/base_widget.dart';
 import 'package:sheeps_landing/util/components/custom_app_bar.dart';
 import 'package:sheeps_landing/util/components/custom_button.dart';
 import 'package:sheeps_landing/util/components/custom_text_field.dart';
-import 'package:sheeps_landing/util/components/get_extended_image.dart';
 import 'package:sheeps_landing/util/components/preview.dart';
+import 'package:sheeps_landing/util/global_function.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../data/models/user_callback.dart';
@@ -945,10 +948,18 @@ class CreateProjectPage extends StatelessWidget {
                     width: 96 * sizeUnit,
                     colorFilter: ColorFilter.mode(controller.colorScheme.primaryContainer, BlendMode.srcIn),
                   )
-                : GetExtendedImage(
-                    url: xFile.path,
-                    fit: BoxFit.contain,
-                  ),
+                :
+            FutureBuilder<ui.Image>(
+              future: GlobalFunction.getImage(xFile.path),
+              builder: (BuildContext context, AsyncSnapshot<ui.Image> snapshot) {
+                if (snapshot.hasData) {
+                  ui.Image? image = snapshot.data;
+                  return ImageNetwork(image: xFile.path, height: image!.height * sizeUnit, width: image!.width * sizeUnit,fitWeb: BoxFitWeb.contain,);
+                } else {
+                  return const Text('Loading...');
+                }
+              },
+            )
           ),
           if (!isNullImg) ...[
             Positioned(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:sheeps_landing/config/constants.dart';
 import 'package:sheeps_landing/screens/project/controllers/project_controller.dart';
@@ -8,6 +9,7 @@ import 'package:sheeps_landing/util/components/custom_button.dart';
 import 'package:sheeps_landing/util/components/responsive.dart';
 import 'package:sheeps_landing/util/components/site_app_bar.dart';
 
+import '../../config/routes.dart';
 import '../../util/components/custom_app_bar.dart';
 import '../../util/components/like_button.dart';
 
@@ -62,6 +64,60 @@ class ProjectPage extends StatelessWidget {
                     ),
                   ),
                 ],
+                if(controller.project.orderID.isEmpty || controller.project.orderID == '') ... [
+                  Positioned(
+                    bottom: 0 * sizeUnit,
+                    child:
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(Routes.createProject);
+                      },
+                      child:
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 60 * sizeUnit,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 16 * sizeUnit,
+                            ),
+                          ],
+                        ),
+                        child:
+                        Responsive.isDesktopToFont(context) ?
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Sheeps Landing', style: $style.text.headline16,),
+                            Text(' 이 사이트는 5분 만에 만드는 쉽스랜딩으로 제작되었습니다.',style: $style.text.body16,),
+                            Gap(10 * sizeUnit),
+                            CustomButton(
+                              customButtonStyle: CustomButtonStyle.filled32,
+                              width: 100 * sizeUnit,
+                              color: controller.keyColor,
+                              text: '무료 시작하기',
+                              onTap: () {
+                                Get.toNamed(Routes.createProject);
+                              },
+                            ),
+                          ],
+                        )
+
+                        : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Gap(20 * sizeUnit),
+                                Text('이 사이트는 5분 만에 만드는 ',style: $style.text.body14,),
+                                Text('Sheeps Landing', style: $style.text.headline14),
+                                Text('으로 제작되었습니다.',style: $style.text.body14,),
+                              ],
+                            ),
+                      ),
+                    ),
+                  )
+                ]
               ],
             ),
             floatingActionButton: controller.isTmp
@@ -76,12 +132,15 @@ class ProjectPage extends StatelessWidget {
                         ),
                       )
                     : null
-                : Obx(() => LikeButton(
-                      isChecked: controller.isLike.value,
-                      color: controller.isLike.value ? controller.keyColor : $style.colors.grey,
-                      count: controller.project.likeCount,
-                      onTap: controller.likeFunc,
-                    )),
+                : Obx(() => Padding(
+                  padding: EdgeInsets.only(bottom: 60 * sizeUnit),
+                  child: LikeButton(
+                        isChecked: controller.isLike.value,
+                        color: controller.isLike.value ? controller.keyColor : $style.colors.grey,
+                        count: controller.project.likeCount,
+                        onTap: controller.likeFunc,
+                      ),
+                )),
           );
         },
       ),
