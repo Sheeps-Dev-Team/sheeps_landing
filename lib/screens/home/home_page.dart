@@ -105,7 +105,7 @@ class HomePage extends StatelessWidget {
                       builder: (BuildContext context, AsyncSnapshot<ui.Image> snapshot) {
                         if (snapshot.hasData) {
                           ui.Image? image = snapshot.data;
-                          return ImageNetwork(image: project.imgPath, height: 170 * sizeUnit, width: 300 * sizeUnit,fitWeb: BoxFitWeb.cover,);
+                          return ImageNetwork(image: project.imgPath, height: isDesktop ? 270 * sizeUnit : 170 * sizeUnit, width: isDesktop ? 500 * sizeUnit :  300 * sizeUnit,fitWeb: BoxFitWeb.cover,);
                         } else {
                           return Center(
                             child: SizedBox(

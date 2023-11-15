@@ -372,11 +372,6 @@ class _ProjectDashboardPageState extends State<ProjectDashboardPage> {
     payload.androidApplicationId = androidApplicationId; // android application id
     payload.iosApplicationId = iosApplicationId; // ios application id
 
-
-    // payload.pg = '다날';
-    // payload.method = '카드';
-    // payload.method = '네이버페이';
-    // payload.methods = ['카드', '휴대폰', '가상계좌', '계좌이체', '카카오페이'];
     payload.orderName = "랜딩페이지"; //결제할 상품명
     payload.price = 990; //정기결제시 0 혹은 주석
 
@@ -412,22 +407,14 @@ class _ProjectDashboardPageState extends State<ProjectDashboardPage> {
       payload.extra?.redirectUrl = 'https://api.bootpay.co.kr/v2';
     }
 
-    // extra.cardQuota = '3';
-    // extra.openType = 'popup';
-
-    // extra.carrier = "SKT,KT,LGT"; //본인인증 시 고정할 통신사명
-    // extra.ageLimit = 20; // 본인인증시 제한할 최소 나이 ex) 20 -> 20살 이상만 인증이 가능
-
     payload.user = user;
     payload.items = itemList;
     payload.extra = extra;
-    // payload.extra?.openType = "iframe";
   }
 
   //버튼클릭시 부트페이 결제요청 실행
   void goBootpayTest(BuildContext context) {
     if(kIsWeb) {
-      //flutter web은 cors 이슈를 설정으로 먼저 해결해주어야 한다.
       payload.extra?.openType = 'iframe';
     }
     payload.extra?.browserOpenType = [
@@ -440,7 +427,6 @@ class _ProjectDashboardPageState extends State<ProjectDashboardPage> {
       context: context,
       payload: payload,
       showCloseButton: false,
-      // closeButton: Icon(Icons.close, size: 35.0, color: Colors.black54),
       onCancel: (String data) {
         if (kDebugMode) {
           print('------- onCancel 1 : $data');
@@ -461,12 +447,9 @@ class _ProjectDashboardPageState extends State<ProjectDashboardPage> {
             if (kDebugMode) {
               print('Bootpay().dismiss');
             }
-            Bootpay().dismiss(context); //명시적으로 부트페이 뷰 종료 호출
+            Bootpay().dismiss(context);
           }
         });
-
-        // Bootpay().dismiss(context); //명시적으로 부트페이 뷰 종료 호출
-        //TODO - 원하시는 라우터로 페이지 이동
       },
       onIssued: (String data) {
         if (kDebugMode) {
@@ -474,10 +457,6 @@ class _ProjectDashboardPageState extends State<ProjectDashboardPage> {
         }
       },
       onConfirm: (String data)  {
-
-        // checkQtyFromServer(data, context).then((value) => print(1243));
-        // await check
-
         if (kDebugMode) {
           print('------- onConfirm: $data');
         }
@@ -492,31 +471,8 @@ class _ProjectDashboardPageState extends State<ProjectDashboardPage> {
         widget.project.orderedAt = DateTime.now();
 
         Bootpay().dismiss(context);
-        // checkQtyFromServer(data);
         return false;
       },
-      // onConfirmAsync: (String data) async {
-      //   print('------- onConfirmAsync11: $data');
-      //   /**
-      //       1. 바로 승인하고자 할 때
-      //       return true;
-      //    **/
-      //   /***
-      //       2. 비동기 승인 하고자 할 때
-      //       checkQtyFromServer(data);
-      //       return false;
-      //    ***/
-      //   /***
-      //       3. 서버승인을 하고자 하실 때 (클라이언트 승인 X)
-      //       return false; 후에 서버에서 결제승인 수행
-      //    */
-      //
-      //   await checkQtyFromServer(data);
-      //   print('------- onConfirmAsync22: $data');
-      //   // return true;
-      //   // return true;
-      //   return true;
-      // },
       onDone: (String data) {
         if (kDebugMode) {
           print('------- onDone: $data');

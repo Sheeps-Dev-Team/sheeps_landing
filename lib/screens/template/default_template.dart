@@ -163,7 +163,7 @@ class DefaultTemplate extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular($style.corners.$24),
               child:
-              ImageNetwork(image: project.imgPath, height: 290 * sizeUnit, width: 564 * sizeUnit,fitWeb: BoxFitWeb.contain)
+              ImageNetwork(image: project.imgPath, height: 300 * sizeUnit, width: 680 * sizeUnit, fitWeb: BoxFitWeb.contain)
             ),
             Gap($style.insets.$40),
             Text(
@@ -204,7 +204,7 @@ class DefaultTemplate extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular($style.corners.$24),
               child:
-              ImageNetwork(image: project.imgPath, height: 256 * sizeUnit, width: 366 * sizeUnit,fitWeb: BoxFitWeb.contain,)
+              ImageNetwork(image: project.imgPath, height: 256 * sizeUnit, width: 540 * sizeUnit,fitWeb: BoxFitWeb.contain,)
             ),
             Gap($style.insets.$24),
             Text(
