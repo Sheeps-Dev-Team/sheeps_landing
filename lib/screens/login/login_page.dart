@@ -5,27 +5,18 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:sheeps_landing/config/global_assets.dart';
 import 'package:sheeps_landing/data/global_data.dart';
-import 'package:sheeps_landing/data/models/project.dart';
-import 'package:sheeps_landing/repository/project_repository.dart';
 import 'package:sheeps_landing/screens/home/controllers/home_page_controller.dart';
 import 'package:sheeps_landing/screens/login/controllers/login_page_controller.dart';
-import 'package:sheeps_landing/screens/user/user_main_page.dart';
-import 'package:sheeps_landing/util/components/get_extended_image.dart';
 import 'package:sheeps_landing/util/global_function.dart';
 
 import '../../config/constants.dart';
 import '../../config/routes.dart';
 import '../../util/components/base_widget.dart';
-import '../../util/components/custom_button.dart';
-import '../../util/components/custom_text_field.dart';
 import '../../util/components/responsive.dart';
-import '../../util/components/site_app_bar.dart';
 import '../project/controllers/create_project_controller.dart';
 
 

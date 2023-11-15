@@ -1,5 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sheeps_landing/screens/template/default_template.dart';
+
+import '../../config/constants.dart';
 
 class Project {
   Project({
@@ -9,6 +13,7 @@ class Project {
     required this.title,
     required this.contents,
     required this.imgPath,
+    this.orderID = '',
     this.callbackType = '',
     this.keyColor = 4283609155,
     this.viewCount = 0,
@@ -16,12 +21,14 @@ class Project {
     this.templateID = DefaultTemplate.id,
     this.descriptions = const [],
     this.isPosting = true,
+    required this.orderedAt,
     required this.createdAt,
     required this.updatedAt,
   });
 
   String documentID;
   String userDocumentID;
+  String orderID;
   String name;
   String title;
   String contents;
@@ -35,9 +42,9 @@ class Project {
   bool isPosting;
   DateTime createdAt;
   DateTime updatedAt;
+  DateTime orderedAt;
 
   factory Project.fromJson(Map<String, dynamic> json) {
-
     List<Description> list = [];
     if(json['descriptions'] != null || json['descriptions'].isNotEmpty){
       for(var i = 0 ; i < json['descriptions'].length ; ++i){
@@ -48,6 +55,7 @@ class Project {
     return Project(
       documentID: json['documentID'] ?? '',
       userDocumentID: json['userDocumentID'] ?? '',
+      orderID: json['orderID'] ?? '',
       name: json['name'] ?? '',
       title: json['title'] ?? '',
       contents: json['contents'] ?? '',
@@ -61,6 +69,7 @@ class Project {
       isPosting: json['isPosting'] ?? true,
       createdAt: json['createdAt'].toDate(),
       updatedAt: json['updatedAt'].toDate(),
+      orderedAt: DateTime.now()
     );
   }
 
@@ -93,11 +102,13 @@ class Project {
     descriptions: [Description.nullDescription.copyWith()],
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
+    orderedAt: DateTime.now()
   );
 
   Project copyWith({
     String? documentID,
     String? userDocumentID,
+    String? orderID,
     String? name,
     String? title,
     String? contents,
@@ -109,10 +120,12 @@ class Project {
     List<Description>? descriptions,
     DateTime? createdAt,
     DateTime? updatedAt,
+    DateTime? orderedAt
   }) {
     return Project(
       documentID: documentID ?? this.documentID,
       userDocumentID: userDocumentID ?? this.userDocumentID,
+      orderID: orderID ?? this.orderID,
       name: name ?? this.name,
       title: title ?? this.title,
       contents: contents ?? this.contents,
@@ -124,6 +137,7 @@ class Project {
       descriptions: descriptions ?? this.descriptions,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      orderedAt: orderedAt ?? this.orderedAt
     );
   }
 

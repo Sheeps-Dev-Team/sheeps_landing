@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:io';
+import 'dart:ui' as ui;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -358,5 +362,12 @@ class GlobalFunction {
       );
     }
     return colorScheme;
+  }
+
+  static Future<ui.Image> getImage(String imgPath) async{
+    Image image = Image.network(imgPath);
+    Completer<ui.Image> completer = Completer<ui.Image>();
+    image.image.resolve(const ImageConfiguration()).addListener(         ImageStreamListener((ImageInfo info, bool synchronousCall) {       completer.complete(info.image);     }));
+    return completer.future;
   }
 }
