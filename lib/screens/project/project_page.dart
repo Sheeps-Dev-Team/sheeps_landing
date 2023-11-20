@@ -64,7 +64,7 @@ class ProjectPage extends StatelessWidget {
                     ),
                   ),
                 ],
-                if(controller.project.orderID.isEmpty || controller.project.orderID == '') ... [
+                if( (false ==controller.isTmp) && (controller.project.orderID.isEmpty || controller.project.orderID == '')) ... [
                   Positioned(
                     bottom: 0 * sizeUnit,
                     child:

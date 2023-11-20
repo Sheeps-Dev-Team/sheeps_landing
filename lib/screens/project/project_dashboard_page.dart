@@ -100,13 +100,33 @@ class _ProjectDashboardPageState extends State<ProjectDashboardPage> {
                       isDesktop,
                     ),
                     Gap($style.insets.$20),
-                    dashboardWidget(
-                      '프로젝트 URL',
-                      widget.project.getUrl,
-                      isDesktop,
-                      () {
-                        Get.toNamed('${Routes.project}/${widget.project.documentID}', arguments: widget.project);
-                      },
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        dashboardWidget(
+                          '프로젝트 URL',
+                          widget.project.getUrl,
+                          isDesktop,
+                          () {
+                            //Get.toNamed('${Routes.project}/${widget.project.documentID}', arguments: widget.project);
+                            window.open(widget.project.getUrl, widget.project.name);
+                          },
+                        ),
+                        const Gap(12),
+                        InkWell(
+                          onTap: () {
+                            window.open(widget.project.getUrl, widget.project.name);
+                          },
+                          child: SizedBox(
+                            width: 32,
+                            height: 32,
+                            child: Icon(
+                              Icons.open_in_new_sharp,
+                              color: $style.colors.darkGrey,
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                     Gap($style.insets.$20),
                     dashboardWidget(
