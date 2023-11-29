@@ -189,7 +189,7 @@ class _ProjectDashboardPageState extends State<ProjectDashboardPage> {
                     SizedBox(
                       height: isDesktop ? 40 * sizeUnit : 30 * sizeUnit,
                       child: Text(
-                        '990원으로 자신만의 랜딩 사이트를 소유하세요.',
+                        '990원으로 자신만의 랜딩 페이지를 소유하세요.',
                         style: isDesktop ? $style.text.subTitle20 : $style.text.subTitle16,
                       ),
                     ),
@@ -220,7 +220,7 @@ class _ProjectDashboardPageState extends State<ProjectDashboardPage> {
                     Row(
                       children: [
                         Text('990원 ', style: $style.text.body16.copyWith(color: $style.colors.blue),),
-                        Text('결제시 페이지 내 하단 광고가 제거 되며, 결제한 금액은 14일 이내 환불 요청 시 100% 환불됩니다.', style: $style.text.body16,)
+                        Text("결제시 페이지 내 하단 광고가 1 영업일 내에 제거 됩니다. 환불 요청 시점, 이유에 따라 환불 수수료가 부과될 수 있습니다. ", style: $style.text.body16,),
                       ],
                     ),
                     Gap($style.insets.$24),
@@ -229,7 +229,8 @@ class _ProjectDashboardPageState extends State<ProjectDashboardPage> {
                       decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular($style.corners.$32), border: Border.all(color: $style.colors.primary)),
                       child: TextButton(
                           onPressed: () {
-                            goBootpayTest(context);
+                            // goBootpayTest(context);
+                            window.open('https://www.latpeed.com/products/BT50j','무료광고제거');
                           },
                           child: Text(
                             '결제하기',
