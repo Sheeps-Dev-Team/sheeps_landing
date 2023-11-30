@@ -44,4 +44,9 @@ class User {
       "updatedAt": Timestamp.fromDate(updatedAt),
     };
   }
+
+  @override
+  String toString(){
+    return '$documentID/$email/$loginType/$name/$state/$createdAt';
+  }
 }
