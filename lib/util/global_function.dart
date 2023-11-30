@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sheeps_landing/screens/home/controllers/home_page_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../config/constants.dart';
@@ -17,6 +18,8 @@ import '../config/routes.dart';
 import '../data/global_data.dart';
 import '../data/models/user.dart';
 import '../repository/user_repository.dart';
+import '../screens/project/controllers/project_controller.dart';
+import '../screens/template/controllers/default_template_controller.dart';
 
 class GlobalFunction {
   // 포커스 해제 함수
@@ -260,8 +263,6 @@ class GlobalFunction {
   static Future<bool> globalLogin() async {
     GoogleSignInAccount? currentUser;
     var errCheck = false;
-
-
     //'https://www.googleapis.com/auth/contacts.readonly',
 
     const List<String> scopes = <String>[
@@ -334,6 +335,7 @@ class GlobalFunction {
   // 로그아웃
   static Future<void> logout() async {
     GlobalData.loginUser = null;
+    GoogleSignIn().signOut();
     // 자동 로그인 정보 삭제
     const storage = FlutterSecureStorage();
     await storage.delete(key: 'email');
