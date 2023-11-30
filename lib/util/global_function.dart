@@ -261,9 +261,11 @@ class GlobalFunction {
     GoogleSignInAccount? currentUser;
     var errCheck = false;
 
+
+    //'https://www.googleapis.com/auth/contacts.readonly',
+
     const List<String> scopes = <String>[
       'email',
-      'https://www.googleapis.com/auth/contacts.readonly',
     ];
     GoogleSignIn googleSignIn = GoogleSignIn(
       scopes: scopes,
