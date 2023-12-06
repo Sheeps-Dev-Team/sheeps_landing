@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:image_network/image_network.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sheeps_landing/config/constants.dart';
 import 'package:sheeps_landing/config/global_assets.dart';
@@ -13,7 +14,6 @@ import 'package:sheeps_landing/screens/info/terms_of_service_page.dart';
 import 'package:sheeps_landing/screens/project/controllers/project_controller.dart';
 import 'package:sheeps_landing/screens/template/controllers/default_template_controller.dart';
 import 'package:sheeps_landing/util/components/custom_button.dart';
-import 'package:sheeps_landing/util/components/get_extended_image.dart';
 import 'package:sheeps_landing/util/components/responsive.dart';
 import 'package:sheeps_landing/util/components/sheeps_ani.dart';
 import 'package:sheeps_landing/util/global_function.dart';
@@ -366,13 +366,8 @@ class DefaultTemplate extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular($style.corners.$24),
-              child: GetExtendedImage(
-                url: project.imgPath,
-                fit: BoxFit.contain,
-                width: 564 * sizeUnit,
-                height: 290 * sizeUnit,
-                loadingWidget: const SizedBox.shrink(),
-              ),
+              child:
+              ImageNetwork(image: project.imgPath, height: 300 * sizeUnit, width: 680 * sizeUnit, fitWeb: BoxFitWeb.contain)
             ),
             Gap($style.insets.$40),
             Text(
@@ -412,13 +407,8 @@ class DefaultTemplate extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular($style.corners.$24),
-              child: GetExtendedImage(
-                url: project.imgPath,
-                fit: BoxFit.contain,
-                width: double.infinity,
-                height: 256 * sizeUnit,
-                loadingWidget: const SizedBox.shrink(),
-              ),
+              child:
+              ImageNetwork(image: project.imgPath, height: 256 * sizeUnit, width: 540 * sizeUnit,fitWeb: BoxFitWeb.contain,)
             ),
             Gap($style.insets.$24),
             Text(
@@ -470,13 +460,8 @@ class DefaultTemplate extends StatelessWidget {
       return Expanded(
         child: ClipRRect(
           borderRadius: BorderRadius.circular($style.corners.$24),
-          child: GetExtendedImage(
-            url: description.imgPath,
-            fit: BoxFit.contain,
-            width: 632 * sizeUnit,
-            height: 477 * sizeUnit,
-            loadingWidget: const SizedBox.shrink(),
-          ),
+          child:
+          ImageNetwork(image: description.imgPath, height: 477 * sizeUnit, width: 632 * sizeUnit,fitWeb: BoxFitWeb.contain)
         ),
       );
     }
@@ -535,13 +520,8 @@ class DefaultTemplate extends StatelessWidget {
     Widget img() {
       return ClipRRect(
         borderRadius: BorderRadius.circular($style.corners.$24),
-        child: GetExtendedImage(
-          url: description.imgPath,
-          fit: BoxFit.contain,
-          height: 357 * sizeUnit,
-          width: 366 * sizeUnit,
-          loadingWidget: const SizedBox.shrink(),
-        ),
+        child:
+        ImageNetwork(image: description.imgPath, height: 357 * sizeUnit, width: 366 * sizeUnit,fitWeb: BoxFitWeb.contain)
       );
     }
 
