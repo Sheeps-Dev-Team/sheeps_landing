@@ -1,12 +1,16 @@
-
+import 'dart:html' show window;
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_network/image_network.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sheeps_landing/config/constants.dart';
+import 'package:sheeps_landing/config/global_assets.dart';
 import 'package:sheeps_landing/data/models/project.dart';
 import 'package:sheeps_landing/data/models/user_callback.dart';
+import 'package:sheeps_landing/screens/info/privacy%20_policy_page.dart';
+import 'package:sheeps_landing/screens/info/terms_of_service_page.dart';
 import 'package:sheeps_landing/screens/project/controllers/project_controller.dart';
 import 'package:sheeps_landing/screens/template/controllers/default_template_controller.dart';
 import 'package:sheeps_landing/util/components/custom_button.dart';
@@ -22,13 +26,17 @@ class DefaultTemplate extends StatelessWidget {
 
   static const int id = 1;
 
-  final DefaultTemplateController controller = Get.put(DefaultTemplateController(), tag: Get.parameters['id']);
-  final ProjectController projectController = Get.find<ProjectController>(tag: Get.parameters['id']);
+  final DefaultTemplateController controller =
+      Get.put(DefaultTemplateController(), tag: Get.parameters['id']);
+  final ProjectController projectController =
+      Get.find<ProjectController>(tag: Get.parameters['id']);
 
   late final Color keyColor = Color(project.keyColor);
   late final ColorScheme colorScheme = GlobalFunction.getColorScheme(keyColor);
-  late TextStyle titleStyle = $style.text.headline32.copyWith(fontSize: 40 * sizeUnit, color: colorScheme.onPrimaryContainer);
-  late TextStyle contentsStyle = $style.text.body16.copyWith(height: 1.6, color: colorScheme.onPrimaryContainer);
+  late TextStyle titleStyle = $style.text.headline32
+      .copyWith(fontSize: 40 * sizeUnit, color: colorScheme.onPrimaryContainer);
+  late TextStyle contentsStyle = $style.text.body16
+      .copyWith(height: 1.6, color: colorScheme.onPrimaryContainer);
   late final Color sectionColor = colorScheme.primaryContainer.withOpacity(.2);
 
   @override
@@ -37,8 +45,10 @@ class DefaultTemplate extends StatelessWidget {
     final double currentWidth = MediaQuery.of(context).size.width;
 
     if (isDesktop) {
-      titleStyle = $style.text.headline32.copyWith(fontSize: 40 * sizeUnit, color: colorScheme.onPrimaryContainer);
-      contentsStyle = $style.text.body16.copyWith(height: 1.6, color: colorScheme.onPrimaryContainer);
+      titleStyle = $style.text.headline32.copyWith(
+          fontSize: 40 * sizeUnit, color: colorScheme.onPrimaryContainer);
+      contentsStyle = $style.text.body16
+          .copyWith(height: 1.6, color: colorScheme.onPrimaryContainer);
     } else {
       titleStyle = titleStyle.copyWith(fontSize: 32 * sizeUnit);
       contentsStyle = contentsStyle.copyWith(fontSize: 15 * sizeUnit);
@@ -52,7 +62,7 @@ class DefaultTemplate extends StatelessWidget {
           body: ScrollablePositionedList.builder(
             itemScrollController: controller.itemScrollController,
             itemPositionsListener: controller.itemPositionsListener,
-            itemCount: 5,
+            itemCount: 6,
             itemBuilder: (context, index) {
               switch (index) {
                 case 0:
@@ -108,8 +118,17 @@ class DefaultTemplate extends StatelessWidget {
                       : const SizedBox.shrink();
                 case 4:
                   return callToAction();
+                case 5:
+                  if (projectController.isIndex) {
+                    if (isDesktop) {
+                      return footerDesktop();
+                    } else {
+                      return footerMobile();
+                    }
+                  } else {
+                    return const SizedBox.shrink();
+                  }
               }
-
               return const SizedBox.shrink();
             },
           ),
@@ -118,10 +137,195 @@ class DefaultTemplate extends StatelessWidget {
     );
   }
 
+  SingleChildScrollView footerMobile() {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: $style.insets.$20),
+        child: Column(
+          children: [
+            SizedBox(
+              width: 224,
+              child: Column(
+                children: [
+                  Text(
+                    'SNS',
+                    style: $style.text.headline20,
+                  ),
+                  Gap($style.insets.$8),
+                  footerTextWidget(
+                    text: 'Instagram',
+                    onTap: () => window.open(
+                        'https://www.instagram.com/sheeps_up/', 'instagram'),
+                  ),
+                  footerTextWidget(
+                    text: 'sheeps.kr',
+                    onTap: () =>
+                        window.open('https://www.sheeps.kr/', 'sheeps_up'),
+                  ),
+                ],
+              ),
+            ),
+            Gap($style.insets.$24),
+            SizedBox(
+              width: 224,
+              child: Column(
+                children: [
+                  Text(
+                    'CONTACT',
+                    style: $style.text.headline20,
+                  ),
+                  Gap($style.insets.$8),
+                  footerTextWidget(text: 'teddy@noteasy.kr', onTap: () {}),
+                ],
+              ),
+            ),
+            Gap($style.insets.$20),
+            SizedBox(
+              width: 224,
+              child: Column(
+                children: [
+                  Text(
+                    'INFO',
+                    style: $style.text.headline20,
+                  ),
+                  Gap($style.insets.$8),
+                  footerTextWidget(
+                      text: '서비스 이용약관',
+                      onTap: () {
+                        Get.to(() => const TermsOfServicePage());
+                      }),
+                  Gap($style.insets.$4),
+                  footerTextWidget(
+                      text: '개인정보 처리방침',
+                      onTap: () {
+                        Get.to(() => const PrivacyPolicyPage());
+                      }),
+                  Gap($style.insets.$20),
+                ],
+              ),
+            ),
+            Text(
+              'Ⓒ 2023 Sheeps Inc. 모든 권리 보유.',
+              style: $style.text.body14.copyWith(color: $style.colors.grey),
+            ),
+            //Gap($style.insets.$20),
+          ],
+        ),
+      ),
+    );
+  }
+
+//푸터
+  Container footerDesktop() {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        vertical: $style.insets.$30,
+      ),
+      alignment: Alignment.center,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Gap($style.insets.$16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 256,
+                height: 80,
+                child: Column(
+                  children: [
+                    Text(
+                      'SNS',
+                      style: $style.text.headline20,
+                    ),
+                    Gap($style.insets.$8),
+                    footerTextWidget(
+                      text: 'Instagram',
+                      onTap: () => window.open(
+                          'https://www.instagram.com/sheeps_up/', 'instagram'),
+                    ),
+                    footerTextWidget(
+                      text: 'sheeps.kr',
+                      onTap: () =>
+                          window.open('https://www.sheeps.kr/', 'sheeps_up'),
+                    ),
+                  ],
+                ),
+              ),
+              const Gap(118),
+              SizedBox(
+                width: 256,
+                height: 80,
+                child: Column(
+                  children: [
+                    Text(
+                      'CONTACT',
+                      style: $style.text.headline20,
+                    ),
+                    Gap($style.insets.$16),
+                    footerTextWidget(text: 'teddy@noteasy.kr', onTap: () {}),
+                  ],
+                ),
+              ),
+              const Gap(118),
+              SizedBox(
+                width: 256,
+                height: 80,
+                child: Column(
+                  children: [
+                    Text(
+                      'INFO',
+                      style: $style.text.headline20,
+                    ),
+                    Gap($style.insets.$8),
+                    footerTextWidget(
+                        text: '서비스 이용약관',
+                        onTap: () {
+                          Get.to(() => const TermsOfServicePage());
+                        }),
+                    Gap($style.insets.$4),
+                    footerTextWidget(
+                        text: '개인정보 처리방침',
+                        onTap: () {
+                          Get.to(() => const PrivacyPolicyPage());
+                        }),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Gap($style.insets.$20),
+          Center(
+            child: Text(
+              'Ⓒ 2023 Sheeps Inc. 모든 권리 보유.',
+              style: $style.text.body14.copyWith(color: $style.colors.grey),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+//푸터 텍스트버튼 위젯
+  InkWell footerTextWidget(
+      {required String text, required GestureTapCallback onTap}) {
+    return InkWell(
+      onTap: onTap,
+      child: Text(
+        text,
+        style: $style.text.body16.copyWith(
+            decoration: TextDecoration.underline,
+            decorationColor: $style.colors.darkGrey,
+            color: $style.colors.darkGrey),
+      ),
+    );
+  }
+
   Container callToAction() {
     return Container(
       width: double.infinity,
-      constraints: BoxConstraints(minHeight: Get.height *.48),
+      constraints: BoxConstraints(minHeight: Get.height * .48),
       padding: EdgeInsets.symmetric(vertical: $style.insets.$160),
       color: project.descriptions.length.isOdd ? sectionColor : Colors.white,
       alignment: Alignment.center,
@@ -226,7 +430,10 @@ class DefaultTemplate extends StatelessWidget {
     );
   }
 
-  Widget description(Description description, {required bool isOdd, required bool isActive, required double currentWidth}) {
+  Widget description(Description description,
+      {required bool isOdd,
+      required bool isActive,
+      required double currentWidth}) {
     Widget titleAndContents() {
       return Expanded(
         child: Align(
@@ -270,7 +477,8 @@ class DefaultTemplate extends StatelessWidget {
         direction: isOdd ? Direction.left : Direction.right,
         isAction: isActive,
         child: Row(
-          mainAxisAlignment: isOdd ? MainAxisAlignment.start : MainAxisAlignment.end,
+          mainAxisAlignment:
+              isOdd ? MainAxisAlignment.start : MainAxisAlignment.end,
           children: [
             if (isOdd) ...[
               img(),
@@ -289,7 +497,8 @@ class DefaultTemplate extends StatelessWidget {
     );
   }
 
-  Widget mobileDescription(Description description, {required bool isOdd, required bool isActive}) {
+  Widget mobileDescription(Description description,
+      {required bool isOdd, required bool isActive}) {
     Widget titleAndContents() {
       return Column(
         children: [
@@ -338,7 +547,8 @@ class DefaultTemplate extends StatelessWidget {
   }
 
   // 콜 투 액션 버튼
-  Widget actionButton({CustomButtonStyle customButtonStyle = CustomButtonStyle.filled48}) {
+  Widget actionButton(
+      {CustomButtonStyle customButtonStyle = CustomButtonStyle.filled48}) {
     final List<String> typeList = project.callbackType.split(division);
     final String type = typeList.first;
 

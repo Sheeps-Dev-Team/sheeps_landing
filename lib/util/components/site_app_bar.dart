@@ -92,7 +92,7 @@ class SiteAppBar extends StatelessWidget implements PreferredSize {
                                     child: Container(
                                       width: isDesktop ? 80 * sizeUnit : 70 * sizeUnit,
                                       height: 30 * sizeUnit,
-                                      decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular($style.corners.$32), border: Border.all(color: $style.colors.primary)),
+                                      decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular($style.corners.$32), border: Border.all(color: $style.colors.primary),),
                                       child: TextButton(
                                           onPressed: GlobalFunction.logout,
                                           child: Text(
