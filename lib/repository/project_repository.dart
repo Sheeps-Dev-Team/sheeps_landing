@@ -122,4 +122,19 @@ class ProjectRepository {
       return false;
     }
   }
+
+  static Future<bool> updateOrderID({required String documentID, required String orderID}) async {
+    try {
+      await _projectCollection.doc(documentID).update(
+        {
+          "orderID": orderID,
+          "orderedAt" : FieldValue.serverTimestamp(),
+        },
+      );
+      return true;
+    } catch (e) {
+      if (kDebugMode) print(e.toString());
+      return false;
+    }
+  }
 }
