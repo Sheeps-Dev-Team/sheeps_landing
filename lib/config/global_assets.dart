@@ -18,8 +18,4 @@ class GlobalAssets {
   static const String svgProjectSettings =
       'assets/images/global/settings.svg'; //프로젝트 설정 로고
   static const String svgEdit = 'assets/images/global/edit.svg'; //프로젝트 수정 로고
-  static const String svgInstagram =
-      'assets/images/global/instagram.png'; //sns 인스타그램 로고
-  static const String svgSheepsLogo =
-      'assets/images/global/sheeps_logo.png'; //sns 인스타그램 로고
 }
