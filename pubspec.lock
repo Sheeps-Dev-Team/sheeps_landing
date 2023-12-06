@@ -61,26 +61,26 @@ packages:
     dependency: "direct main"
     description:
       name: bootpay
-      sha256: "41123158c9bd5a9f8c1f793ae4a41b71adc297b2f25ebb9a2b1bf45d2fbe285b"
+      sha256: "580bba7e1673c727b8577853532c081f57d47342355ba9ec7caf4cb31fab1a3e"
       url: "https://pub.dev"
     source: hosted
-    version: "4.7.3"
+    version: "4.8.0"
   bootpay_webview_flutter:
     dependency: transitive
     description:
       name: bootpay_webview_flutter
-      sha256: "83648e3af92be3770045b5d9fc84532e69a0711f3e3fbd86e857a336b96847aa"
+      sha256: "7066abd059fd901910f093918083abe66ecd2aec753e7057b8c96da8d75cd56b"
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.3"
+    version: "4.3.0"
   bootpay_webview_flutter_android:
     dependency: transitive
     description:
       name: bootpay_webview_flutter_android
-      sha256: e0178efaad019c404534cd4321ee04b795319fa0b4c7a98752cc3706cc056aa1
+      sha256: fdfa7c2888716d9e27f15b51e7361db6d44b74a3429b2513eae57177ead29213
       url: "https://pub.dev"
     source: hosted
-    version: "3.6.2"
+    version: "3.7.0"
   bootpay_webview_flutter_platform_interface:
     dependency: transitive
     description:
@@ -93,10 +93,10 @@ packages:
     dependency: transitive
     description:
       name: bootpay_webview_flutter_wkwebview
-      sha256: "03e271a0c8e6dd6c6fb594f27e72dc54852f873a1bab57acc76b80cf44c25379"
+      sha256: f91680969006121535d8e8ca4594548d4767285978ab4191e9bdd7d5fd56007c
       url: "https://pub.dev"
     source: hosted
-    version: "3.4.1"
+    version: "3.4.2"
   characters:
     dependency: transitive
     description:
@@ -185,22 +185,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.3.3"
-  extended_image:
-    dependency: "direct main"
-    description:
-      name: extended_image
-      sha256: d7f091d068fcac7246c4b22a84b8dac59a62e04d29a5c172710c696e67a22f94
-      url: "https://pub.dev"
-    source: hosted
-    version: "8.2.0"
-  extended_image_library:
-    dependency: transitive
-    description:
-      name: extended_image_library
-      sha256: "9b55fc5ebc65fad984de66b8f177a1bef2a84d79203c9c213f75ff83c2c29edd"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.1"
   encrypt:
     dependency: transitive
     description:
@@ -209,6 +193,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.3"
+  extended_image:
+    dependency: "direct main"
+    description:
+      name: extended_image
+      sha256: e77d18f956649ba6e5ecebd0cb68542120886336a75ee673788145bd4c3f0767
+      url: "https://pub.dev"
+    source: hosted
+    version: "8.0.2"
+  extended_image_library:
+    dependency: transitive
+    description:
+      name: extended_image_library
+      sha256: af3ff1c09c23ca7663f94272313d63499a6bd19121e99378e375e0cf2ac7a3e4
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.5.2"
   fake_async:
     dependency: transitive
     description:
@@ -509,6 +509,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.13.6"
+  http_client_helper:
+    dependency: transitive
+    description:
+      name: http_client_helper
+      sha256: "14c6e756644339f561321dab021215475ba4779aa962466f59ccb3ecf66b36c3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.4"
   http_parser:
     dependency: transitive
     description:
@@ -1058,7 +1066,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.0"
-    version: "0.1.4-beta"
   webview_flutter:
     dependency: transitive
     description:
@@ -1133,4 +1140,4 @@ packages:
     version: "3.1.2"
 sdks:
   dart: ">=3.2.0-194.0.dev <4.0.0"
-  flutter: ">=3.16.0"
+  flutter: ">=3.13.0"

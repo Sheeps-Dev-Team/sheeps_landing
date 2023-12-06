@@ -27,7 +27,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final bool isDesktop = Responsive.isDesktopToFont(context);
 
     return BaseWidget(
@@ -40,7 +39,8 @@ class HomePage extends StatelessWidget {
                 initState: (_) => controller.init(),
                 builder: (_) {
                   return GridView.builder(
-                    padding: EdgeInsets.all(isDesktop ?  24 * sizeUnit : 16 * sizeUnit),
+                    padding: EdgeInsets.all(
+                        isDesktop ? 24 * sizeUnit : 16 * sizeUnit),
                     itemCount: controller.list.length + 1,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: Responsive.isMobile(context)
@@ -48,9 +48,12 @@ class HomePage extends StatelessWidget {
                           : Responsive.isTablet(context)
                               ? 3
                               : 4,
-                      childAspectRatio:  !Responsive.isMobile(context) ? 4 / 3 : 3.6 / 3.4,
-                      mainAxisSpacing: isDesktop ? 40 * sizeUnit : 16 * sizeUnit,
-                      crossAxisSpacing: isDesktop ? 40 * sizeUnit : 16 * sizeUnit,
+                      childAspectRatio:
+                          !Responsive.isMobile(context) ? 4 / 3 : 3.6 / 3.4,
+                      mainAxisSpacing:
+                          isDesktop ? 40 * sizeUnit : 16 * sizeUnit,
+                      crossAxisSpacing:
+                          isDesktop ? 40 * sizeUnit : 16 * sizeUnit,
                     ),
                     itemBuilder: (context, index) {
                       if (controller.list.isEmpty) {
@@ -70,8 +73,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget projectItem(Project project,bool isDesktop) {
-
+  Widget projectItem(Project project, bool isDesktop) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -91,33 +93,41 @@ class HomePage extends StatelessWidget {
                   Get.delete<DefaultTemplateController>();
 
                   if (kDebugMode) {
-                    Get.toNamed('${Routes.project}/${project.documentID == '' ? 'N1Z1RfyvMRfz52SP2K4g' : project.documentID}', arguments: project);
+                    Get.toNamed(
+                        '${Routes.project}/${project.documentID == '' ? 'N1Z1RfyvMRfz52SP2K4g' : project.documentID}',
+                        arguments: project);
                   } else {
-                    Get.toNamed('${Routes.project}/${project.documentID}', arguments: project);
+                    Get.toNamed('${Routes.project}/${project.documentID}',
+                        arguments: project);
                   }
                 },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular($style.insets.$12),
                   child: Center(
-                    child:
-                    FutureBuilder<ui.Image>(
-                      future: GlobalFunction.getImage(project.imgPath),
-                      builder: (BuildContext context, AsyncSnapshot<ui.Image> snapshot) {
-                        if (snapshot.hasData) {
-                          ui.Image? image = snapshot.data;
-                          return ImageNetwork(image: project.imgPath, height: isDesktop ? 270 * sizeUnit : 170 * sizeUnit, width: isDesktop ? 500 * sizeUnit :  300 * sizeUnit,fitWeb: BoxFitWeb.cover,);
-                        } else {
-                          return Center(
+                      child: FutureBuilder<ui.Image>(
+                    future: GlobalFunction.getImage(project.imgPath),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<ui.Image> snapshot) {
+                      if (snapshot.hasData) {
+                        ui.Image? image = snapshot.data;
+                        return ImageNetwork(
+                          image: project.imgPath,
+                          height: isDesktop ? 270 * sizeUnit : 170 * sizeUnit,
+                          width: isDesktop ? 500 * sizeUnit : 300 * sizeUnit,
+                          fitWeb: BoxFitWeb.cover,
+                        );
+                      } else {
+                        return Center(
                             child: SizedBox(
-                              width: 24 * sizeUnit,
-                              height: 24 * sizeUnit,
-                              child: CircularProgressIndicator(strokeWidth: 2 * sizeUnit, color: $style.colors.primary),
-                            )
-                          );
-                        }
-                      },
-                    )
-                  ),
+                          width: 24 * sizeUnit,
+                          height: 24 * sizeUnit,
+                          child: CircularProgressIndicator(
+                              strokeWidth: 2 * sizeUnit,
+                              color: $style.colors.primary),
+                        ));
+                      }
+                    },
+                  )),
                 ),
               ),
             ),
@@ -132,30 +142,48 @@ class HomePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Gap($style.insets.$4),
-                    Text(project.name, style: isDesktop ? $style.text.subTitle16 : $style.text.subTitle12),
+                    Text(project.name,
+                        style: isDesktop
+                            ? $style.text.subTitle16
+                            : $style.text.subTitle12),
                     Gap($style.insets.$2),
                     Text(GlobalFunction.getDateTimeToString(project.updatedAt),
-                        style: isDesktop ? $style.text.body12.copyWith(color: $style.colors.darkGrey) :
-                        $style.text.body10.copyWith(color: $style.colors.darkGrey)
-                    ),
+                        style: isDesktop
+                            ? $style.text.body12
+                                .copyWith(color: $style.colors.darkGrey)
+                            : $style.text.body10
+                                .copyWith(color: $style.colors.darkGrey)),
                   ],
                 ),
               ),
               Container(
                 width: (isDesktop ? 80 : 48) * sizeUnit,
                 height: (isDesktop ? 30 : 20) * sizeUnit,
-                decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular(12 * sizeUnit), border: Border.all(color: $style.colors.primary)),
+                decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(12 * sizeUnit),
+                    border: Border.all(color: $style.colors.primary)),
                 child: TextButton(
                     onPressed: () {
                       if (kDebugMode) {
-                        Get.toNamed('${Routes.projectManagement}/${project.documentID == '' ? 'N1Z1RfyvMRfz52SP2K4g' : project.documentID}', arguments: project,);
+                        Get.toNamed(
+                          '${Routes.projectManagement}/${project.documentID == '' ? 'N1Z1RfyvMRfz52SP2K4g' : project.documentID}',
+                          arguments: project,
+                        );
                       } else {
-                        Get.toNamed('${Routes.projectManagement}/${project.documentID}', arguments: project,);
+                        Get.toNamed(
+                          '${Routes.projectManagement}/${project.documentID}',
+                          arguments: project,
+                        );
                       }
                     },
                     child: Text(
                       '관리',
-                      style: isDesktop ? $style.text.subTitle14.copyWith(color: $style.colors.primary) : $style.text.body10.copyWith(color: $style.colors.primary),
+                      style: isDesktop
+                          ? $style.text.subTitle14
+                              .copyWith(color: $style.colors.primary)
+                          : $style.text.body10
+                              .copyWith(color: $style.colors.primary),
                     )),
               )
             ],
