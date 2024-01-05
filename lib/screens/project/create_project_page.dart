@@ -953,8 +953,7 @@ class CreateProjectPage extends StatelessWidget {
               future: GlobalFunction.getImage(xFile.path),
               builder: (BuildContext context, AsyncSnapshot<ui.Image> snapshot) {
                 if (snapshot.hasData) {
-                  ui.Image? image = snapshot.data;
-                  return ImageNetwork(image: xFile.path, height: image!.height * sizeUnit, width: image!.width * sizeUnit,fitWeb: BoxFitWeb.contain,);
+                  return ImageNetwork(image: xFile.path, height: height, width: width,fitWeb: BoxFitWeb.contain,);
                 } else {
                   return const Text('Loading...');
                 }
