@@ -53,7 +53,7 @@ class _LikeButtonState extends State<LikeButton> with SingleTickerProviderStateM
                 Transform.scale(
                   scale: 1 + animation.value * 2,
                   child: Icon(
-                    Icons.thumb_up,
+                    widget.isChecked ? Icons.favorite : Icons.favorite_border_outlined,
                     size: 32 * sizeUnit,
                     color: widget.color,
                   ),

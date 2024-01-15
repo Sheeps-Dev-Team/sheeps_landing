@@ -82,15 +82,6 @@ class ProjectController extends GetxController {
       Project? res = await ProjectRepository.getProjectByID(id);
       if (res != null) {
         project = res;
-
-        SharedPreferences prefs;
-        try{
-          prefs = await SharedPreferences.getInstance();
-          isLike((prefs.getStringList(likedIdListKey) ?? []).contains(project.documentID));
-
-        } catch (error) {
-          debugPrint(error.toString());
-        }
       } else {
         return GlobalFunction.goToBack(); // 잘못된 project 예외처리
       }
@@ -98,8 +89,12 @@ class ProjectController extends GetxController {
       project = tmpProject;
     }
 
+    // 좋아요 체크
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    isLike((prefs.getStringList(likedIdListKey) ?? []).contains(project.documentID));
+
     // 프로젝트 조회수 up
-    if (kReleaseMode) ProjectRepository.updateViewCount(documentID: project.documentID);
+    if (kReleaseMode && !this.isTmp && !this.isModify) ProjectRepository.updateViewCount(documentID: project.documentID);
 
     keyColor = Color(project.keyColor);
     colorScheme = ColorScheme.fromSeed(seedColor: keyColor);
