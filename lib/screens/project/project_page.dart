@@ -175,7 +175,10 @@ class ProjectPage extends StatelessWidget {
                   onTap: () => Get.offNamed(Routes.home),
                   child: Text(
                     '관리',
-                    style: $style.text.subTitle12.copyWith(color: $style.colors.darkGrey),
+                    style: $style.text.subTitle14.copyWith(
+                      color: $style.colors.darkGrey,
+                      fontSize: isDesktop ? 14 : 12,
+                    ),
                   ),
                 ),
                 Gap($style.insets.$16),
