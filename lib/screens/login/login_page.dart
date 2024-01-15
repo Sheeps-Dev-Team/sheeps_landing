@@ -1,16 +1,9 @@
-import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:sheeps_landing/config/global_assets.dart';
 import 'package:sheeps_landing/data/global_data.dart';
-import 'package:sheeps_landing/screens/home/controllers/home_page_controller.dart';
 import 'package:sheeps_landing/screens/info/privacy%20_policy_page.dart';
 import 'package:sheeps_landing/screens/info/terms_of_service_page.dart';
 import 'package:sheeps_landing/screens/login/controllers/login_page_controller.dart';
@@ -20,14 +13,11 @@ import '../../config/constants.dart';
 import '../../config/routes.dart';
 import '../../util/components/base_widget.dart';
 import '../../util/components/responsive.dart';
-import '../project/controllers/create_project_controller.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
   final LoginPageController controller = Get.put(LoginPageController());
-  final CreateProjectController createProjectController =
-      Get.put(CreateProjectController());
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +40,7 @@ class LoginPage extends StatelessWidget {
               SizedBox(height: 12 * sizeUnit),
               InkWell(
                 onTap: () async {
-                  if (false == await GlobalFunction.globalLogin() &&
-                      GlobalData.loginUser != null) {
+                  if (false == await GlobalFunction.globalLogin() && GlobalData.loginUser != null) {
                     //로그인 성공시
                     Get.offAllNamed(Routes.home);
                   } else {
@@ -62,10 +51,7 @@ class LoginPage extends StatelessWidget {
                 child: Container(
                   width: 240 * sizeUnit,
                   height: 36 * sizeUnit,
-                  decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(6 * sizeUnit),
-                      border: Border.all(color: $style.colors.barrierColor)),
+                  decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular(6 * sizeUnit), border: Border.all(color: $style.colors.barrierColor)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -99,8 +85,7 @@ class LoginPage extends StatelessWidget {
                     ),
                     Text(
                       '또는',
-                      style: $style.text.subTitle14
-                          .copyWith(color: $style.colors.grey),
+                      style: $style.text.subTitle14.copyWith(color: $style.colors.grey),
                     ),
                     SizedBox(
                       width: 10 * sizeUnit,
@@ -116,21 +101,12 @@ class LoginPage extends StatelessWidget {
               SizedBox(height: 18 * sizeUnit),
               InkWell(
                 onTap: () async {
-                  if (kDebugMode) {
-                    Get.delete<HomePageController>();
-
-                    Get.toNamed(Routes.home);
-                  } else {
-                    Get.toNamed(Routes.index);
-                  }
+                  Get.offAllNamed(Routes.index);
                 },
                 child: Container(
                   width: 240 * sizeUnit,
                   height: 36 * sizeUnit,
-                  decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(6 * sizeUnit),
-                      border: Border.all(color: $style.colors.barrierColor)),
+                  decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular(6 * sizeUnit), border: Border.all(color: $style.colors.barrierColor)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -162,16 +138,12 @@ class LoginPage extends StatelessWidget {
   }
 
 //푸터 텍스트버튼 위젯
-  InkWell textWidget(
-      {required String text, required GestureTapCallback onTap}) {
+  InkWell textWidget({required String text, required GestureTapCallback onTap}) {
     return InkWell(
       onTap: onTap,
       child: Text(
         text,
-        style: $style.text.body14.copyWith(
-            decoration: TextDecoration.underline,
-            decorationColor: $style.colors.darkGrey,
-            color: $style.colors.darkGrey),
+        style: $style.text.body14.copyWith(decoration: TextDecoration.underline, decorationColor: $style.colors.darkGrey, color: $style.colors.darkGrey),
       ),
     );
   }

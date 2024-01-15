@@ -37,10 +37,11 @@ class ProjectController extends GetxController {
 
   void initState({required bool isIndex}) async {
     this.isIndex = isIndex; // 쉽스 랜딩 페이지인지
-    if (isIndex) {
-      await loginCheck(); // 로그인 체크
 
-      // 로그인이 된 경우 홈으로
+    await loginCheck(); // 로그인 체크 (로그인 정보 있으면 로그인)
+
+    // 로그인이 된 경우 홈으로
+    if (isIndex) {
       if (GlobalData.loginUser != null) {
         Get.offAllNamed(Routes.home);
         return;
