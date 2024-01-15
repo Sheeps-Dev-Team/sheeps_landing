@@ -27,3 +27,4 @@ const int descriptionMaxCount = 3; // description 최대 개수
 
 const String likedIdListKey = 'likedIdList';
 const String defaultImgUrl = 'https://firebasestorage.googleapis.com/v0/b/sheeps-landing.appspot.com/o/project'; // 기본 이미지 url
+const String siteUrl = 'http://sheeps.co.kr/'; // 사이트 url

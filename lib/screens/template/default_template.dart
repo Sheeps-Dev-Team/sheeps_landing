@@ -1,12 +1,10 @@
-import 'dart:html' show window;
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_network/image_network.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sheeps_landing/config/constants.dart';
-import 'package:sheeps_landing/config/global_assets.dart';
 import 'package:sheeps_landing/data/models/project.dart';
 import 'package:sheeps_landing/data/models/user_callback.dart';
 import 'package:sheeps_landing/screens/info/privacy%20_policy_page.dart';
@@ -26,17 +24,13 @@ class DefaultTemplate extends StatelessWidget {
 
   static const int id = 1;
 
-  final DefaultTemplateController controller =
-      Get.put(DefaultTemplateController(), tag: Get.parameters['id']);
-  final ProjectController projectController =
-      Get.find<ProjectController>(tag: Get.parameters['id']);
+  final DefaultTemplateController controller = Get.put(DefaultTemplateController(), tag: Get.parameters['id']);
+  final ProjectController projectController = Get.find<ProjectController>(tag: Get.parameters['id']);
 
   late final Color keyColor = Color(project.keyColor);
   late final ColorScheme colorScheme = GlobalFunction.getColorScheme(keyColor);
-  late TextStyle titleStyle = $style.text.headline32
-      .copyWith(fontSize: 40 * sizeUnit, color: colorScheme.onPrimaryContainer);
-  late TextStyle contentsStyle = $style.text.body16
-      .copyWith(height: 1.6, color: colorScheme.onPrimaryContainer);
+  late TextStyle titleStyle = $style.text.headline32.copyWith(fontSize: 40 * sizeUnit, color: colorScheme.onPrimaryContainer);
+  late TextStyle contentsStyle = $style.text.body16.copyWith(height: 1.6, color: colorScheme.onPrimaryContainer);
   late final Color sectionColor = colorScheme.primaryContainer.withOpacity(.2);
 
   @override
@@ -45,10 +39,8 @@ class DefaultTemplate extends StatelessWidget {
     final double currentWidth = MediaQuery.of(context).size.width;
 
     if (isDesktop) {
-      titleStyle = $style.text.headline32.copyWith(
-          fontSize: 40 * sizeUnit, color: colorScheme.onPrimaryContainer);
-      contentsStyle = $style.text.body16
-          .copyWith(height: 1.6, color: colorScheme.onPrimaryContainer);
+      titleStyle = $style.text.headline32.copyWith(fontSize: 40 * sizeUnit, color: colorScheme.onPrimaryContainer);
+      contentsStyle = $style.text.body16.copyWith(height: 1.6, color: colorScheme.onPrimaryContainer);
     } else {
       titleStyle = titleStyle.copyWith(fontSize: 32 * sizeUnit);
       contentsStyle = contentsStyle.copyWith(fontSize: 15 * sizeUnit);
@@ -154,13 +146,11 @@ class DefaultTemplate extends StatelessWidget {
                   Gap($style.insets.$8),
                   footerTextWidget(
                     text: 'Instagram',
-                    onTap: () => window.open(
-                        'https://www.instagram.com/sheeps_up/', 'instagram'),
+                    onTap: () => GlobalFunction.launch(Uri.parse('https://www.instagram.com/sheeps_up/')),
                   ),
                   footerTextWidget(
                     text: 'sheeps.kr',
-                    onTap: () =>
-                        window.open('https://www.sheeps.kr/', 'sheeps_up'),
+                    onTap: () => GlobalFunction.launch(Uri.parse('https://www.sheeps.kr/')),
                   ),
                 ],
               ),
@@ -175,7 +165,13 @@ class DefaultTemplate extends StatelessWidget {
                     style: $style.text.headline20,
                   ),
                   Gap($style.insets.$8),
-                  footerTextWidget(text: 'teddy@noteasy.kr', onTap: () {}),
+                  footerTextWidget(
+                    text: 'teddy@noteasy.kr',
+                    onTap: () {
+                      Clipboard.setData(const ClipboardData(text: 'teddy@noteasy.kr'));
+                      GlobalFunction.showToast(msg: '클립보드에 복사되었습니다.');
+                    },
+                  ),
                 ],
               ),
             ),
@@ -242,13 +238,11 @@ class DefaultTemplate extends StatelessWidget {
                     Gap($style.insets.$8),
                     footerTextWidget(
                       text: 'Instagram',
-                      onTap: () => window.open(
-                          'https://www.instagram.com/sheeps_up/', 'instagram'),
+                      onTap: () => GlobalFunction.launch(Uri.parse('https://www.instagram.com/sheeps_up/')),
                     ),
                     footerTextWidget(
                       text: 'sheeps.kr',
-                      onTap: () =>
-                          window.open('https://www.sheeps.kr/', 'sheeps_up'),
+                      onTap: () => GlobalFunction.launch(Uri.parse('https://www.sheeps.kr/')),
                     ),
                   ],
                 ),
@@ -264,7 +258,13 @@ class DefaultTemplate extends StatelessWidget {
                       style: $style.text.headline20,
                     ),
                     Gap($style.insets.$16),
-                    footerTextWidget(text: 'teddy@noteasy.kr', onTap: () {}),
+                    footerTextWidget(
+                      text: 'teddy@noteasy.kr',
+                      onTap: () {
+                        Clipboard.setData(const ClipboardData(text: 'teddy@noteasy.kr'));
+                        GlobalFunction.showToast(msg: '클립보드에 복사되었습니다.');
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -308,16 +308,12 @@ class DefaultTemplate extends StatelessWidget {
   }
 
 //푸터 텍스트버튼 위젯
-  InkWell footerTextWidget(
-      {required String text, required GestureTapCallback onTap}) {
+  InkWell footerTextWidget({required String text, required GestureTapCallback onTap}) {
     return InkWell(
       onTap: onTap,
       child: Text(
         text,
-        style: $style.text.body16.copyWith(
-            decoration: TextDecoration.underline,
-            decorationColor: $style.colors.darkGrey,
-            color: $style.colors.darkGrey),
+        style: $style.text.body16.copyWith(decoration: TextDecoration.underline, decorationColor: $style.colors.darkGrey, color: $style.colors.darkGrey),
       ),
     );
   }
@@ -366,11 +362,7 @@ class DefaultTemplate extends StatelessWidget {
           children: [
             ClipRRect(
                 borderRadius: BorderRadius.circular($style.corners.$24),
-                child: ImageNetwork(
-                    image: project.imgPath,
-                    height: 300 * sizeUnit,
-                    width: 680 * sizeUnit,
-                    fitWeb: BoxFitWeb.contain)),
+                child: ImageNetwork(image: project.imgPath, height: 300 * sizeUnit, width: 680 * sizeUnit, fitWeb: BoxFitWeb.contain)),
             Gap($style.insets.$40),
             Text(
               project.title,
@@ -412,7 +404,7 @@ class DefaultTemplate extends StatelessWidget {
                 child: ImageNetwork(
                   image: project.imgPath,
                   height: 256 * sizeUnit,
-                  width: 540 * sizeUnit,
+                  width: 360 * sizeUnit,
                   fitWeb: BoxFitWeb.contain,
                 )),
             Gap($style.insets.$24),
@@ -435,10 +427,7 @@ class DefaultTemplate extends StatelessWidget {
     );
   }
 
-  Widget description(Description description,
-      {required bool isOdd,
-      required bool isActive,
-      required double currentWidth}) {
+  Widget description(Description description, {required bool isOdd, required bool isActive, required double currentWidth}) {
     Widget titleAndContents() {
       return Expanded(
         child: Align(
@@ -465,11 +454,7 @@ class DefaultTemplate extends StatelessWidget {
       return Expanded(
         child: ClipRRect(
             borderRadius: BorderRadius.circular($style.corners.$24),
-            child: ImageNetwork(
-                image: description.imgPath,
-                height: 477 * sizeUnit,
-                width: 632 * sizeUnit,
-                fitWeb: BoxFitWeb.contain)),
+            child: ImageNetwork(image: description.imgPath, height: 477 * sizeUnit, width: 632 * sizeUnit, fitWeb: BoxFitWeb.contain)),
       );
     }
 
@@ -484,8 +469,7 @@ class DefaultTemplate extends StatelessWidget {
         direction: isOdd ? Direction.left : Direction.right,
         isAction: isActive,
         child: Row(
-          mainAxisAlignment:
-              isOdd ? MainAxisAlignment.start : MainAxisAlignment.end,
+          mainAxisAlignment: isOdd ? MainAxisAlignment.start : MainAxisAlignment.end,
           children: [
             if (isOdd) ...[
               img(),
@@ -504,8 +488,7 @@ class DefaultTemplate extends StatelessWidget {
     );
   }
 
-  Widget mobileDescription(Description description,
-      {required bool isOdd, required bool isActive}) {
+  Widget mobileDescription(Description description, {required bool isOdd, required bool isActive}) {
     Widget titleAndContents() {
       return Column(
         children: [
@@ -527,11 +510,7 @@ class DefaultTemplate extends StatelessWidget {
     Widget img() {
       return ClipRRect(
           borderRadius: BorderRadius.circular($style.corners.$24),
-          child: ImageNetwork(
-              image: description.imgPath,
-              height: 357 * sizeUnit,
-              width: 366 * sizeUnit,
-              fitWeb: BoxFitWeb.contain));
+          child: ImageNetwork(image: description.imgPath, height: 357 * sizeUnit, width: 366 * sizeUnit, fitWeb: BoxFitWeb.contain));
     }
 
     return Container(
@@ -556,8 +535,7 @@ class DefaultTemplate extends StatelessWidget {
   }
 
   // 콜 투 액션 버튼
-  Widget actionButton(
-      {CustomButtonStyle customButtonStyle = CustomButtonStyle.filled48}) {
+  Widget actionButton({CustomButtonStyle customButtonStyle = CustomButtonStyle.filled48}) {
     final List<String> typeList = project.callbackType.split(division);
     final String type = typeList.first;
 
