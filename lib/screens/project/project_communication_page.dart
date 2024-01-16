@@ -45,7 +45,7 @@ class ProjectCommunicationPage extends StatelessWidget {
                     rows: List.generate(
                       controller.userCallbackList.length,
                           (index) => [
-                        (index + 1).toString(),
+                        (controller.userCallbackList.length - index).toString(),
                         controller.callbackTypes[index],
                         ...controller.userCallbackList[index].getRows,
                       ],

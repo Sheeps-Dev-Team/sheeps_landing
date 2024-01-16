@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sheeps_landing/config/routes.dart';
 import 'package:sheeps_landing/screens/template/default_template.dart';
 
 import '../../config/constants.dart';
@@ -118,6 +119,7 @@ class Project {
     int? likeCount,
     int? templateID,
     List<Description>? descriptions,
+    int? keyColor,
     DateTime? createdAt,
     DateTime? updatedAt,
     DateTime? orderedAt
@@ -135,13 +137,14 @@ class Project {
       likeCount: likeCount ?? this.likeCount,
       templateID: templateID ?? this.templateID,
       descriptions: descriptions ?? this.descriptions,
+      keyColor: keyColor ?? this.keyColor,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       orderedAt: orderedAt ?? this.orderedAt
     );
   }
 
-  String get getUrl => 'https://sheeps-landing.web.app/project/$documentID';
+  String get getUrl => '$siteUri${Routes.project}/$documentID';
 }
 
 class Description {

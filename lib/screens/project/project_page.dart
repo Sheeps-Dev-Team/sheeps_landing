@@ -104,7 +104,7 @@ class ProjectPage extends StatelessWidget {
   GestureDetector banner(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        GlobalFunction.launch(Uri.parse('$siteUrl/${Routes.createProject}'));
+        GlobalFunction.launch(Uri.parse('$siteUri/${Routes.createProject}'));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -138,7 +138,7 @@ class ProjectPage extends StatelessWidget {
                     color: controller.keyColor,
                     text: '무료 시작하기',
                     onTap: () {
-                      GlobalFunction.launch(Uri.parse('$siteUrl/${Routes.createProject}'));
+                      GlobalFunction.launch(Uri.parse('$siteUri/${Routes.createProject}'));
                     },
                   ),
                 ],

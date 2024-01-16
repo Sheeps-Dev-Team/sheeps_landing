@@ -67,7 +67,7 @@ class CreateProjectController extends GetxController {
     // 수정 데이터 세팅
     if (isModify) {
       try {
-        project = Get.arguments;
+        project = (Get.arguments as Project).copyWith();
         keyColor = Color(project.keyColor);
 
         // 콜백 타입 세팅
