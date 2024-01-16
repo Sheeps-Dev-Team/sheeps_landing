@@ -100,6 +100,7 @@ class CreateProjectPage extends StatelessWidget {
                                 '그동안 아이디어를 검증하는 과정이 너무 번거롭지 않았나요?\n\n단 5분만에 손쉽게 랜딩 페이지를 제작할 수 있는 툴을 통해, 자신만의 아이디어를 쉽게 검증해 보세요.\n\n디자인이나 코딩을 몰라도 걱정할 필요가 없습니다.\n\n몇 가지 질문에만 대답하면 멋진 랜딩 페이지가 완성됩니다.',
                             maxLine: 10,
                             maxLength: 200,
+                            textAlign: TextAlign.center,
                             onChanged: (value) => controller.project.contents = value,
                           );
                         case 3:
@@ -808,6 +809,7 @@ class CreateProjectPage extends StatelessWidget {
     required String hintText,
     int? maxLine,
     int? maxLength,
+    TextAlign textAlign = TextAlign.start,
     required Function(String value) onChanged,
   }) {
     return Column(
@@ -832,6 +834,7 @@ class CreateProjectPage extends StatelessWidget {
           maxLines: maxLine ?? 1,
           minLines: maxLine ?? 1,
           maxLength: maxLength,
+          textAlign: textAlign,
           onChanged: (p0) {
             onChanged(p0);
             value(p0);
