@@ -39,7 +39,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.6
   #extended_image: ^8.2.0 # 캐시 이미지
-  extended_image: ^8.0.2 # 캐시 이미지
+#  extended_image: ^8.0.2 # 캐시 이미지
   image_network: ^2.5.4+1
   flutter_svg: ^2.0.5 # svg
   gap: ^3.0.0 # 간격 간소화 위젯
@@ -61,6 +61,7 @@ dependencies:
   intl: ^0.18.1
   bootpay: ^4.7.3
   #bootpay: ^1.3.2
+  cached_network_image: ^3.3.1 # 캐시 이미지
 
 dev_dependencies:
   flutter_test:

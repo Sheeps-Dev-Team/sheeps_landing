@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:image_network/image_network.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sheeps_landing/config/constants.dart';
 import 'package:sheeps_landing/data/models/project.dart';
@@ -15,6 +14,8 @@ import 'package:sheeps_landing/util/components/custom_button.dart';
 import 'package:sheeps_landing/util/components/responsive.dart';
 import 'package:sheeps_landing/util/components/sheeps_ani.dart';
 import 'package:sheeps_landing/util/global_function.dart';
+
+import '../../util/components/get_cached_network_image.dart';
 
 // ignore: must_be_immutable
 class DefaultTemplate extends StatelessWidget {
@@ -35,98 +36,100 @@ class DefaultTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDesktop = Responsive.isDesktop(context);
-    final double currentWidth = MediaQuery.of(context).size.width;
+    return LayoutBuilder(builder: (context, constraints) {
+      final double currentWidth = constraints.maxWidth;
+      final bool isDesktop = currentWidth >= 1100;
 
-    if (isDesktop) {
-      titleStyle = $style.text.headline32.copyWith(fontSize: 40 * sizeUnit, color: colorScheme.onPrimaryContainer);
-      contentsStyle = $style.text.body16.copyWith(height: 1.6, color: colorScheme.onPrimaryContainer);
-    } else {
-      titleStyle = titleStyle.copyWith(fontSize: 32 * sizeUnit);
-      contentsStyle = contentsStyle.copyWith(fontSize: 15 * sizeUnit);
-    }
+      if (isDesktop) {
+        titleStyle = $style.text.headline32.copyWith(fontSize: 40 * sizeUnit, color: colorScheme.onPrimaryContainer);
+        contentsStyle = $style.text.body16.copyWith(height: 1.6, color: colorScheme.onPrimaryContainer);
+      } else {
+        titleStyle = titleStyle.copyWith(fontSize: 32 * sizeUnit);
+        contentsStyle = contentsStyle.copyWith(fontSize: 15 * sizeUnit);
+      }
 
-    return GetBuilder<DefaultTemplateController>(
-      tag: Get.parameters['id'],
-      initState: (state) => controller.initState(project),
-      builder: (_) {
-        return Scaffold(
-          body: ScrollablePositionedList.builder(
-            itemScrollController: controller.itemScrollController,
-            itemPositionsListener: controller.itemPositionsListener,
-            itemCount: 6,
-            itemBuilder: (context, index) {
-              switch (index) {
-                case 0:
-                  return Responsive(
-                    desktop: header(currentWidth),
-                    mobile: mobileHeader(),
-                  );
-                case 1:
-                  return Responsive(
-                    desktop: description(
-                      project.descriptions[0],
-                      isOdd: false,
-                      isActive: controller.description01Ani,
-                      currentWidth: currentWidth,
-                    ),
-                    mobile: mobileDescription(
-                      project.descriptions[0],
-                      isOdd: false,
-                      isActive: controller.description01Ani,
-                    ),
-                  );
-                case 2:
-                  return project.descriptions.length > 1
-                      ? Responsive(
-                          desktop: description(
-                            project.descriptions[1],
-                            isOdd: true,
-                            isActive: controller.description02Ani,
-                            currentWidth: currentWidth,
-                          ),
-                          mobile: mobileDescription(
-                            project.descriptions[1],
-                            isOdd: true,
-                            isActive: controller.description02Ani,
-                          ),
-                        )
-                      : const SizedBox.shrink();
-                case 3:
-                  return project.descriptions.length > 2
-                      ? Responsive(
-                          desktop: description(
-                            project.descriptions[2],
-                            isOdd: false,
-                            isActive: controller.description03Ani,
-                            currentWidth: currentWidth,
-                          ),
-                          mobile: mobileDescription(
-                            project.descriptions[2],
-                            isOdd: false,
-                            isActive: controller.description03Ani,
-                          ),
-                        )
-                      : const SizedBox.shrink();
-                case 4:
-                  return callToAction();
-                case 5:
-                  if (projectController.isIndex) {
-                    if (isDesktop) {
-                      return footerDesktop();
+      return GetBuilder<DefaultTemplateController>(
+        tag: Get.parameters['id'],
+        initState: (state) => controller.initState(project),
+        builder: (_) {
+          return Scaffold(
+            body: ScrollablePositionedList.builder(
+              itemScrollController: controller.itemScrollController,
+              itemPositionsListener: controller.itemPositionsListener,
+              itemCount: 6,
+              itemBuilder: (context, index) {
+                switch (index) {
+                  case 0:
+                    return Responsive(
+                      desktop: header(currentWidth),
+                      mobile: mobileHeader(),
+                    );
+                  case 1:
+                    return Responsive(
+                      desktop: description(
+                        project.descriptions[0],
+                        isOdd: false,
+                        isActive: controller.description01Ani,
+                        currentWidth: currentWidth,
+                      ),
+                      mobile: mobileDescription(
+                        project.descriptions[0],
+                        isOdd: false,
+                        isActive: controller.description01Ani,
+                      ),
+                    );
+                  case 2:
+                    return project.descriptions.length > 1
+                        ? Responsive(
+                            desktop: description(
+                              project.descriptions[1],
+                              isOdd: true,
+                              isActive: controller.description02Ani,
+                              currentWidth: currentWidth,
+                            ),
+                            mobile: mobileDescription(
+                              project.descriptions[1],
+                              isOdd: true,
+                              isActive: controller.description02Ani,
+                            ),
+                          )
+                        : const SizedBox.shrink();
+                  case 3:
+                    return project.descriptions.length > 2
+                        ? Responsive(
+                            desktop: description(
+                              project.descriptions[2],
+                              isOdd: false,
+                              isActive: controller.description03Ani,
+                              currentWidth: currentWidth,
+                            ),
+                            mobile: mobileDescription(
+                              project.descriptions[2],
+                              isOdd: false,
+                              isActive: controller.description03Ani,
+                            ),
+                          )
+                        : const SizedBox.shrink();
+                  case 4:
+                    return callToAction();
+                  case 5:
+                    if (projectController.isIndex) {
+                      if (isDesktop) {
+                        return footerDesktop();
+                      } else {
+                        return footerMobile();
+                      }
                     } else {
-                      return footerMobile();
+                      return const SizedBox.shrink();
                     }
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-              }
-              return const SizedBox.shrink();
-            },
-          ),
-        );
-      },
-    );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+          );
+        },
+      );
+    });
   }
 
   SingleChildScrollView footerMobile() {
@@ -361,8 +364,15 @@ class DefaultTemplate extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ClipRRect(
-                borderRadius: BorderRadius.circular($style.corners.$24),
-                child: ImageNetwork(image: project.imgPath, height: 300 * sizeUnit, width: 680 * sizeUnit, fitWeb: BoxFitWeb.contain)),
+              borderRadius: BorderRadius.circular($style.corners.$24),
+              child: GetCachedNetworkImage(
+                imageUrl: project.imgPath,
+                height: 300 * sizeUnit,
+                width: 680 * sizeUnit,
+                fit: BoxFit.contain,
+                progressColor: Color(project.keyColor),
+              ),
+            ),
             Gap($style.insets.$40),
             Text(
               project.title,
@@ -400,13 +410,15 @@ class DefaultTemplate extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ClipRRect(
-                borderRadius: BorderRadius.circular($style.corners.$24),
-                child: ImageNetwork(
-                  image: project.imgPath,
-                  height: 256 * sizeUnit,
-                  width: 360 * sizeUnit,
-                  fitWeb: BoxFitWeb.contain,
-                )),
+              borderRadius: BorderRadius.circular($style.corners.$24),
+              child: GetCachedNetworkImage(
+                imageUrl: project.imgPath,
+                height: 256 * sizeUnit,
+                width: 360 * sizeUnit,
+                fit: BoxFit.contain,
+                progressColor: Color(project.keyColor),
+              ),
+            ),
             Gap($style.insets.$24),
             Text(
               project.title,
@@ -453,8 +465,15 @@ class DefaultTemplate extends StatelessWidget {
     Widget img() {
       return Expanded(
         child: ClipRRect(
-            borderRadius: BorderRadius.circular($style.corners.$24),
-            child: ImageNetwork(image: description.imgPath, height: 477 * sizeUnit, width: 632 * sizeUnit, fitWeb: BoxFitWeb.contain)),
+          borderRadius: BorderRadius.circular($style.corners.$24),
+          child: GetCachedNetworkImage(
+            imageUrl: description.imgPath,
+            fit: BoxFit.contain,
+            width: 632 * sizeUnit,
+            height: 477 * sizeUnit,
+            progressColor: Color(project.keyColor),
+          ),
+        ),
       );
     }
 
@@ -509,8 +528,15 @@ class DefaultTemplate extends StatelessWidget {
 
     Widget img() {
       return ClipRRect(
-          borderRadius: BorderRadius.circular($style.corners.$24),
-          child: ImageNetwork(image: description.imgPath, height: 357 * sizeUnit, width: 366 * sizeUnit, fitWeb: BoxFitWeb.contain));
+        borderRadius: BorderRadius.circular($style.corners.$24),
+        child: GetCachedNetworkImage(
+          imageUrl: description.imgPath,
+          height: 357 * sizeUnit,
+          width: 366 * sizeUnit,
+          fit: BoxFit.contain,
+          progressColor: Color(project.keyColor),
+        ),
+      );
     }
 
     return Container(
