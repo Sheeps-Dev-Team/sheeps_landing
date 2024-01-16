@@ -123,11 +123,12 @@ class ProjectPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Sheeps Landing',
-                    style: $style.text.headline16,
+                    ' 이 사이트는 5분 만에 만드는 ',
+                    style: $style.text.body16,
                   ),
+                  Text('쉽스랜딩', style: $style.text.headline18),
                   Text(
-                    ' 이 사이트는 5분 만에 만드는 쉽스랜딩으로 제작되었습니다.',
+                    '으로 제작되었습니다.',
                     style: $style.text.body16,
                   ),
                   Gap(10 * sizeUnit),
