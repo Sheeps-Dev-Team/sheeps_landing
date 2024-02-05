@@ -9,6 +9,7 @@ import 'package:image_network/image_network.dart';
 import 'package:sheeps_landing/config/routes.dart';
 import 'package:sheeps_landing/screens/project/controllers/project_controller.dart';
 import 'package:sheeps_landing/screens/template/controllers/default_template_controller.dart';
+import 'package:sheeps_landing/util/components/custom_button.dart';
 import 'package:sheeps_landing/util/components/responsive.dart';
 import 'package:sheeps_landing/util/components/site_app_bar.dart';
 import 'package:sheeps_landing/util/global_function.dart';
@@ -53,10 +54,10 @@ class HomePage extends StatelessWidget {
                     ),
                     itemBuilder: (context, index) {
                       if (controller.list.isEmpty) {
-                        return addProjectItem();
+                        return addProjectItem(isDesktop);
                       } else {
                         if (index == (controller.list.length)) {
-                          return addProjectItem();
+                          return addProjectItem(isDesktop);
                         }
                         return projectItem(controller.list[index], isDesktop);
                       }
@@ -133,22 +134,15 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
+              CustomButton(
+                customButtonStyle: isDesktop ? CustomButtonStyle.outline28 : CustomButtonStyle.outline20,
                 width: (isDesktop ? 80 : 48) * sizeUnit,
-                height: (isDesktop ? 30 : 20) * sizeUnit,
-                decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular(12 * sizeUnit), border: Border.all(color: $style.colors.primary)),
-                child: TextButton(
-                    onPressed: () {
-                      Get.toNamed(
-                        '${Routes.projectManagement}/${project.documentID}',
-                        arguments: project,
-                      );
-                    },
-                    child: Text(
-                      '관리',
-                      style: isDesktop ? $style.text.subTitle14.copyWith(color: $style.colors.primary) : $style.text.body10.copyWith(color: $style.colors.primary),
-                    )),
-              )
+                text: '관리',
+                onTap: () => Get.toNamed(
+                  '${Routes.projectManagement}/${project.documentID}',
+                  arguments: project,
+                ),
+              ),
             ],
           ),
         ),
@@ -156,7 +150,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget addProjectItem() {
+  Widget addProjectItem(bool isDesktop) {
     return Column(
       children: [
         Expanded(
@@ -172,7 +166,7 @@ class HomePage extends StatelessWidget {
               alignment: Alignment.center,
               child: SvgPicture.asset(
                 GlobalAssets.svgPlus,
-                width: 100 * sizeUnit,
+                width: isDesktop ? 100 * sizeUnit : 40 * sizeUnit,
                 colorFilter: ColorFilter.mode(
                   $style.colors.grey,
                   BlendMode.srcIn,

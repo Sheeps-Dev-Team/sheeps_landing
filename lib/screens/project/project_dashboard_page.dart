@@ -10,6 +10,7 @@ import 'package:bootpay/model/payload.dart';
 import 'package:bootpay/model/stat_item.dart';
 import 'package:bootpay/model/user.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -100,29 +101,33 @@ class _ProjectDashboardPageState extends State<ProjectDashboardPage> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        dashboardWidget(
-                          '프로젝트 URL',
-                          widget.project.getUrl,
-                          isDesktop,
-                          () {
-                            //Get.toNamed('${Routes.project}/${widget.project.documentID}', arguments: widget.project);
-                            window.open(widget.project.getUrl, widget.project.name);
-                          },
+                        Expanded(
+                          child: dashboardWidget(
+                            '프로젝트 URL',
+                            widget.project.getUrl,
+                            isDesktop,
+                            () {
+                              //Get.toNamed('${Routes.project}/${widget.project.documentID}', arguments: widget.project);
+                              window.open(widget.project.getUrl, widget.project.name);
+                            },
+                          ),
                         ),
-                        const Gap(12),
-                        InkWell(
-                          onTap: () {
-                            window.open(widget.project.getUrl, widget.project.name);
-                          },
-                          child: SizedBox(
-                            width: 32,
-                            height: 32,
-                            child: Icon(
-                              Icons.open_in_new_sharp,
-                              color: $style.colors.darkGrey,
+                        if (isDesktop) ...[
+                          const Gap(12),
+                          InkWell(
+                            onTap: () {
+                              window.open(widget.project.getUrl, widget.project.name);
+                            },
+                            child: SizedBox(
+                              width: 32,
+                              height: 32,
+                              child: Icon(
+                                Icons.open_in_new_sharp,
+                                color: $style.colors.darkGrey,
+                              ),
                             ),
                           ),
-                        )
+                        ],
                       ],
                     ),
                     Gap($style.insets.$20),
@@ -199,55 +204,51 @@ class _ProjectDashboardPageState extends State<ProjectDashboardPage> {
                       Gap($style.insets.$12),
                       Row(
                         children: [
-                          const SizedBox(
-                            child: Icon(
-                              Icons.info_outlined,
+                          if (isDesktop) ...[
+                            const SizedBox(
+                              child: Icon(
+                                Icons.info_outlined,
+                              ),
+                            ),
+                            const Gap(8),
+                          ],
+                          Expanded(
+                            child: RichText(
+                              text: TextSpan(
+                                style: $style.text.body16.copyWith(fontSize: isDesktop ? 16 : 12, height: 1.5),
+                                children: [
+                                  const TextSpan(text: '구매를 진행하면 해당 '),
+                                  TextSpan(
+                                    text: '이용약관 ',
+                                    style: TextStyle(color: $style.colors.blue),
+                                    recognizer: TapGestureRecognizer()..onTap = () => GlobalFunction.launch(Uri.parse('https://www.sheeps.kr/sheeps_landing/legal/terms')),
+                                  ),
+                                  const TextSpan(text: '에 동의하며 '),
+                                  TextSpan(
+                                    text: '개인정보처리방침 ',
+                                    style: TextStyle(color: $style.colors.blue),
+                                    recognizer: TapGestureRecognizer()..onTap = () => GlobalFunction.launch(Uri.parse('https://www.sheeps.kr/sheeps_landing/legal/privacy-policy')),
+                                  ),
+                                  const TextSpan(text: '을 숙지하였음을 의미합니다.'),
+                                ],
+                              ),
                             ),
                           ),
-                          Gap(8 * sizeUnit),
-                          Text(
-                            '구매를 진행하면 해당 ',
-                            style: $style.text.body16,
-                          ),
-                          TextButton(
-                              onPressed: () {
-                                window.open('https://www.sheeps.kr/sheeps_landing/legal/terms', '이용약관');
-                              },
-                              child: Text(
-                                '이용약관',
-                                style: $style.text.body16.copyWith(color: $style.colors.blue),
-                              )),
-                          Text(
-                            '에 동의하며 ',
-                            style: $style.text.body16,
-                          ),
-                          TextButton(
-                              onPressed: () {
-                                window.open('https://www.sheeps.kr/sheeps_landing/legal/privacy-policy', '개인정보처리방침');
-                              },
-                              child: Text(
-                                '개인정보처리방침',
-                                style: $style.text.body16.copyWith(color: $style.colors.blue),
-                              )),
-                          Text(
-                            '을 숙지하였음을 의미합니다',
-                            style: $style.text.body16,
-                          ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            '990원 ',
-                            style: $style.text.body16.copyWith(color: $style.colors.blue),
-                          ),
-                          Text(
-                            "결제시 페이지 내 하단 광고가 1 영업일 내에 제거 됩니다. 환불 요청 시점, 이유에 따라 환불 수수료가 부과될 수 있습니다. ",
-                            style: $style.text.body16,
-                          ),
-                        ],
+                      RichText(
+                        text: TextSpan(
+                          style: $style.text.body16.copyWith(fontSize: isDesktop ? 16 : 12, height: 1.5),
+                          children: [
+                            TextSpan(
+                              text: '990원  ',
+                              style: TextStyle(color: $style.colors.blue),
+                            ),
+                            const TextSpan(text: '결제 시 페이지 내 하단 광고가 1영업일 내에 제거 됩니다. 환불 요청 시점, 이유에 따라 환불 수수료가 부과될 수 있습니다.'),
+                          ],
+                        ),
                       ),
-                      Gap($style.insets.$24),
+                      Gap(isDesktop ? $style.insets.$24 : $style.insets.$16),
                       Container(
                         width: 120 * sizeUnit,
                         decoration:
@@ -286,19 +287,27 @@ class _ProjectDashboardPageState extends State<ProjectDashboardPage> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(
-                            child: Icon(
-                              Icons.info_outlined,
+                          if (isDesktop) ...[
+                            const SizedBox(
+                              child: Icon(
+                                Icons.info_outlined,
+                              ),
                             ),
-                          ),
-                          Gap(8 * sizeUnit),
-                          Text(
-                            '결제한 금액은 14일 이내 환불 요청 시 100% 환불됩니다.\n구매 취소를 위해서는 카카오톡 채널로 직접 문의해 주시길 바랍니다.',
-                            style: $style.text.body16,
+                            Gap(8 * sizeUnit),
+                          ],
+                          Expanded(
+                            child: Text(
+                              '결제한 금액은 14일 이내 환불 요청 시 100% 환불됩니다.',
+                              style: $style.text.body16.copyWith(fontSize: isDesktop ? 16 : 12, height: 1.5),
+                            ),
                           )
                         ],
                       ),
-                      Gap($style.insets.$24),
+                      Text(
+                        '구매 취소를 위해서는 카카오톡 채널로 직접 문의해 주시길 바랍니다.',
+                        style: $style.text.body16.copyWith(fontSize: isDesktop ? 16 : 12, height: 1.5),
+                      ),
+                      Gap(isDesktop ? $style.insets.$24 : $style.insets.$16),
                       Container(
                         width: 120 * sizeUnit,
                         decoration: BoxDecoration(

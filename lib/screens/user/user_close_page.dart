@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:sheeps_landing/data/global_data.dart';
 import 'package:sheeps_landing/repository/user_repository.dart';
+import 'package:sheeps_landing/util/components/custom_button.dart';
 import 'package:sheeps_landing/util/components/custom_text_field.dart';
 import 'package:sheeps_landing/util/components/site_app_bar.dart';
 import 'package:sheeps_landing/util/global_function.dart';
@@ -40,7 +41,10 @@ class _UserClosePageState extends State<UserClosePage> {
         centerTitle: isDesktop ? false : true,
         leading: InkWell(
           onTap: () => Get.back(),
-          child: Icon(Icons.chevron_left, color: $style.colors.darkGrey,),
+          child: Icon(
+            Icons.chevron_left,
+            color: $style.colors.darkGrey,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -243,7 +247,7 @@ class _UserClosePageState extends State<UserClosePage> {
         },
         child: Text(
           '계정 닫기',
-          style: $style.text.subTitle14.copyWith(color: isCheck == false ? $style.colors.red : Colors.white),
+          style: $style.text.subTitle14.copyWith(color: isCheck == false ? $style.colors.red : Colors.white, height: 1),
         ),
       ),
     );
