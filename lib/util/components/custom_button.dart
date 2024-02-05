@@ -94,6 +94,7 @@ class CustomButton extends StatelessWidget {
       color: fontColor,
       fontSize: fontSize,
       fontWeight: fontWeight,
+      height: 1.0,
     );
 
     return Theme(
