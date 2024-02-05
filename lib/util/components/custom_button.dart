@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../config/constants.dart';
 
-enum CustomButtonStyle { filled48, filled32, outline48, outline32, outline28 }
+enum CustomButtonStyle { filled48, filled32, outline48, outline32, outline28, outline20 }
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
@@ -73,10 +73,20 @@ class CustomButton extends StatelessWidget {
         fontColor = color;
         fontSize = 14 * sizeUnit;
         if (color == $style.colors.grey) {
-          fontWeight = FontWeight.w500;
+          fontWeight = FontWeight.w400;
           borderColor = $style.colors.grey;
         }
         height = 28 * sizeUnit;
+        break;
+      case CustomButtonStyle.outline20:
+        fillColor = Colors.white;
+        fontColor = color;
+        fontSize = 10 * sizeUnit;
+        if (color == $style.colors.grey) {
+          fontWeight = FontWeight.w400;
+          borderColor = $style.colors.grey;
+        }
+        height = 20 * sizeUnit;
         break;
     }
 

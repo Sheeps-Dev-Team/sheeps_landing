@@ -11,6 +11,7 @@ import '../../config/global_assets.dart';
 import '../../config/routes.dart';
 import '../../screens/user/user_main_page.dart';
 import 'custom_app_bar.dart';
+import 'custom_button.dart';
 
 class SiteAppBar extends StatelessWidget implements PreferredSize {
   const SiteAppBar({super.key, this.leading, this.centerTitle = false});
@@ -92,12 +93,20 @@ class SiteAppBar extends StatelessWidget implements PreferredSize {
                                     child: Container(
                                       width: isDesktop ? 80 * sizeUnit : 70 * sizeUnit,
                                       height: 30 * sizeUnit,
-                                      decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular($style.corners.$32), border: Border.all(color: $style.colors.primary),),
+                                      decoration: BoxDecoration(
+                                        color: Colors.transparent,
+                                        borderRadius: BorderRadius.circular($style.corners.$32),
+                                        border: Border.all(color: $style.colors.primary),
+                                      ),
                                       child: TextButton(
                                           onPressed: GlobalFunction.logout,
                                           child: Text(
                                             '로그아웃',
-                                            style: isDesktop ? $style.text.subTitle14.copyWith(color: $style.colors.primary) : $style.text.subTitle10.copyWith(color: $style.colors.primary),
+                                            style: $style.text.subTitle14.copyWith(
+                                              color: $style.colors.primary,
+                                              fontSize: isDesktop ? 14 : 12,
+                                              height: 1.0,
+                                            ),
                                           )),
                                     ),
                                   )
@@ -117,17 +126,12 @@ class SiteAppBar extends StatelessWidget implements PreferredSize {
             ),
           ),
         } else ...{
-          Container(
-            width: 58 * sizeUnit,
-            height: 30 * sizeUnit,
-            decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.circular($style.corners.$32), border: Border.all(color: $style.colors.primary)),
-            child: TextButton(
-                onPressed: () => Get.toNamed(Routes.login),
-                child: Text(
-                  '로그인',
-                  style: $style.text.subTitle10.copyWith(color: $style.colors.primary),
-                )),
-          )
+          CustomButton(
+            customButtonStyle: isDesktop ? CustomButtonStyle.outline32 : CustomButtonStyle.outline28,
+            width: (isDesktop ? 70 : 64) * sizeUnit,
+            text: '로그인',
+            onTap: () => Get.toNamed(Routes.login),
+          ),
         },
         Gap(isDesktop ? $style.insets.$24 : $style.insets.$16),
       ],

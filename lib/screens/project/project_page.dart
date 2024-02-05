@@ -182,7 +182,7 @@ class ProjectPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                Gap($style.insets.$16),
+                Gap(isDesktop ? $style.insets.$24 : $style.insets.$16),
               ]
             : null,
       );

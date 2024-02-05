@@ -193,7 +193,7 @@ class UserSettingPage extends StatelessWidget {
                                 },
                                 child: Text(
                                   '계정 닫기',
-                                  style: $style.text.subTitle14.copyWith(color: $style.colors.red),
+                                  style: $style.text.subTitle14.copyWith(color: $style.colors.red, height: 1.0),
                                 )),
                           ),
                         )
