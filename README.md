@@ -1,16 +1,26 @@
-# sheeps_landing
+# 쉽스 랜딩 클라이언트
 
-A new Flutter project.
+노코드로 랜딩 페이지를 제작할 수 있는 프로젝트 입니다.
 
-## Getting Started
+# 목차
 
-This project is a starting point for a Flutter application.
+-   [요약](#요약)
+-   [주요 기능](#주요기능)
 
-A few resources to get you started if this is your first Flutter project:
+# 요약
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- 사용자는 간단한 질문에 답변하여 쉽게 랜딩 페이지를 생성할 수 있습니다.
+- 생성된 랜딩 페이지는 Call To Action을 통해 다른 사용자들의 반응을 확인할 수 있습니다.
+- 반응은 조회수, 좋아요 수, 이메일, 링크를 통해 확인할 수 있습니다.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# 주요기능
+
+- 회원가입
+    - 카카오, 애플, 구글 및 비회원으로 로그인이 가능해야 함
+    - 사용자는 간단한 질문에 답변하여 랜딩 페이지를 생성할 수 있어야 함
+- 노코드
+    - 사용자가 코딩 없이 쉽게 랜딩 페이지를 생성할 수 있어야 함
+- 랜딩페이지 생성
+    - 사용자가 입력한 정보를 기반으로 자동으로 랜딩 페이지가 생성되어야 함
+- 반응 확인 대시보드
+    - 사용자는 생성한 랜딩 페이지에 대한 반응을 조회수, 좋아요 수, 이메일, 링크 등을 통해 확인할 수 있어야 함
